@@ -5,30 +5,18 @@ package jaredbgreat.procgenlab.tranforms;
  *
  * Currently under the Creative Commons Attribution License version 4.0:  
  * https://creativecommons.org/licenses/by/4.0/legalcode
-*/
+ */
 
 import jaredbgreat.procgenlab.exceptions.ImageCreationException;
 import jaredbgreat.procgenlab.interfaces.IPalette;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
-import static java.awt.image.BufferedImage.*;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 /**
  *
  * @author Jared Blackburn
  */
-public class DiscretePallete implements IPalette {
-    private int[] palette;
-
-    @Override
-    public int getColor(int value) throws ImageCreationException {
-        if((value < 0) || (value > palette.length)) {
-            throw new ImageCreationException("Tried to use value not in color "
-                            + "paletta (outside bounds of color array).");
-        }
-        return palette[value];
-    }
-    
+public abstract class AbstractPalette implements IPalette {
     
     @Override
     public BufferedImage getImage(int w, int h, int[] data) 
@@ -45,5 +33,4 @@ public class DiscretePallete implements IPalette {
             }
         return out;
     }
-    
 }

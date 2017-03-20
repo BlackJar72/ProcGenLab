@@ -8,23 +8,31 @@ package jaredbgreat.procgenlab.tranforms;
  */
 
 import jaredbgreat.procgenlab.exceptions.ImageCreationException;
-import jaredbgreat.procgenlab.interfaces.IPalette;
-import java.awt.image.BufferedImage;
 
 /**
  *
  * @author Jared Blackburn
  */
-public class DiscontinuousPalette implements IPalette  {
+public class DiscontinuousPalette extends AbstractPalette {
+    private ContinuousPalette[] ps;
 
     @Override
     public int getColor(int value) throws ImageCreationException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public BufferedImage getImage(int w, int h, int[] data) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Note: There is no way now of making sure the regions
+        // don't overlap -- I'm not sure how I might do that yet.
+        ContinuousPalette region = getRegion(value);
+        if(region == null) {
+            throw new ImageCreationException("Tried to use value not in any " 
+                        + "region to retrieve color");
+        }
+        return region.getColor(value);
     }
     
+    
+    private ContinuousPalette getRegion(int value) {
+        for(int i = 0; i < ps.length; i++) {
+            if(ps[i].inRange(value)) return ps[i];
+        }
+        return null;
+    }
 }
