@@ -10,7 +10,8 @@ package jaredbgreat.procgenlab.interfaces;
 import java.awt.Image;
 
 /**
- *
+ *  For use internally in representing processed representations
+ * 
  * @author Jared Blackburn
  */
 public interface IWorldMap {

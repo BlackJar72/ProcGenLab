@@ -8,15 +8,20 @@ package jaredbgreat.procgenlab.interfaces;
  */
 
 /**
+ * The interface the main class of a generator (i.e., the generators facade).
  *
  * @author Jared Blackburn
  */
 public interface IGenerator {
     
     public void generate();
-    public IWorldMap[] getData();
-    public IWorldMap[] generateData();
+    public int[][] getData();
+    public int[][] generateData();
     public void setParameters(String[] param);
+    public int[][][] getColorPaletes();
+    public String[] getNames();
+    public int[] getImageSize();
+    public int getNumLayers();
     
     
 }
