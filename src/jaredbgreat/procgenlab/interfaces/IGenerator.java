@@ -1,21 +1,22 @@
 package jaredbgreat.procgenlab.interfaces;
 
 /*
- * Copyright (C) Jared Blackburn 2016
+ * Copyright (C) Jared Blackburn 2017
  *
  * Currently under the Creative Commons Attribution License version 4.0:  
  * https://creativecommons.org/licenses/by/4.0/legalcode
-*/
-
-import java.awt.Image;
+ */
 
 /**
  *
  * @author Jared Blackburn
  */
-public interface IWorldMap {
+public interface IGenerator {
     
-    public Image getImage(int number);
-    public String getImageName(int number);
+    public void generate();
+    public IWorldMap[] getData();
+    public IWorldMap[] generateData();
+    public void setParameters(String[] param);
+    
     
 }
