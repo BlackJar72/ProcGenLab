@@ -6,6 +6,8 @@
  */
 package jaredbgreat.procgenlab;
 
+import jaredbgreat.procgenlab.viewer.MainWindow;
+
 /**
  * TODO: Everything!!!
  * 
@@ -20,12 +22,36 @@ package jaredbgreat.procgenlab;
  * @author Jared Blackburn
  */
 public class MapGenView {
-
+    public static MainWindow win;
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        init();
+        winInit();
+        run();
+        cleanup();
+    }
+    
+    
+    private static void init() {
+        
+    }
+    
+    
+    private static void winInit() {
+        win = new MainWindow();
+    }
+    
+    
+    private static void run() {
+        
+    }
+    
+    
+    private static void cleanup() {
+        
     }
     
 }

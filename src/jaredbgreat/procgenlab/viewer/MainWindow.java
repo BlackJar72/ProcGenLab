@@ -8,6 +8,9 @@ package jaredbgreat.procgenlab.viewer;
  */
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 /**
  * Is the main window of the application.  Will hold a menu and a viewing pane
@@ -17,5 +20,39 @@ import javax.swing.JFrame;
  * @author Jared Blackburn
  */
 public class MainWindow extends JFrame {
+    private int width = 1024;
+    private int height = 640;
+    
+    private JMenuBar menuBar;
+    private JMenu fileMenu;
+    private JMenuItem menuExit;
+    
+    public MainWindow() {
+        setupWindow();
+        setupMenuBar();
+    }
+    
+    
+    /**
+     * Sets up the window itself and major / global features
+     */
+    private void setupWindow() {
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(width, height);        
+    }
+    
+    
+    /**
+     * Sets up the menu bar and its menus.
+     */
+    private void setupMenuBar() {
+        menuBar = new JMenuBar();
+        fileMenu = new JMenu("File");
+        menuExit = new JMenuItem("Exit");
+        fileMenu.add(menuExit);
+        menuBar.add(fileMenu);
+        setJMenuBar(menuBar);        
+    }
     
 }
