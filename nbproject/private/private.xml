@@ -13,6 +13,8 @@
             <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/viewer/MapPanel.java</file>
             <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/interfaces/IPalette.java</file>
             <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/tranforms/ContinuousPalette.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/tranforms/AbstractPalette.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/viewer/ViewPane.java</file>
         </group>
     </open-files>
 </project-private>

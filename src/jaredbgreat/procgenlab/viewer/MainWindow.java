@@ -7,6 +7,7 @@ package jaredbgreat.procgenlab.viewer;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -22,6 +23,11 @@ import javax.swing.JMenuItem;
 public class MainWindow extends JFrame {
     private int width = 1024;
     private int height = 640;
+    
+    private BorderLayout layout;
+    private TopPanel topPanel;
+    private SidePanel sidePanel;
+    private ViewPane viewPane;
     
     private JMenuBar menuBar;
     private JMenu fileMenu;
@@ -39,7 +45,14 @@ public class MainWindow extends JFrame {
     private void setupWindow() {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(width, height);        
+        setSize(width, height);
+        setLayout(layout = new BorderLayout());
+        topPanel = new TopPanel();
+        sidePanel = new SidePanel();
+        viewPane = new ViewPane();
+        add(topPanel, BorderLayout.NORTH);
+        add(sidePanel, BorderLayout.WEST);
+        add(viewPane, BorderLayout.CENTER);
     }
     
     
