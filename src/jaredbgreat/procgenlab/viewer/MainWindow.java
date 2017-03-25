@@ -36,6 +36,7 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         setupWindow();
         setupMenuBar();
+        setVisible(true);
     }
     
     
@@ -43,7 +44,6 @@ public class MainWindow extends JFrame {
      * Sets up the window itself and major / global features
      */
     private void setupWindow() {
-        setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(width, height);
         setLayout(layout = new BorderLayout());
@@ -65,7 +65,7 @@ public class MainWindow extends JFrame {
         menuExit = new JMenuItem("Exit");
         fileMenu.add(menuExit);
         menuBar.add(fileMenu);
-        setJMenuBar(menuBar);        
+        setJMenuBar(menuBar);  
     }
     
 }

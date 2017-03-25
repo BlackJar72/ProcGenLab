@@ -3,18 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/MapGenView.java</file>
             <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/tranforms/DiscontinuousPalette.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/viewer/SidePanel.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/exceptions/ImageCreationException.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/tranforms/ContinuousPalette.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/viewer/ViewPane.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/MapGenView.java</file>
             <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/interfaces/IGenerator.java</file>
             <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/viewer/MainWindow.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/viewer/TopPanel.java</file>
             <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/tranforms/DiscretePalette.java</file>
             <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/interfaces/IWorldMap.java</file>
-            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/exceptions/ImageCreationException.java</file>
             <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/viewer/MapPanel.java</file>
             <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/interfaces/IPalette.java</file>
-            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/tranforms/ContinuousPalette.java</file>
             <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/tranforms/AbstractPalette.java</file>
-            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/viewer/ViewPane.java</file>
         </group>
     </open-files>
 </project-private>
