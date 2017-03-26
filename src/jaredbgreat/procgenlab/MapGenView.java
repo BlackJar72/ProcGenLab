@@ -22,7 +22,7 @@ import jaredbgreat.procgenlab.viewer.MainWindow;
  * @author Jared Blackburn
  */
 public class MapGenView {
-    public static MainWindow win;
+    private static MainWindow win;
     
     /**
      * @param args the command line arguments
@@ -41,7 +41,7 @@ public class MapGenView {
     
     
     private static void winInit() {
-        win = new MainWindow();
+        win = MainWindow.getMainWindow();
     }
     
     

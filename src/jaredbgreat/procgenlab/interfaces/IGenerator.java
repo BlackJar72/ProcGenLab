@@ -14,7 +14,7 @@ package jaredbgreat.procgenlab.interfaces;
  */
 public interface IGenerator {
     
-    public void generate();
+    public void generate(Long seed);
     public int[][] getData();
     public int[][] generateData();
     public void setParameters(String[] param);

@@ -7,6 +7,7 @@ package jaredbgreat.procgenlab.viewer.control;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import jaredbgreat.procgenlab.viewer.MainWindow;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -20,10 +21,12 @@ import java.util.HashMap;
  */
 public class Interpreter implements ActionListener {
     private final HashMap<String, ICommand> commands;
+    private final MainWindow mw;
     private static Interpreter it;
     
     private Interpreter(){
-        commands = new HashMap<String, ICommand>();
+        commands = new HashMap<>();
+        mw = MainWindow.getMainWindow();
         addCommands();
     }    
     

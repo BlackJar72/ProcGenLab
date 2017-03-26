@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JTextField;
 
 /**
  * Is the main window of the application.  Will hold a menu and a viewing pane
@@ -21,6 +22,8 @@ import javax.swing.JMenuItem;
  * @author Jared Blackburn
  */
 public class MainWindow extends JFrame {
+    private static MainWindow it;
+    
     private int width = 1024;
     private int height = 640;
     
@@ -33,10 +36,18 @@ public class MainWindow extends JFrame {
     private JMenu fileMenu;
     private JMenuItem menuExit;
     
-    public MainWindow() {
+    private MainWindow() {
         setupWindow();
         setupMenuBar();
         setVisible(true);
+    }
+    
+    
+    public static MainWindow getMainWindow() {
+        if(it == null) {
+            it = new MainWindow();
+        }
+        return it;
     }
     
     
@@ -66,6 +77,11 @@ public class MainWindow extends JFrame {
         fileMenu.add(menuExit);
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);  
+    }
+    
+    
+    private JTextField getSeedBox() {
+        return topPanel.getSeedBox();
     }
     
 }

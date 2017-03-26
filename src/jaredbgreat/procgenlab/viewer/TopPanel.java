@@ -98,4 +98,9 @@ public class TopPanel extends JPanel {
         add(profLabel);
         add(profiler);
     }
+    
+    
+    public JTextField getSeedBox() {
+        return seedbox;
+    }
 }
