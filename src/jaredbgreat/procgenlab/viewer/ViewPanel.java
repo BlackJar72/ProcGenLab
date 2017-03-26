@@ -13,7 +13,14 @@ import javax.swing.JTabbedPane;
  *
  * @author Jared Blackburn
  */
-public class ViewPane extends JTabbedPane {
+public class ViewPanel extends JTabbedPane {
     private MapPanel[] layers;
+    
+    public ViewPanel(MapPanel[] in) {
+        layers = in;
+        if((layers != null) && (layers.length > 0))for(MapPanel img : layers ){
+            add(img);
+        }
+    }
     
 }

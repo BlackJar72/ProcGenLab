@@ -27,7 +27,7 @@ public class MainWindow extends JFrame {
     private BorderLayout layout;
     private TopPanel topPanel;
     private SidePanel sidePanel;
-    private ViewPane viewPane;
+    private ViewPanel viewPanel;
     
     private JMenuBar menuBar;
     private JMenu fileMenu;
@@ -49,10 +49,10 @@ public class MainWindow extends JFrame {
         setLayout(layout = new BorderLayout());
         topPanel = new TopPanel();
         sidePanel = new SidePanel();
-        viewPane = new ViewPane();
+        viewPanel = new ViewPanel(null);
         add(topPanel, BorderLayout.NORTH);
         add(sidePanel, BorderLayout.WEST);
-        add(viewPane, BorderLayout.CENTER);
+        add(viewPanel, BorderLayout.CENTER);
     }
     
     

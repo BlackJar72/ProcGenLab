@@ -1,11 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jaredbgreat.procgenlab.viewer;
 
+/*
+ * Copyright (C) Jared Blackburn 2017
+ *
+ * Currently under the Creative Commons Attribution License version 4.0:  
+ * https://creativecommons.org/licenses/by/4.0/legalcode
+ */
+
 import java.awt.FlowLayout;
+import static java.awt.FlowLayout.RIGHT;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -38,11 +41,10 @@ public class TopPanel extends JPanel {
     
     
     public void init() {
-        // OK, WTF!!! Why does this exact code give different result each time run
-        // Why does it occationally work and more often not!
         addGenerateButton();
         addSelector();
-        addSeedbox();        
+        addSeedBox();   
+        addProfileBox();
     }
     
     
@@ -72,11 +74,28 @@ public class TopPanel extends JPanel {
     /**
      * Adds text box for setting random seed.
      */
-    private void addSeedbox() {
+    private void addSeedBox() {
         seedLabel = new JLabel("Seed: ");
         seedLabel.setText("Seed: ");
+        seedLabel.setHorizontalAlignment(JLabel.TRAILING);
         seedbox = new JTextField();
+        seedLabel.setLabelFor(seedbox);
         add(seedLabel);
         add(seedbox);
+    }
+    
+    
+    /**
+     * Adds text box for sviewing profiler timings.
+     */
+    private void addProfileBox() {
+        profLabel = new JLabel("Time: ");
+        profLabel.setText("Time: ");
+        profLabel.setHorizontalAlignment(JLabel.TRAILING);
+        profiler = new JTextField();
+        profiler.setEditable(false);
+        profLabel.setLabelFor(profiler);
+        add(profLabel);
+        add(profiler);
     }
 }
