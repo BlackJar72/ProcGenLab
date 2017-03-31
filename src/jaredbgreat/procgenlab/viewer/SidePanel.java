@@ -1,16 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jaredbgreat.procgenlab.viewer;
 
+/*
+ * Copyright (C) Jared Blackburn 2017
+ *
+ * Currently under the Creative Commons Attribution License version 4.0:  
+ * https://creativecommons.org/licenses/by/4.0/legalcode
+ */
+
+import java.awt.Color;
 import javax.swing.JPanel;
 
 /**
  *
- * @author jared
+ * @author Jared Blackburn
  */
 public class SidePanel extends JPanel {
     
+    
+        SidePanel() {
+            super();
+        }
 }

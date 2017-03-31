@@ -34,7 +34,7 @@ public class TopPanel extends JPanel {
     JLabel seedLabel, profLabel, gensLabel;
     
     TopPanel() {
-        layout = new GridLayout();
+        layout = new GridLayout(1, 4);
         setLayout(layout);
         init();
     }
