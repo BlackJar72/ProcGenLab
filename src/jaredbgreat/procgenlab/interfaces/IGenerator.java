@@ -18,7 +18,7 @@ public interface IGenerator {
     public int[][] getData();
     public int[][] generateData();
     public void setParameters(String[] param);
-    public int[][][] getColorPaletes();
+    public IPalette[] getColorPaletes();
     public String[] getNames();
     public int[] getImageSize();
     public int getNumLayers();

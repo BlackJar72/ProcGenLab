@@ -161,6 +161,46 @@ public class Registry<T> implements Iterable<T> {
         return directory.containsKey(key);
     }
     
+    /**
+     * Returns the contents of the list as an array.
+     * 
+     * @return an array containing the items in the registry.
+     */
+    public T[] toArray() {
+        return (T[])list.toArray();
+    }
+    
+    
+    /**
+     * Returns an array containing the items in the registry.
+     * 
+     * @param in
+     * @return an array containing the items in the registry
+     */
+    public T[] toArray(T[] in) {
+        return list.toArray(in);
+    }
+    
+    
+    /**
+     * Returns a copy of the list.
+     * 
+     * @return a the data as a clones list.
+     */
+    public ArrayList<T> getListCopy() {
+        return (ArrayList<T>) list.clone();
+    }
+    
+    
+    /**
+     * Returns a reference to the internal list representation.
+     * 
+     * @return a reference to the actual internal list.
+     */
+    public ArrayList<T> getList() {
+        return list;
+    }
+    
     
     /**
      * This will add the object (value) named by the key to to the registry,
