@@ -9,6 +9,8 @@ package jaredbgreat.procgenlab.registries;
 
 import jaredbgreat.procgenlab.interfaces.IGenerator;
 import jaredbgreat.procgenlab.interfaces.IPalette;
+import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
+import java.util.List;
 
 /**
  *
@@ -17,11 +19,13 @@ import jaredbgreat.procgenlab.interfaces.IPalette;
 public class GeneratorRegistrar {
     private final Registry<IGenerator> gens;
     private final Registry<IPalette[]> palettes;
+    private final Registry<List<IParameter>> parameters;
     
     
     public GeneratorRegistrar() {
         gens = new Registry<>();
         palettes = new Registry<>();
+        parameters = new Registry<>();
     }
     
     

@@ -1,4 +1,4 @@
-package jaredbgreat.procgenlab.viewer.logic;
+package jaredbgreat.procgenlab.viewer.logic.parameters;
 
 /*
  * Copyright (C) Jared Blackburn 2017
@@ -7,15 +7,10 @@ package jaredbgreat.procgenlab.viewer.logic;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-import jaredbgreat.procgenlab.interfaces.IGenerator;
-import java.util.ArrayList;
-
 /**
  *
  * @author Jared Blackburn
  */
-public class Generators {
-    private ArrayList<IGenerator> list;
-    private IGenerator selected;
+public class ParameterFactory {
     
 }

@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/viewer/MainWindow.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/interfaces/IGenerator.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/viewer/TopPanel.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/registries/Registry.java</file>
+            <file>file:/home/jared/Documents/src/NetBeansProjects/MapGenView/src/jaredbgreat/procgenlab/registries/GeneratorRegistrar.java</file>
         </group>
     </open-files>
 </project-private>
