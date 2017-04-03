@@ -11,6 +11,7 @@ import jaredbgreat.procgenlab.viewer.MainWindow;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A class to store, retrieve, and execute commands defined with gui components.
@@ -20,18 +21,16 @@ import java.util.HashMap;
  * @author Jared Blackburn
  */
 public class Interpreter implements ActionListener {
-    private final HashMap<String, ICommand> commands;
-    private final MainWindow mw;
+    private final Map<String, ICommand> commands;
     private static Interpreter it;
     
     private Interpreter(){
         commands = new HashMap<>();
-        mw = MainWindow.getMainWindow();
         addCommands();
     }    
     
     private void addCommands() {
-        
+        commands.put("exit", new ExitCommand());
     }
     
     
@@ -43,7 +42,7 @@ public class Interpreter implements ActionListener {
      * 
      * @return 
      */
-    public Interpreter getInterpeter() {
+    public static Interpreter getInterpeter() {
         if(it == null) {
             it = new Interpreter();
         }

@@ -8,7 +8,10 @@ package jaredbgreat.procgenlab.viewer.control.event;
  */
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EventObject;
+import java.util.List;
 import javax.swing.JComponent;
 
 /**
@@ -17,10 +20,16 @@ import javax.swing.JComponent;
  */
 public class ControlEvent extends EventObject {
     private final String payload;
+    final List<IControlListener> recipients;
 
-    public ControlEvent(String msg, Object source) {
+    public ControlEvent(String msg, Object source, 
+            IControlListener... recipients) {
         super(source);
         payload = msg;
+        this.recipients = new ArrayList<>();
+        if(recipients != null) {
+            this.recipients.addAll(Arrays.asList(recipients));
+        }
     }
     
     
@@ -73,5 +82,17 @@ public class ControlEvent extends EventObject {
     @Override
     public String toString() {
         return (super.toString() + " (\"" + payload + "\")");
+    }
+    
+    
+    public void send() {
+        for(IControlListener recipient : recipients) {
+            recipient.recieveEvent(this);
+        }
+    }
+    
+
+    public List<IControlListener> getRecipients() {
+        return recipients;
     }
 }

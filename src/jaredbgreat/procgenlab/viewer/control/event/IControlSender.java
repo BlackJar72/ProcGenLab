@@ -1,14 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jaredbgreat.procgenlab.viewer.control.event;
+
+/*
+ * Copyright (C) Jared Blackburn 2017
+ *
+ * Currently under the Creative Commons Attribution License version 4.0:  
+ * https://creativecommons.org/licenses/by/4.0/legalcode
+ */
 
 /**
  *
- * @author jared
+ * @author Jared Blackburn
  */
 public interface IControlSender {
-    
+    public void sendEvent(Object source, String msg, 
+            IControlListener... recipients);
 }

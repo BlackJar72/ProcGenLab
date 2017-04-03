@@ -7,6 +7,7 @@ package jaredbgreat.procgenlab.viewer;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import jaredbgreat.procgenlab.viewer.control.Interpreter;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -71,6 +72,8 @@ public class MainWindow extends JFrame {
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
         menuExit = new JMenuItem("Exit");
+        menuExit.setActionCommand("exit");
+        menuExit.addActionListener(Interpreter.getInterpeter());        
         fileMenu.add(menuExit);
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);  
