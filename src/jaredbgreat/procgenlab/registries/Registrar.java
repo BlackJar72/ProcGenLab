@@ -14,15 +14,16 @@ import java.util.List;
 
 /**
  *
- * @author jared
+ * @author Jared Blackburn
  */
-public class GeneratorRegistrar {
+public class Registrar {
+    public static final Registrar registries = new Registrar();
     private final Registry<IGenerator> gens;
     private final Registry<IPalette[]> palettes;
     private final Registry<List<IParameter>> parameters;
     
     
-    public GeneratorRegistrar() {
+    private Registrar() {
         gens = new Registry<>();
         palettes = new Registry<>();
         parameters = new Registry<>();
@@ -33,6 +34,13 @@ public class GeneratorRegistrar {
         gens.add(name, gen);
         palettes.add(name, gen.getColorPaletes());
         //TODO: Add data to to ComboBox gui widget "generators."
+    }
+    
+    
+    public IGenerator getGenerator(String name) {
+        if(gens.containsKey(name)) {
+            return gens.get(name);
+        } else return null;
     }
     
     

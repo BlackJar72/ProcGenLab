@@ -7,7 +7,10 @@ package jaredbgreat.procgenlab.viewer.control;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import jaredbgreat.procgenlab.interfaces.IGenerator;
+import jaredbgreat.procgenlab.registries.Registrar;
 import jaredbgreat.procgenlab.viewer.logic.RandomHelper;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 /**
@@ -15,18 +18,56 @@ import javax.swing.JTextField;
  * @author Jared Blackburn
  */
 public class GenerateCommand implements ICommand {
+    private static final long  MILLE       = 1000000;
+    private static final float FLOAT_MILLE = 1000000f;
+    private static final long  UNIT        = 1000000000;
+    private static final float FLOAT_UNIT  = 1000000000f;
+    
     private static JTextField seedbox;
+    private static JTextField timebox;
+    private static JComboBox  selection;
 
     @Override
     public void execute() {
         long seed = RandomHelper.getSeedFromText(seedbox.getText());
-        System.out.println("Seed = " + seed);
-        //TDOD: Call a generator!
+        if((selection == null) || (selection.getSelectedItem() == null)) {
+            timebox.setText("*(ERROR: no generators!)*");  
+            return;
+        }
+        IGenerator generator 
+                = Registrar.registries
+                        .getGenerator(selection.getSelectedItem().toString());
+        if(generator == null) {
+            timebox.setText("*(No Such Generator)*");
+            return;
+        }
+        long time = System.nanoTime();
+        generator.generate(seed);
+        time = System.nanoTime() - time;
+        String timeString;
+        if(time < MILLE) {
+            timeString = time + " ns";
+        } else if(time < UNIT) {
+            timeString = (((float)time) / FLOAT_MILLE) + " ms";
+        } else {
+            timeString = (((float)time) / FLOAT_UNIT) + " s";
+        }
+        timebox.setText(timeString);
     }
     
     
     public static void setSeedbox(JTextField input) {
         seedbox = input;
+    }
+    
+    
+    public static void setTimebox(JTextField input) {
+        timebox = input;
+    }
+    
+    
+    public static void setSelector(JComboBox input) {
+        selection = input;
     }
     
 }

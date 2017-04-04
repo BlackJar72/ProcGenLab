@@ -10,6 +10,8 @@ package jaredbgreat.procgenlab.registries;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * May be used on its own, but most likely to be used as base class for more 
@@ -45,10 +47,16 @@ public class Registry<T> implements Iterable<T> {
         }
     }    
     
-    private ArrayList<T> list; // Must contain T, not Entry, to use iterators
-    private HashMap<String, Entry> directory;
+    private List<T> list; // Must contain T, not Entry, to use iterators
+    private Map<String, Entry> directory;
     private int n = 0;
 
+    
+    public Registry() {
+        list = new ArrayList<>();
+        directory = new HashMap<>();
+    }
+    
     
     /**
      * Adds a named item to the registry.
@@ -187,8 +195,8 @@ public class Registry<T> implements Iterable<T> {
      * 
      * @return a the data as a clones list.
      */
-    public ArrayList<T> getListCopy() {
-        return (ArrayList<T>) list.clone();
+    public List<T> getListCopy() {
+        return (List<T>) ((ArrayList)list).clone();
     }
     
     
@@ -197,7 +205,7 @@ public class Registry<T> implements Iterable<T> {
      * 
      * @return a reference to the actual internal list.
      */
-    public ArrayList<T> getList() {
+    public List<T> getList() {
         return list;
     }
     

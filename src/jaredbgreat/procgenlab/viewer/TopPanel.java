@@ -63,6 +63,9 @@ public class TopPanel extends JPanel {
      */
     private void addSelector() {
         generators = new JComboBox();
+        generators.setEditable(false);
+        generators.setEnabled(false);
+        GenerateCommand.setSelector(generators);
         //TODO: setup combo box
         add(generators);
         
@@ -94,6 +97,7 @@ public class TopPanel extends JPanel {
         profiler = new JTextField();
         profiler.setEditable(false);
         profLabel.setLabelFor(profiler);
+        GenerateCommand.setTimebox(profiler);
         add(profLabel);
         add(profiler);
     }
@@ -101,5 +105,19 @@ public class TopPanel extends JPanel {
     
     public JTextField getSeedBox() {
         return seedbox;
+    }
+    
+    
+    private void addGenerator(String name) {
+        generators.addItem(name);
+        generators.setEnabled(true);
+    }
+    
+    
+    private void removeGenerator(String name) {
+        generators.removeItem(name);
+        if(generators.getItemCount() < 1) {
+            generators.setEnabled(false);
+        }
     }
 }
