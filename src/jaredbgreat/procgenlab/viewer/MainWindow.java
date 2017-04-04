@@ -7,8 +7,10 @@ package jaredbgreat.procgenlab.viewer;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import jaredbgreat.procgenlab.registries.Registry;
 import jaredbgreat.procgenlab.viewer.control.Interpreter;
 import java.awt.BorderLayout;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -24,9 +26,10 @@ import javax.swing.JTextField;
  */
 public class MainWindow extends JFrame {
     private static MainWindow it;
+    private static Registry<JComponent> components;
     
-    private int width = 1024;
-    private int height = 640;
+    private final int width = 1024;
+    private final int height = 640;
     
     private BorderLayout layout;
     private TopPanel topPanel;
@@ -82,6 +85,25 @@ public class MainWindow extends JFrame {
     
     private JTextField getSeedBox() {
         return topPanel.getSeedBox();
+    }
+    
+    
+    public static Registry<JComponent> getComponentRegistry() {
+        if(components == null) {
+            components = new Registry<>();
+        }
+        return components;
+    }
+    
+    
+    public static void registerComponenent(String name, 
+            JComponent component) {
+        getComponentRegistry().add(name, component);
+    }
+    
+    
+    public static JComponent getComponenent(String name) {
+        return getComponentRegistry().get(name);
     }
     
 }
