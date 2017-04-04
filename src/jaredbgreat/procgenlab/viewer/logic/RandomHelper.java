@@ -22,8 +22,8 @@ public class RandomHelper {
         if(in.isEmpty()) {
             out = System.nanoTime();
         } else try {
-            out = Long.getLong(in);
-        } catch (Exception e) {
+            out = Long.parseLong(in);
+        } catch (NumberFormatException e) {
             out = (long)in.hashCode();
         }        
         return out;

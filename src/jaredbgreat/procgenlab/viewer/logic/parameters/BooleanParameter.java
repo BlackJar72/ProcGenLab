@@ -7,6 +7,7 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 
 /**
@@ -14,6 +15,7 @@ import javax.swing.JComponent;
  * @author Jared Blackburn
  */
 public class BooleanParameter implements IParameter {
+    JCheckBox widgit;
 
     @Override
     public JComponent getComponent() {

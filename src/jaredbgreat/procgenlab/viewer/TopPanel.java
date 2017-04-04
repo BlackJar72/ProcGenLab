@@ -13,6 +13,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import jaredbgreat.procgenlab.viewer.control.GenerateCommand;
+import jaredbgreat.procgenlab.viewer.control.Interpreter;
 
 /**
  *
@@ -48,6 +50,7 @@ public class TopPanel extends JPanel {
      */
     private void addGenerateButton() {
         generate = new JButton("Generate");
+        generate.addActionListener(Interpreter.getInterpeter());
         generate.setActionCommand("generate");
         generate.setName("generate");
         generate.setText("Generate!");
@@ -75,6 +78,7 @@ public class TopPanel extends JPanel {
         seedLabel.setHorizontalAlignment(JLabel.TRAILING);
         seedbox = new JTextField();
         seedLabel.setLabelFor(seedbox);
+        GenerateCommand.setSeedbox(seedbox);
         add(seedLabel);
         add(seedbox);
     }

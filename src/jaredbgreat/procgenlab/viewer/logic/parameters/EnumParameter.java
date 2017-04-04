@@ -7,6 +7,7 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
 /**
@@ -22,6 +23,7 @@ import javax.swing.JComponent;
  * @author jared
  */
 public class EnumParameter implements IParameter {
+    JComboBox widgit;
 
     @Override
     public JComponent getComponent() {

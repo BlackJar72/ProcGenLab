@@ -8,13 +8,15 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  */
 
 import javax.swing.JComponent;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Jared Blackburn
  */
 public class StringParameter implements IParameter {
-
+    JTextField widgit;
+    
     @Override
     public JComponent getComponent() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

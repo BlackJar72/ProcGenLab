@@ -14,7 +14,8 @@ import javax.swing.JComponent;
  * @author Jared Blackburn
  */
 public class IntRangeParameter implements IParameter {
-
+    // TDOD: Use simple text field? Or text field / slider combination?
+    
     @Override
     public JComponent getComponent() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

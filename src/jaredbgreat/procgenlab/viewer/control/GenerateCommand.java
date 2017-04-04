@@ -14,17 +14,19 @@ import javax.swing.JTextField;
  *
  * @author Jared Blackburn
  */
-class GenerateCommand implements ICommand {
-    private JTextField seedbox;
-    
-    GenerateCommand(JTextField input) {
-        seedbox = input;
-    }
+public class GenerateCommand implements ICommand {
+    private static JTextField seedbox;
 
     @Override
     public void execute() {
-        RandomHelper.getSeedFromText(seedbox.getText());
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long seed = RandomHelper.getSeedFromText(seedbox.getText());
+        System.out.println("Seed = " + seed);
+        //TDOD: Call a generator!
+    }
+    
+    
+    public static void setSeedbox(JTextField input) {
+        seedbox = input;
     }
     
 }

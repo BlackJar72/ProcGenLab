@@ -14,6 +14,7 @@ import javax.swing.JComponent;
  * @author jared
  */
 public class RealRangeParameter implements IParameter {
+    // TDOD: Use simple text field? Or text field / slider combination?
 
     @Override
     public JComponent getComponent() {
