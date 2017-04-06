@@ -9,6 +9,8 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  * This represents a finite set of predefined options, each represented by a
@@ -23,7 +25,19 @@ import javax.swing.JComponent;
  * @author jared
  */
 public class EnumParameter implements IParameter {
-    JComboBox widgit;
+    public static final ParameterType type = ParameterType.ENUM;
+    public static final String typeName = "enum";
+    
+    final JComboBox widget;
+    final JLabel label;
+    final String name;
+
+    
+    EnumParameter(String def) {
+        widget = new JComboBox();
+        label = new JLabel();
+        name = "";
+    }
 
     @Override
     public JComponent getComponent() {
@@ -38,6 +52,11 @@ public class EnumParameter implements IParameter {
     @Override
     public void setup(String definition) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public JLabel getLabel() {
+        return label;
     }
     
 }

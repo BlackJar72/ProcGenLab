@@ -7,6 +7,8 @@ package jaredbgreat.procgenlab.viewer;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import jaredbgreat.procgenlab.viewer.control.GenerateCommand;
+import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -20,7 +22,7 @@ import javax.swing.JPanel;
  */
 public class SidePanel extends JPanel {
     BoxLayout layout;
-    List<JComponent> controls;
+    List<IParameter> controls;
     
     
         SidePanel() {
@@ -32,11 +34,16 @@ public class SidePanel extends JPanel {
         }
         
         
-        public void setControls(List<JComponent> in) {
-            controls.stream().forEach(this::remove);
+        public void setControls(List<IParameter> in) {
+            for(IParameter param : controls) {
+                remove(param.getComponent());
+            }
             controls.clear();
             controls.addAll(in);
-            controls.stream().forEach(this::add);
+            for(IParameter param : controls) {
+                add(param.getComponent());
+            }
+            GenerateCommand.setParameters(controls);
             repaint();
         }
 }

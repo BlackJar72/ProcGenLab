@@ -7,10 +7,24 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import static jaredbgreat.procgenlab.util.Delims.*;
+import java.util.StringTokenizer;
+
 /**
  *
  * @author Jared Blackburn
  */
 public class ParameterFactory {
+    
+    
+    public static IParameter makeParameter(String def) {
+        IParameter out = null;
+        StringTokenizer tokens = new StringTokenizer(def, 
+                String.valueOf(RS) + String.valueOf(US));
+        switch(ParameterType.valueOf(tokens.nextToken().trim().toUpperCase())) {
+            
+        }        
+        return out;
+    }
     
 }

@@ -7,16 +7,19 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-
 /**
  *
  * @author Jared Blackburn
  */
-public interface IParameter {
-    JComponent getComponent();
-    JLabel getLabel();
-    String getSetting();
-    void setup(String definition);    
+public enum ParameterType {
+    NULL,
+    BOOL,
+    INT,
+    LONG,
+    FLOAT,
+    DOUBLE,
+    IRANGE,
+    RRANGE,
+    STRING,
+    ENUM;  
 }

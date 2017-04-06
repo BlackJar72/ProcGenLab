@@ -8,12 +8,27 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  */
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
  * @author Jared Blackburn
  */
 public class IntRangeParameter implements IParameter {
+    public static final ParameterType type = ParameterType.IRANGE;
+    public static final String typeName = "irange";
+    
+    final JTextField widget;
+    final JLabel label;
+    final String name;
+
+    
+    IntRangeParameter(String def) {
+        widget = new JTextField();
+        label = new JLabel();
+        name = "";
+    }
     // TDOD: Use simple text field? Or text field / slider combination?
     
     @Override
@@ -29,6 +44,11 @@ public class IntRangeParameter implements IParameter {
     @Override
     public void setup(String definition) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public JLabel getLabel() {
+        return label;
     }
     
 }

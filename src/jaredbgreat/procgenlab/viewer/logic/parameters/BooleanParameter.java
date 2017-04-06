@@ -9,17 +9,31 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 /**
  *
  * @author Jared Blackburn
  */
 public class BooleanParameter implements IParameter {
-    JCheckBox widgit;
+    public static final ParameterType type = ParameterType.BOOL;
+    public static final String typeName = "boolean";
+    
+    final JCheckBox widget;
+    final JLabel label;
+    final String name;
 
+    
+    BooleanParameter(String def) {
+        widget = new JCheckBox();
+        label = new JLabel();
+        name = "";
+    }
+    
+    
     @Override
     public JComponent getComponent() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return widget;
     }
 
     @Override
@@ -30,6 +44,11 @@ public class BooleanParameter implements IParameter {
     @Override
     public void setup(String definition) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public JLabel getLabel() {
+        return label;
     }
     
 }

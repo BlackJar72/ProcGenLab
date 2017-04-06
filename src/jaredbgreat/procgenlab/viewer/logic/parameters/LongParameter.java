@@ -8,6 +8,7 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  */
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**
@@ -15,7 +16,19 @@ import javax.swing.JTextField;
  * @author Jared Blackburn
  */
 public class LongParameter implements IParameter {
-    JTextField widgit;
+    public static final ParameterType type = ParameterType.LONG;
+    public static final String typeName = "long";
+    
+    final JTextField widget;
+    final JLabel label;
+    final String name;
+
+    
+    LongParameter(String def) {
+        widget = new JTextField();
+        label = new JLabel();
+        name = "";
+    }
     
     @Override
     public JComponent getComponent() {
@@ -30,6 +43,11 @@ public class LongParameter implements IParameter {
     @Override
     public void setup(String definition) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public JLabel getLabel() {
+        return label;
     }
     
 }

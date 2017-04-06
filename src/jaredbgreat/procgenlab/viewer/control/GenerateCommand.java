@@ -10,7 +10,11 @@ package jaredbgreat.procgenlab.viewer.control;
 import jaredbgreat.procgenlab.interfaces.IGenerator;
 import jaredbgreat.procgenlab.registries.Registrar;
 import jaredbgreat.procgenlab.viewer.logic.RandomHelper;
+import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 /**
@@ -26,6 +30,7 @@ public class GenerateCommand implements ICommand {
     private static JTextField seedbox;
     private static JTextField timebox;
     private static JComboBox  selection;
+    private static List<IParameter> parameters;
 
     @Override
     public void execute() {
@@ -41,6 +46,7 @@ public class GenerateCommand implements ICommand {
             timebox.setText("*(No Such Generator)*");
             return;
         }
+        generator.setParameters(getArgumentString());
         long time = System.nanoTime();
         generator.generate(seed);
         time = System.nanoTime() - time;
@@ -68,6 +74,21 @@ public class GenerateCommand implements ICommand {
     
     public static void setSelector(JComboBox input) {
         selection = input;
+    }
+    
+    
+    public static void setParameters(List<IParameter> input) {
+        parameters = input;
+    }
+    
+    
+    private String[] getArgumentString() {
+        ArrayList<String> builder = new ArrayList<>();
+        for(IParameter param : parameters) {
+            builder.add(param.getSetting());
+        }
+        builder.trimToSize();
+        return (String[])builder.toArray();
     }
     
 }
