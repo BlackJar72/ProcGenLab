@@ -8,7 +8,6 @@ package jaredbgreat.procgenlab.interfaces;
 */
 
 import jaredbgreat.procgenlab.exceptions.ImageCreationException;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**
@@ -16,6 +15,7 @@ import java.awt.image.BufferedImage;
  * @author Jared Blackburn
  */
 public interface IPalette {
-    public int getColor(int value) throws ImageCreationException ;
-    public BufferedImage getImage(int w, int h, int[] data) throws Exception;
+    public int getColor(int value) throws ImageCreationException;
+    public BufferedImage getImage(int w, int h, int[] data) 
+            throws ImageCreationException;
 }

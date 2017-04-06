@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import jaredbgreat.procgenlab.viewer.control.GenerateCommand;
 import jaredbgreat.procgenlab.viewer.control.Interpreter;
+import javax.swing.BorderFactory;
 
 /**
  *
@@ -38,6 +39,7 @@ public class TopPanel extends JPanel {
     
     
     public void init() {
+        setBorder(BorderFactory.createRaisedBevelBorder());
         addGenerateButton();
         addSelector();
         addSeedBox();   

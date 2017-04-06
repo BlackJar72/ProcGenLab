@@ -10,6 +10,7 @@ package jaredbgreat.procgenlab.viewer;
 import jaredbgreat.procgenlab.registries.Registry;
 import jaredbgreat.procgenlab.viewer.control.Interpreter;
 import java.awt.BorderLayout;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -79,6 +80,7 @@ public class MainWindow extends JFrame {
         menuExit.addActionListener(Interpreter.getInterpeter());        
         fileMenu.add(menuExit);
         menuBar.add(fileMenu);
+        menuBar.setBorder(BorderFactory.createRaisedBevelBorder());
         setJMenuBar(menuBar);  
     }
     

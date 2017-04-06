@@ -16,12 +16,13 @@ public interface IGenerator {
     
     public void generate(Long seed);
     public int[][] getData();
-    public int[][] generateData();
     public void setParameters(String[] param);
     public IPalette[] getColorPaletes();
     public String[] getNames();
     public int[] getImageSize();
     public int getNumLayers();
+    public int getWidth();
+    public int getHeight();
     
     
 }
