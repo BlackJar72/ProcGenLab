@@ -66,6 +66,8 @@ public class MainWindow extends JFrame {
         gensArea = new GeneratorPanel();
         add(topPanel, BorderLayout.NORTH);
         add(gensArea, BorderLayout.CENTER);
+        MainWindow.registerComponenent("TopPanel", topPanel);
+        MainWindow.registerComponenent("GeneratorArea", gensArea);
     }
     
     
@@ -75,13 +77,16 @@ public class MainWindow extends JFrame {
     private void setupMenuBar() {
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
+        MainWindow.registerComponenent("FileMenu", fileMenu);
         menuExit = new JMenuItem("Exit");
         menuExit.setActionCommand("exit");
         menuExit.addActionListener(Interpreter.getInterpeter());        
         fileMenu.add(menuExit);
+        MainWindow.registerComponenent("MenuExit", menuExit);
         menuBar.add(fileMenu);
         menuBar.setBorder(BorderFactory.createRaisedBevelBorder());
         setJMenuBar(menuBar);  
+        MainWindow.registerComponenent("MenuBar", menuBar);
     }
     
     

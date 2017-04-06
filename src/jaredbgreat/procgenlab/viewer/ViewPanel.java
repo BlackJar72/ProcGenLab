@@ -7,6 +7,7 @@ package jaredbgreat.procgenlab.viewer;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import jaredbgreat.procgenlab.viewer.logic.WorldMap;
 import java.awt.Color;
 import javax.swing.JTabbedPane;
 
@@ -16,6 +17,7 @@ import javax.swing.JTabbedPane;
  */
 public class ViewPanel extends JTabbedPane {
     private MapPanel[] layers;
+    private WorldMap map;
     
     public ViewPanel(MapPanel[] in) {
         layers = in;

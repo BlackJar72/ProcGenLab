@@ -57,6 +57,7 @@ public class TopPanel extends JPanel {
         generate.setName("generate");
         generate.setText("Generate!");
         add(generate);
+        MainWindow.registerComponenent("GenerateButton", generate);
     }
     
     
@@ -69,8 +70,8 @@ public class TopPanel extends JPanel {
         generators.setEnabled(false);
         GenerateCommand.setSelector(generators);
         //TODO: setup combo box
-        add(generators);
-        
+        add(generators);        
+        MainWindow.registerComponenent("SelectorComboBox", generators);
     }
     
     
@@ -86,6 +87,8 @@ public class TopPanel extends JPanel {
         GenerateCommand.setSeedbox(seedbox);
         add(seedLabel);
         add(seedbox);
+        MainWindow.registerComponenent("SeedboxLabel", seedLabel);
+        MainWindow.registerComponenent("Seedbox", seedbox);
     }
     
     
@@ -102,6 +105,8 @@ public class TopPanel extends JPanel {
         GenerateCommand.setTimebox(profiler);
         add(profLabel);
         add(profiler);
+        MainWindow.registerComponenent("ProfilingTimeLabel", profLabel);
+        MainWindow.registerComponenent("ProfilingTimeBox", profiler);
     }
     
     
