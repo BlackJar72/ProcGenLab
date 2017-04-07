@@ -8,6 +8,8 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  */
 
 import static jaredbgreat.procgenlab.util.Delims.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -15,6 +17,16 @@ import java.util.StringTokenizer;
  * @author Jared Blackburn
  */
 public class ParameterFactory {
+    
+    
+    public static List<IParameter> makeParameters(String param) {
+        StringTokenizer tokens = new StringTokenizer(param, SFS + SGS);
+        ArrayList<IParameter> out = new ArrayList<>();
+        while(tokens.hasMoreTokens()) {
+            out.add(makeParameter(tokens.nextToken()));
+        }
+        return out;
+    }
     
     
     public static IParameter makeParameter(String def) {

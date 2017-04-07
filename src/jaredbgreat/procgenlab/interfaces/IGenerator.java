@@ -16,6 +16,7 @@ public interface IGenerator {
     
     public void generate(Long seed);
     public int[][] getData();
+    public String getParameters();
     public void setParameters(String[] param);
     public IPalette[] getColorPaletes();
     public String[] getNames();
