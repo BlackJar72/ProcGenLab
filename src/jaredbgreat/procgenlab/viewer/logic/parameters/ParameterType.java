@@ -21,5 +21,5 @@ public enum ParameterType {
     IRANGE,
     RRANGE,
     STRING,
-    ENUM;  
+    MULTI;  
 }

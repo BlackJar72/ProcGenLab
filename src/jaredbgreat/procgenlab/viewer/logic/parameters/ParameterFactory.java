@@ -22,7 +22,38 @@ public class ParameterFactory {
         StringTokenizer tokens = new StringTokenizer(def, 
                 String.valueOf(RS) + String.valueOf(US));
         switch(ParameterType.valueOf(tokens.nextToken().trim().toUpperCase())) {
-            
+            case BOOL:
+                    
+                break;
+            case INT:
+                    
+                break;
+            case LONG:
+                    
+                break;
+            case FLOAT:
+                    
+                break;
+            case DOUBLE:
+                    
+                break;
+            case IRANGE:
+                    
+                break;
+            case RRANGE:
+                    
+                break;
+            case STRING:
+                    
+                break;
+            case MULTI:
+                    
+                break;
+            default:
+                System.err.println("ERROR: Parameter factor recieved "
+                        + "invalid type!");
+                new Exception().printStackTrace();
+                System.exit(1);
         }        
         return out;
     }
