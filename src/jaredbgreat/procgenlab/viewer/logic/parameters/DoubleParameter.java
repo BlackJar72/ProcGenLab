@@ -19,7 +19,7 @@ import javax.swing.JTextField;
  */
 public class DoubleParameter implements IParameter {
     public static final ParameterType type = ParameterType.DOUBLE;
-    public static final String typeName = "double";
+    public static final String typeName = type.name().toLowerCase();
     
     final JTextField widget;
     final JLabel label;

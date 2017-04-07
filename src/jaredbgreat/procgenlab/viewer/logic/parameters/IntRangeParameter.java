@@ -17,7 +17,7 @@ import javax.swing.JTextField;
  */
 public class IntRangeParameter implements IParameter {
     public static final ParameterType type = ParameterType.IRANGE;
-    public static final String typeName = "irange";
+    public static final String typeName = type.name().toLowerCase();
     
     final JTextField widget;
     final JLabel label;

@@ -18,7 +18,7 @@ import javax.swing.JTextField;
  */
 public class RealRangeParameter implements IParameter {
     public static final ParameterType type = ParameterType.RRANGE;
-    public static final String typeName = "range";
+    public static final String typeName = type.name().toLowerCase();
     
     final JSlider widget;
     final JLabel label;

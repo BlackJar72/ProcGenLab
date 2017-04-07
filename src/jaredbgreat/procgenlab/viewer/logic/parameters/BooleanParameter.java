@@ -19,7 +19,7 @@ import javax.swing.JLabel;
  */
 public class BooleanParameter implements IParameter {
     public static final ParameterType type = ParameterType.BOOL;
-    public static final String typeName = "boolean";
+    public static final String typeName = type.name().toLowerCase();
     
     final JCheckBox widget;
     final JLabel label;

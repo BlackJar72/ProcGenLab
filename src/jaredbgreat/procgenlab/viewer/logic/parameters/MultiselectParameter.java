@@ -24,7 +24,7 @@ import javax.swing.JTextField;
  */
 public class MultiselectParameter implements IParameter {
     public static final ParameterType type = ParameterType.MULTI;
-    public static final String typeName = "multiselect";
+    public static final String typeName = type.name().toLowerCase();
     
     final JComboBox widget;
     final JLabel label;

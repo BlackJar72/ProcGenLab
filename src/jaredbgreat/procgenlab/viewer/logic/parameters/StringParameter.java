@@ -19,7 +19,7 @@ import javax.swing.JTextField;
  */
 public class StringParameter implements IParameter {
     public static final ParameterType type = ParameterType.STRING;
-    public static final String typeName = "string";
+    public static final String typeName = type.name().toLowerCase();
     
     final JTextField widget;
     final JLabel label;
