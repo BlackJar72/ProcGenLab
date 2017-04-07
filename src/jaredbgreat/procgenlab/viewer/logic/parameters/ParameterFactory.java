@@ -32,17 +32,14 @@ public class ParameterFactory {
                 return new FloatParameter(tokens.nextToken());
             case DOUBLE:
                 return new DoubleParameter(tokens.nextToken());
-            case IRANGE:
-                    
-                break;
-            case RRANGE:
-                    
-                break;
+            case RANGE:
+                return new IntRangeParameter(tokens.nextToken(), 
+                        tokens.nextToken());
             case STRING:
                 return new StringParameter(tokens.nextToken());
             case MULTI:
-                    
-                break;
+                return new MultiselectParameter(tokens.nextToken(), 
+                        tokens.nextToken());
             default:
                 System.err.println("ERROR: Parameter factory recieved "
                         + "invalid type!");

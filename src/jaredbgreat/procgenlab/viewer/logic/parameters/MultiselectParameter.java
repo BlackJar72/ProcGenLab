@@ -7,10 +7,13 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import static jaredbgreat.procgenlab.util.Delims.SGS;
+import static jaredbgreat.procgenlab.util.Delims.SRS;
+import static jaredbgreat.procgenlab.util.Delims.SUS;
+import java.util.StringTokenizer;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 /**
  * This represents a finite set of predefined options, each represented by a
@@ -31,20 +34,34 @@ public class MultiselectParameter implements IParameter {
     final String name;
 
     
-    MultiselectParameter(String def) {
+    MultiselectParameter(String name, String fields) {
         widget = new JComboBox();
-        label = new JLabel();
-        name = "";
+        setupWidget(fields);
+        widget.setEditable(false);
+        widget.setEnabled(true);
+        label = new JLabel(name + "Label");
+        label.setLabelFor(widget);
+        this.name = name;
     }
+    
+    
+    private void setupWidget(String fields) {
+        StringTokenizer tokens = new StringTokenizer(fields, SUS);
+        while(tokens.hasMoreTokens()) {
+            widget.addItem(tokens.nextToken());
+        }
+    }
+    
 
     @Override
     public JComponent getComponent() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return widget;
     }
 
     @Override
     public String getSetting() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return typeName + SRS + name + SRS 
+                + widget.getSelectedItem().toString() + SGS;
     }
 
     @Override

@@ -18,8 +18,7 @@ public enum ParameterType {
     LONG,
     FLOAT,
     DOUBLE,
-    IRANGE,
-    RRANGE,
+    RANGE,
     STRING,
     MULTI;  
 }

@@ -7,38 +7,52 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import static jaredbgreat.procgenlab.util.Delims.SGS;
+import static jaredbgreat.procgenlab.util.Delims.SRS;
+import static jaredbgreat.procgenlab.util.Delims.SUS;
+import java.util.StringTokenizer;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.JSlider;
 
 /**
  *
  * @author Jared Blackburn
  */
 public class IntRangeParameter implements IParameter {
-    public static final ParameterType type = ParameterType.IRANGE;
+    public static final ParameterType type = ParameterType.RANGE;
     public static final String typeName = type.name().toLowerCase();
     
-    final JTextField widget;
+    final JSlider widget;
     final JLabel label;
     final String name;
 
     
-    IntRangeParameter(String def) {
-        widget = new JTextField();
-        label = new JLabel();
-        name = "";
+    IntRangeParameter(String name, String definition) {
+        widget = new JSlider();
+        setupSlider(definition);
+        widget.setEnabled(true);
+        label = new JLabel(name + "Label");
+        label.setLabelFor(widget);
+        this.name = name;
     }
-    // TDOD: Use simple text field? Or text field / slider combination?
+    
+    
+    private void setupSlider(String definition) {
+        StringTokenizer tokens = new StringTokenizer(definition, SUS);
+        widget.setMinimum(Integer.valueOf(tokens.nextToken()));
+        widget.setMaximum(Integer.valueOf(tokens.nextToken()));
+    }
+    
     
     @Override
     public JComponent getComponent() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return widget;
     }
 
     @Override
     public String getSetting() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return typeName + SRS + name + SRS + ((int)widget.getValue()) + SGS;
     }
 
     @Override
