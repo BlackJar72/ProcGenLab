@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A class to store, retrieve, and execute commands defined with gui components.
+ * A class to store, retrieve, and execute commands defined with GUI components.
  * 
- * This is used to exectute commands sent from the swing components.
+ * This is used to execute commands sent from the swing components.
  * 
  * @author Jared Blackburn
  */
@@ -28,6 +28,10 @@ public class Interpreter implements ActionListener {
         addCommands();
     }    
     
+    /**
+     * A command that should only be called once, but the \
+     * constructor, to register all the commands.
+     */
     private void addCommands() {
         commands.put("exit", new ExitCommand());
         commands.put("generate", new GenerateCommand());
@@ -37,7 +41,7 @@ public class Interpreter implements ActionListener {
     /**
      * Returns a singleton instance.
      * 
-     * (Yes, I know "friends don't let friends use singletons," 
+     * (Yes, I know, "Friends don't let friends create singletons," 
      *  but this really is the simplest way for this.)
      * 
      * @return 
@@ -60,9 +64,22 @@ public class Interpreter implements ActionListener {
         ICommand com = commands.get(command);
         if(com != null) {
             com.execute();
+        } else {
+            System.err.println("ERROR: Gui issued invalid command string \""
+                    + command + "\"!");
+            throw new RuntimeException();
         }
     }
-
+    
+    
+    /**
+     * Required by the ActionListener interface to receive its 
+     * events.  In effect this wraps execute(), though that c
+     * method only takes the action command rather than the whole 
+     * event.
+     * 
+     * @param e 
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         execute(e.getActionCommand());

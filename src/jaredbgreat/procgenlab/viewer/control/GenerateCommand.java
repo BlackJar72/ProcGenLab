@@ -9,6 +9,7 @@ package jaredbgreat.procgenlab.viewer.control;
 
 import jaredbgreat.procgenlab.interfaces.IGenerator;
 import jaredbgreat.procgenlab.registries.Registrar;
+import static jaredbgreat.procgenlab.util.Delims.SFS;
 import jaredbgreat.procgenlab.viewer.logic.RandomHelper;
 import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
 import java.util.ArrayList;
@@ -61,33 +62,70 @@ public class GenerateCommand implements ICommand {
     }
     
     
+    /**
+     * This sets the JTextBox from which the provided 
+     * seed (if any) should be read.  This should only  
+     * be called by the GUI's TopPanel to attach its 
+     * widget to this command.
+     * 
+     * @param input 
+     */
     public static void setSeedbox(JTextField input) {
         seedbox = input;
     }
     
     
+    /**
+     * This sets the JTextBox into which the time taken 
+     * to complete generation should be written.  This should 
+     * only be called by the GUI's TopPanel instance in order 
+     * to link its widget to this command.
+     * 
+     * @param input 
+     */
     public static void setTimebox(JTextField input) {
         timebox = input;
     }
     
     
+    /**
+     * This set the JComboBox to use as the generator 
+     * selector.  This should only be called by the GUI 
+     * internally (specifically the TopPanel) to link the 
+     * GUI widget to the this command.
+     * 
+     * @param input 
+     */
     public static void setSelector(JComboBox input) {
         selection = input;
     }
     
     
+    /**
+     * Set the parameter list.  This should be called by the GUI 
+     * combo box of generators whenever a new generator is selected.
+     * 
+     * @param input 
+     */
     public static void setParameters(List<IParameter> input) {
         parameters = input;
     }
     
     
-    private String[] getArgumentString() {
-        ArrayList<String> builder = new ArrayList<>();
-        for(IParameter param : parameters) {
-            builder.add(param.getSetting());
-        }
-        builder.trimToSize();
-        return (String[])builder.toArray();
+    /**
+     * This will go through the array of parameters, extract the 
+     * data string from each, concatenate them into a single 
+     * String that can be returned to the IGenerator object.
+     * 
+     * @return 
+     */
+    private String getArgumentString() {
+        StringBuilder builder = new StringBuilder();
+        parameters.stream().forEach((param) -> {
+            builder.append(param.getSetting());
+        });
+        builder.append(SFS);
+        return builder.toString();
     }
     
 }

@@ -8,7 +8,8 @@ package jaredbgreat.procgenlab.viewer.control;
  */
 
 /**
- *
+ * The holds the command used to exit the application completely.
+ * 
  * @author Jared Blackburn
  */
 public class ExitCommand implements ICommand {

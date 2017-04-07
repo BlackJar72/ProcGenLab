@@ -16,7 +16,12 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 /**
- *
+ * This class represent / contains all the images created from 
+ * data returned by the generator, including the names and 
+ * graphic images to display.  Its primary purpose is to hold 
+ * a set of results so it can be found and displayed by the GUI's
+ * ViewPanel.
+ * 
  * @author Jared Blackburn
  */
 public class WorldMap implements IWorldMap {
@@ -27,11 +32,22 @@ public class WorldMap implements IWorldMap {
     public WorldMap() {}
     
     
+    /**
+     * This will request the current generation data 
+     * of an generator (i.e., the data result from running
+     * generate()) and uses it to create set of Images 
+     * for displaying the results.  It should only be called 
+     * after the generator has been run.
+     * 
+     * @param generator
+     * @throws InconsistentLayersException
+     * @throws ImageCreationException 
+     */
     public void setData(IGenerator generator) 
                         throws InconsistentLayersException, 
                                ImageCreationException {
         int layers = generator.getNumLayers();
-        names = generator.getNames();
+        names = generator.getLayerNames();
         if(names.length != layers) {
             if(names.length < layers) {
                 throw new 
@@ -69,13 +85,29 @@ public class WorldMap implements IWorldMap {
         }
     }
     
-
+    
+    /**
+     * Get the Image for a specific index.
+     * 
+     * @param number
+     * @return 
+     */
     @Override
     public Image getImage(int number) {
         return images[number];
     }
     
-
+    
+    /**
+     * Get the name for the Image at the given index.
+     * 
+     * This is the human readable name to placed on tabs 
+     * so that the specific map layers can be found.  I.e.,
+     * it is for human use, not a technical part of processing.
+     * 
+     * @param number
+     * @return 
+     */
     @Override
     public String getImageName(int number) {
         return names[number];
