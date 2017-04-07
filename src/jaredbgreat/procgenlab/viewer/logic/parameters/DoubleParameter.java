@@ -8,7 +8,7 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  */
 
 import static jaredbgreat.procgenlab.util.Delims.SGS;
-import static jaredbgreat.procgenlab.util.Delims.SUS;
+import static jaredbgreat.procgenlab.util.Delims.SRS;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -44,13 +44,13 @@ public class DoubleParameter implements IParameter {
     @Override
     public String getSetting() {
         try {
-            return typeName + SUS + name + SUS 
+            return typeName + SRS + name + SRS 
                     + Double.valueOf(widget.getText()) + SGS;
         } catch (NumberFormatException e) {
             //TODO: A better way to report errors, shoing something in the GUI
             System.err.println("ERROR: Invalid format for parameter "
                     + name + " of type " + typeName + "; using 0.0.");
-            return typeName + SUS + name + SUS 
+            return typeName + SRS + name + SRS 
                     + "0.0" + SGS;            
         }
     }

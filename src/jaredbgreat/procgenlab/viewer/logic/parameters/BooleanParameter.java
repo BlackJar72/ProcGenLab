@@ -8,7 +8,7 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  */
 
 import static jaredbgreat.procgenlab.util.Delims.SGS;
-import static jaredbgreat.procgenlab.util.Delims.SUS;
+import static jaredbgreat.procgenlab.util.Delims.SRS;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -44,8 +44,8 @@ public class BooleanParameter implements IParameter {
 
     @Override
     public String getSetting() {
-        return typeName + SUS + name 
-                + SUS + Boolean.toString(widget.isSelected()) + SGS;
+        return typeName + SRS + name 
+                + SRS + Boolean.toString(widget.isSelected()) + SGS;
     }
 
     @Override

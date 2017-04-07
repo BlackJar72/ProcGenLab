@@ -8,7 +8,7 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  */
 
 import static jaredbgreat.procgenlab.util.Delims.SGS;
-import static jaredbgreat.procgenlab.util.Delims.SUS;
+import static jaredbgreat.procgenlab.util.Delims.SRS;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -42,7 +42,7 @@ public class StringParameter implements IParameter {
 
     @Override
     public String getSetting() {
-        return typeName + SUS + name + SUS +widget.getText() + SGS;
+        return typeName + SRS + name + SRS +widget.getText() + SGS;
     }
 
     @Override

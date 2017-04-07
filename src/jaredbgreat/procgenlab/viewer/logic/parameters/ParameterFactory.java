@@ -20,7 +20,7 @@ public class ParameterFactory {
     public static IParameter makeParameter(String def) {
         IParameter out = null;
         StringTokenizer tokens = new StringTokenizer(def, 
-                String.valueOf(RS) + String.valueOf(US));
+                SRS);
         switch(ParameterType.valueOf(tokens.nextToken().trim().toUpperCase())) {
             case BOOL:
                 return new BooleanParameter(tokens.nextToken());
@@ -39,13 +39,12 @@ public class ParameterFactory {
                     
                 break;
             case STRING:
-                    
-                break;
+                return new StringParameter(tokens.nextToken());
             case MULTI:
                     
                 break;
             default:
-                System.err.println("ERROR: Parameter factor recieved "
+                System.err.println("ERROR: Parameter factory recieved "
                         + "invalid type!");
                 new Exception().printStackTrace();
                 System.exit(1);
