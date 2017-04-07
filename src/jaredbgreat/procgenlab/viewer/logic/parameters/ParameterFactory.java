@@ -23,20 +23,15 @@ public class ParameterFactory {
                 String.valueOf(RS) + String.valueOf(US));
         switch(ParameterType.valueOf(tokens.nextToken().trim().toUpperCase())) {
             case BOOL:
-                    
-                break;
+                return new BooleanParameter(tokens.nextToken());
             case INT:
-                    
-                break;
+                return new IntParameter(tokens.nextToken());
             case LONG:
-                    
-                break;
+                return new LongParameter(tokens.nextToken());
             case FLOAT:
-                    
-                break;
+                return new FloatParameter(tokens.nextToken());
             case DOUBLE:
-                    
-                break;
+                return new DoubleParameter(tokens.nextToken());
             case IRANGE:
                     
                 break;

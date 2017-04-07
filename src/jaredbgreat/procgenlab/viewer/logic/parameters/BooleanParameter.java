@@ -7,6 +7,8 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import static jaredbgreat.procgenlab.util.Delims.SGS;
+import static jaredbgreat.procgenlab.util.Delims.SUS;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -22,12 +24,16 @@ public class BooleanParameter implements IParameter {
     final JCheckBox widget;
     final JLabel label;
     final String name;
+    private Object delims;
 
     
-    BooleanParameter(String def) {
-        widget = new JCheckBox();
-        label = new JLabel();
-        name = "";
+    BooleanParameter(String name) {
+        this.name = name;
+        widget = new JCheckBox(name);
+        widget.setEnabled(true);
+        label = new JLabel(name + "Label");
+        label.setLabelFor(widget);
+        label.setText(name);
     }
     
     
@@ -38,12 +44,8 @@ public class BooleanParameter implements IParameter {
 
     @Override
     public String getSetting() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setup(String definition) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return typeName + SUS + name 
+                + SUS + Boolean.toString(widget.isSelected()) + SGS;
     }
 
     @Override

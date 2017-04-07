@@ -36,11 +36,13 @@ public class SidePanel extends JPanel {
         
         public void setControls(List<IParameter> in) {
             for(IParameter param : controls) {
+                remove(param.getLabel());
                 remove(param.getComponent());
             }
             controls.clear();
             controls.addAll(in);
             for(IParameter param : controls) {
+                add(param.getLabel());
                 add(param.getComponent());
             }
             GenerateCommand.setParameters(controls);

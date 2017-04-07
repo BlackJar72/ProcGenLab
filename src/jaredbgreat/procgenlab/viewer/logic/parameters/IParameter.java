@@ -18,5 +18,5 @@ public interface IParameter {
     JComponent getComponent();
     JLabel getLabel();
     String getSetting();
-    void setup(String definition);    
+    //void set(String setting); // Later, get working prototype before too fancy
 }

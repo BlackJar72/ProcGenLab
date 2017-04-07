@@ -17,6 +17,10 @@ package jaredbgreat.procgenlab.util;
  * @author Jared Blackburn
  */
 public class Delims {
+    
+    /*
+     *  DELIMETERS AS CHARACTERS
+     */
     /** File Seperator */
     public static final char FS  = '\u001C'; 
     /** Group Seperator */
@@ -27,4 +31,20 @@ public class Delims {
     public static final char US  = '\u001F'; 
     /** End of Text (non-null terminator) */
     public static final char ETX = '\u0003'; 
+    
+    
+    
+    /*
+     *  DELIMETERS AS STRINGS
+     */
+    /** File Seperator as a String*/
+    public static final String SFS  = String.valueOf(FS); 
+    /** Group Seperator as a String*/
+    public static final String SGS  = String.valueOf(GS); 
+    /** Record Seperator as a String*/
+    public static final String SRS  = String.valueOf(RS); 
+    /** Unit Seperator as a String*/
+    public static final String SUS  = String.valueOf(US); 
+    /** End of Text (non-null terminator) as a String */
+    public static final String SETX = String.valueOf(ETX); 
 }

@@ -43,11 +43,6 @@ public class RealRangeParameter implements IParameter {
     }
 
     @Override
-    public void setup(String definition) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public JLabel getLabel() {
         return label;
     }

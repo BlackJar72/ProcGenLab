@@ -7,6 +7,8 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import static jaredbgreat.procgenlab.util.Delims.SGS;
+import static jaredbgreat.procgenlab.util.Delims.SUS;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -24,25 +26,23 @@ public class StringParameter implements IParameter {
     final String name;
 
     
-    StringParameter(String def) {
-        widget = new JTextField();
-        label = new JLabel();
-        name = "";
+    StringParameter(String name) {
+        widget = new JTextField(name);
+        widget.setEnabled(true);
+        widget.setEditable(true);
+        label = new JLabel(name + "Label");
+        label.setLabelFor(widget);
+        this.name = name;
     }
     
     @Override
     public JComponent getComponent() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return widget;
     }
 
     @Override
     public String getSetting() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setup(String definition) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return typeName + SUS + name + SUS +widget.getText() + SGS;
     }
 
     @Override

@@ -14,7 +14,6 @@ import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 /**
