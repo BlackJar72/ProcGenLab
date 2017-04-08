@@ -13,6 +13,8 @@ import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.api.IPalette;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class represent / contains all the images created from 
@@ -23,12 +25,25 @@ import java.awt.image.BufferedImage;
  * 
  * @author Jared Blackburn
  */
-public class WorldMap implements IWorldMap {
+public final class WorldMap implements IWorldMap {
     private Image[] images;
     private String[] names;
     
     
-    public WorldMap() {}
+    public WorldMap(IGenerator generator) {
+        try {
+            setData(generator);
+        } catch (InconsistentLayersException ex) {
+            Logger.getLogger(WorldMap.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            System.exit(1);
+            
+        } catch (ImageCreationException ex) {
+            Logger.getLogger(WorldMap.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            System.exit(1);
+        }
+    }
     
     
     /**
@@ -110,6 +125,11 @@ public class WorldMap implements IWorldMap {
     @Override
     public String getImageName(int number) {
         return names[number];
+    }
+    
+    
+    public int getSize() {
+        return images.length;
     }
     
 }

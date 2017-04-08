@@ -34,9 +34,11 @@ public class GeneratorPanel extends JPanel {
                 = new GridBagConstraints(1, 0, 1, 1, 0.75, 1.0, CENTER, 
                         BOTH, nothing, 0, 0);
         options = new SidePanel();
-        viewing = new ViewPanel(null);
+        viewing = new ViewPanel();
         add(options, optConstraints);
         add(viewing, viewConstraints);
+        MainWindow.registerComponenent("SidePanel", options);
+        MainWindow.registerComponenent("ViewPanel", viewing);
     }
     
 }

@@ -16,12 +16,17 @@ import javax.swing.JPanel;
  * @author Jared Blackburn
  */
 public final class MapPanel extends JPanel {
-    private Graphics graphics;
+    private Image image;
     
     public MapPanel(Image img) {
-        graphics = getGraphics();
-        // This could be done better, to avoid aspect ratio distortion
-        graphics.drawImage(img, 0, 0, getWidth(), getHeight(), this);
+        image = img;
+    }
+    
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
     }
 
 }

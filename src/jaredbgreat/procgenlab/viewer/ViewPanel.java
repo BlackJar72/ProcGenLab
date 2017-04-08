@@ -8,7 +8,6 @@ package jaredbgreat.procgenlab.viewer;
  */
 
 import jaredbgreat.procgenlab.viewer.logic.WorldMap;
-import java.awt.Color;
 import javax.swing.JTabbedPane;
 
 /**
@@ -16,13 +15,21 @@ import javax.swing.JTabbedPane;
  * @author Jared Blackburn
  */
 public class ViewPanel extends JTabbedPane {
-    private MapPanel[] layers;
     private WorldMap map;
+    private int size;
     
-    public ViewPanel(MapPanel[] in) {
-        layers = in;
-        if((layers != null) && (layers.length > 0))for(MapPanel img : layers ){
-            add(img);
+    
+    public void setWorldMap(WorldMap in) {
+        removeAll();
+        map = in;
+        size = map.getSize();
+        if((map != null) && (size > 0)) {
+            for(int i = 0; i < size; i++) {
+                //System.out.println(map.getImage(i));
+                MapPanel img = new MapPanel(map.getImage(i));
+                img.setName(map.getImageName(i));
+                add(img);
+            }
         }
     }
     

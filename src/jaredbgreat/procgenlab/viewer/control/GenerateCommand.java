@@ -10,7 +10,10 @@ package jaredbgreat.procgenlab.viewer.control;
 import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.registries.Registrar;
 import static jaredbgreat.procgenlab.api.util.Delims.SFS;
+import jaredbgreat.procgenlab.viewer.MainWindow;
+import jaredbgreat.procgenlab.viewer.ViewPanel;
 import jaredbgreat.procgenlab.viewer.logic.RandomHelper;
+import jaredbgreat.procgenlab.viewer.logic.WorldMap;
 import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
 import java.util.List;
 import javax.swing.JComboBox;
@@ -58,6 +61,8 @@ public class GenerateCommand implements ICommand {
             timeString = (((float)time) / FLOAT_UNIT) + " s";
         }
         timebox.setText(timeString);
+        ViewPanel view = (ViewPanel)MainWindow.getComponenent("ViewPanel");
+        view.setWorldMap(new WorldMap(generator));
     }
     
     
@@ -119,6 +124,9 @@ public class GenerateCommand implements ICommand {
      * @return 
      */
     private String getArgumentString() {
+        if(parameters == null || parameters.isEmpty()) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder();
         parameters.stream().forEach((param) -> {
             builder.append(param.getSetting());

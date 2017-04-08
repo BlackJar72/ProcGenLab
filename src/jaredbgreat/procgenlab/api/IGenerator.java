@@ -59,11 +59,6 @@ public interface IGenerator {
      *  geometric dimension
      * 
      * @return int[] - dimension lengths*/
-    public int[] getImageSize();
-    /** Get the number of layers (viewing tabs) that will 
-     *  be generated
-     * 
-     * @return number of layers*/
     public int getNumLayers();
     /** Get the width of the map / image created.
      * 
