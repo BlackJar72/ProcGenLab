@@ -12,7 +12,6 @@ import jaredbgreat.procgenlab.registries.Registrar;
 import static jaredbgreat.procgenlab.api.util.Delims.SFS;
 import jaredbgreat.procgenlab.viewer.logic.RandomHelper;
 import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -40,7 +39,7 @@ public class GenerateCommand implements ICommand {
             return;
         }
         IGenerator generator 
-                = Registrar.registries
+                = Registrar.getRegistrar()
                         .getGenerator(selection.getSelectedItem().toString());
         if(generator == null) {
             timebox.setText("*(No Such Generator)*");

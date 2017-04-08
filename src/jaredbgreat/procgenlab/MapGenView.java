@@ -7,6 +7,7 @@ package jaredbgreat.procgenlab;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import jaredbgreat.procgenlab.loader.InternalLoader;
 import jaredbgreat.procgenlab.viewer.MainWindow;
 
 /**
@@ -29,6 +30,7 @@ public class MapGenView {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        InternalLoader.listClasses();
         init();
         winInit();
         run();

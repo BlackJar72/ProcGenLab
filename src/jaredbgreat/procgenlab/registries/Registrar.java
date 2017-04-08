@@ -9,9 +9,11 @@ package jaredbgreat.procgenlab.registries;
 
 import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.api.IPalette;
+import jaredbgreat.procgenlab.viewer.MainWindow;
 import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
 import jaredbgreat.procgenlab.viewer.logic.parameters.ParameterFactory;
 import java.util.List;
+import javax.swing.JComboBox;
 
 /**
  * This class handles registries, registering them and providing access to 
@@ -20,16 +22,27 @@ import java.util.List;
  * @author Jared Blackburn
  */
 public class Registrar {
-    public static final Registrar registries = new Registrar();
+    private static Registrar registries = new Registrar();
     private final Registry<IGenerator> gens;
     private final Registry<IPalette[]> palettes;
     private final Registry<List<IParameter>> parameters;
+    private final JComboBox selector;
     
     
     private Registrar() {
         gens = new Registry<>();
         palettes = new Registry<>();
         parameters = new Registry<>();
+        selector = (JComboBox)MainWindow.getComponentRegistry()
+                .get("SelectorComboBox");
+    }
+    
+    
+    public static Registrar getRegistrar() {
+        if(registries == null) {
+            registries = new Registrar();
+        }
+        return registries;
     }
     
     
@@ -48,7 +61,9 @@ public class Registrar {
         gens.add(name, gen);
         palettes.add(name, gen.getColorPaletes());
         parameters.add(name, 
-                ParameterFactory.makeParameters(gen.getParameters()));
+                ParameterFactory.makeParameters(gen.getParameters()));        
+        selector.addItem(name);
+        selector.setEnabled(true);
     }
     
     
@@ -66,6 +81,13 @@ public class Registrar {
     }
     
     
+    /**
+     * This will retrieve the array of palettes to be used in converting
+     * map data to graphical form.
+     * 
+     * @param name
+     * @return IPalette[] - the array of palettes for the named generator
+     */
     public IPalette[] getPalettes(String name) {
         if(gens.containsKey(name)) {
             return palettes.get(name);
