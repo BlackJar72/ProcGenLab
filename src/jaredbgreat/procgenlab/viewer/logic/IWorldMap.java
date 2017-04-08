@@ -1,4 +1,4 @@
-package jaredbgreat.procgenlab.interfaces;
+package jaredbgreat.procgenlab.viewer.logic;
 
 /*
  * Copyright (C) Jared Blackburn 2016

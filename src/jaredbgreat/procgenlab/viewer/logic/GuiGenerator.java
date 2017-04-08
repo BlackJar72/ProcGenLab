@@ -7,8 +7,8 @@ package jaredbgreat.procgenlab.viewer.logic;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-import jaredbgreat.procgenlab.interfaces.IGenerator;
-import jaredbgreat.procgenlab.interfaces.IPalette;
+import jaredbgreat.procgenlab.api.IGenerator;
+import jaredbgreat.procgenlab.api.IPalette;
 import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
 import jaredbgreat.procgenlab.viewer.logic.parameters.ParameterFactory;
 import java.util.ArrayList;

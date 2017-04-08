@@ -7,7 +7,7 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-import static jaredbgreat.procgenlab.util.Delims.*;
+import static jaredbgreat.procgenlab.api.util.Delims.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -55,10 +55,8 @@ public class ParameterFactory {
             default:
                 System.err.println("ERROR: Parameter factory recieved "
                         + "invalid type!");
-                new Exception().printStackTrace();
-                System.exit(1);
-        }        
-        return out;
+                throw new RuntimeException();
+        }
     }
     
 }

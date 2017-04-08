@@ -7,9 +7,9 @@ package jaredbgreat.procgenlab.viewer.control;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-import jaredbgreat.procgenlab.interfaces.IGenerator;
+import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.registries.Registrar;
-import static jaredbgreat.procgenlab.util.Delims.SFS;
+import static jaredbgreat.procgenlab.api.util.Delims.SFS;
 import jaredbgreat.procgenlab.viewer.logic.RandomHelper;
 import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
 import java.util.ArrayList;

@@ -7,8 +7,8 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-import static jaredbgreat.procgenlab.util.Delims.SGS;
-import static jaredbgreat.procgenlab.util.Delims.SRS;
+import static jaredbgreat.procgenlab.api.util.Delims.SGS;
+import static jaredbgreat.procgenlab.api.util.Delims.SRS;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;

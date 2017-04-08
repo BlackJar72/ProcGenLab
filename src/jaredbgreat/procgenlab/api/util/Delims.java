@@ -1,4 +1,4 @@
-package jaredbgreat.procgenlab.util;
+package jaredbgreat.procgenlab.api.util;
 
 /*
  * Copyright (C) Jared Blackburn 2017

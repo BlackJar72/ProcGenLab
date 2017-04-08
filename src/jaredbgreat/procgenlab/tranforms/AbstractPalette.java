@@ -8,7 +8,7 @@ package jaredbgreat.procgenlab.tranforms;
  */
 
 import jaredbgreat.procgenlab.exceptions.ImageCreationException;
-import jaredbgreat.procgenlab.interfaces.IPalette;
+import jaredbgreat.procgenlab.api.IPalette;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 

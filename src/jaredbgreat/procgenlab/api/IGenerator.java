@@ -1,4 +1,4 @@
-package jaredbgreat.procgenlab.interfaces;
+package jaredbgreat.procgenlab.api;
 
 /*
  * Copyright (C) Jared Blackburn 2017
@@ -25,32 +25,53 @@ public interface IGenerator {
      *  from generators.  THIS IS FAR 
      *  FROM FINAL!
      */
-    /** Generate content using the seed.*/
+    
+    /** Generate content using the seed.
+     * 
+     * @param seed*/
     public void generate(Long seed);
-    /** Get the results of running generate.*/
+    /** Get the results of running generate.
+     * 
+     * @return int[][]*/
     public int[][] getData();
-    /** Get the parameters as a parsable String.*/
+    /** Get the parameters as a parsable String.
+     * 
+     * @return int[][]*/
     public String getParameters();
     /** Accepts an argument String and parses it 
-     * to set parameters.*/
+     * to set parameters.
+     * 
+     * @param param - formated String of parameter data*/
     public void setParameters(String param);
     public IPalette[] getColorPaletes();
-    /** Get the name for this generator.*/
+    /** Get the name for this generator.
+     * 
+     * @return name*/
     public String getName();
-    /** Get the names of the layers for display on GUI tabs.*/
+    /** Get the names of the layers for display on GUI tabs.
+     * 
+     * @return String[] - layer names*/
     public String[] getLayerNames();
     /** Get an array telling the size in each dimension. 
      *  Usually this should contain exactly two elements; 
      *  more generally the array length is the number of 
-     *  dimension and each value is a length allong that
-     *  geometric dimension.*/
+     *  dimension and each value is a length along that
+     *  geometric dimension
+     * 
+     * @return int[] - dimension lengths*/
     public int[] getImageSize();
     /** Get the number of layers (viewing tabs) that will 
-     *  be generated.*/
+     *  be generated
+     * 
+     * @return number of layers*/
     public int getNumLayers();
-    /** Get the width of the map / image created.*/
+    /** Get the width of the map / image created.
+     * 
+     * @return image / map width*/
     public int getWidth();
-    /** Get the Height of the map / image created.*/
+    /** Get the Height of the map / image created.
+     * 
+     * @return image / map height*/
     public int getHeight();
     
     

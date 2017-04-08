@@ -30,8 +30,10 @@ public class DiscontinuousPalette extends AbstractPalette {
     
     
     private ContinuousPalette getRegion(int value) {
-        for(int i = 0; i < ps.length; i++) {
-            if(ps[i].inRange(value)) return ps[i];
+        for (ContinuousPalette p : ps) {
+            if (p.inRange(value)) {
+                return p;
+            }
         }
         return null;
     }

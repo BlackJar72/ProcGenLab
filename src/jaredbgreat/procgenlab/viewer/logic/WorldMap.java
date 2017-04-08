@@ -9,9 +9,8 @@ package jaredbgreat.procgenlab.viewer.logic;
 
 import jaredbgreat.procgenlab.exceptions.ImageCreationException;
 import jaredbgreat.procgenlab.exceptions.InconsistentLayersException;
-import jaredbgreat.procgenlab.interfaces.IGenerator;
-import jaredbgreat.procgenlab.interfaces.IPalette;
-import jaredbgreat.procgenlab.interfaces.IWorldMap;
+import jaredbgreat.procgenlab.api.IGenerator;
+import jaredbgreat.procgenlab.api.IPalette;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
