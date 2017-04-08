@@ -1,6 +1,7 @@
 package jaredbgreat.procgenlab.loader;
 
 import jaredbgreat.procgenlab.api.IGenerator;
+import jaredbgreat.procgenlab.registries.Registrar;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,9 +49,14 @@ public class InternalLoader {
             try {
                 if(contents[i].endsWith(".class")) {
                     String name = pac + contents[i].substring(0, contents[i].length() - 6);
-                    Class geegee = ClassLoader.getSystemClassLoader().loadClass(name);
+                    Class theClass = ClassLoader.getSystemClassLoader().loadClass(name);
+                    if(IGenerator.class.isAssignableFrom(theClass)) {
+                        IGenerator newGen = (IGenerator) theClass.newInstance();
+                        System.out.println("IGnerator found: " + newGen.getName());
+                        Registrar.getRegistrar().registerGenerator(newGen);
+                    }
                 }
-            } catch (ClassNotFoundException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(InternalLoader.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println();            

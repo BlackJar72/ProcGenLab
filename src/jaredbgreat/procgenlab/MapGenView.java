@@ -30,16 +30,15 @@ public class MapGenView {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        InternalLoader.listClasses();
-        init();
         winInit();
+        init();
         run();
         cleanup();
     }
     
     
-    private static void init() {
-        
+    private static void init() {        
+        InternalLoader.listClasses();
     }
     
     
