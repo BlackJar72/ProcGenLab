@@ -3,8 +3,6 @@ package jaredbgreat.procgenlab.loader;
 import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.registries.Registrar;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,25 +25,9 @@ public class InternalLoader {
     public static void listClasses() {
         URL resource = InternalLoader.class.getResource(dir);
         System.out.println(resource);
-        File file = new File(resource.getFile());
-        String[] contents = file.list();
-        URL[] res = new URL[contents.length];
+        File directory = new File(resource.getFile());
+        String[] contents = directory.list();
         for(int i = 0; i < contents.length; i++) {
-            System.out.println(contents[i]);
-            InputStream out;            
-            out = InternalLoader.class.getResourceAsStream(dir + "/" + contents[i]);            
-            char c;
-            int  v = -1;
-            if(out != null) do {
-                try {
-                    v = out.read();
-                } catch (IOException ex) {
-                    Logger.getLogger(InternalLoader.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                c = (char) v;
-                System.out.print(c);
-            } while (v > 0);
-            System.out.println();
             try {
                 if(contents[i].endsWith(".class")) {
                     String name = pac + contents[i].substring(0, contents[i].length() - 6);
@@ -58,8 +40,8 @@ public class InternalLoader {
                 }
             } catch (Exception ex) {
                 Logger.getLogger(InternalLoader.class.getName()).log(Level.SEVERE, null, ex);
+                System.exit(1);
             }
-            System.out.println();            
         }
     }
     
