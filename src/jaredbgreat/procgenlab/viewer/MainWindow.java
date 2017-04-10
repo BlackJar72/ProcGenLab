@@ -7,6 +7,7 @@ package jaredbgreat.procgenlab.viewer;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
+import jaredbgreat.procgenlab.Info;
 import jaredbgreat.procgenlab.registries.Registry;
 import jaredbgreat.procgenlab.viewer.control.Interpreter;
 import java.awt.BorderLayout;
@@ -59,6 +60,7 @@ public class MainWindow extends JFrame {
      * Sets up the window itself and major / global features
      */
     private void setupWindow() {
+        setTitle(Info.NAME + "   " + Info.VERSION);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(width, height);
         setLayout(layout = new BorderLayout());

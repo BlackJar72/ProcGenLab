@@ -11,6 +11,6 @@ package jaredbgreat.procgenlab.viewer.logic;
  *
  * @author Jared Blackburn
  */
-public class WorldHandler {
+public class TimeStats {
     
 }
