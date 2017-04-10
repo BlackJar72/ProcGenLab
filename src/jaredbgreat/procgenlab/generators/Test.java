@@ -10,12 +10,14 @@ import jaredbgreat.procgenlab.api.IPalette;
 import static jaredbgreat.procgenlab.api.util.Delims.*;
 import jaredbgreat.procgenlab.tranforms.DiscretePalette;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 /**
  *
  * @author jared
  */
 public class Test implements IGenerator {
+    int x = 100, y = 100;
     Random random;
     int[][] data;
     IPalette[] palettes;
@@ -32,9 +34,9 @@ public class Test implements IGenerator {
     @Override
     public void generate(Long seed) {
         random = new Random(seed);
-        data = new int[1][10000];
+        data = new int[1][x * y];
         for(int i = 0; i < 1; i++) {
-            for(int j = 0; j < 10000; j++) {
+            for(int j = 0; j < x * y; j++) {
                 data[i][j] = random.nextInt(2);
             }
         }
@@ -47,11 +49,25 @@ public class Test implements IGenerator {
 
     @Override
     public String getParameters() {
-        return "INT" + SRS + "Width" + SGS + "INT" + SRS + "Height" + SFS;
+        return "INT" + SRS + "Width" + SRS + x + SGS
+                + "INT" + SRS + "Height" + SRS + y + SFS;
     }
 
     @Override
-    public void setParameters(String param) {}
+    public void setParameters(String param) {
+        StringTokenizer l1 = new StringTokenizer(param, SGS + SFS);
+        while(l1.hasMoreTokens()) {
+            StringTokenizer l2 = new StringTokenizer(l1.nextToken(), SRS);
+            if(!l2.nextToken().toLowerCase().equals("int")) {
+                continue;
+            }
+            if(l2.nextToken().toLowerCase().equals("width")) {
+                x = Integer.valueOf(l2.nextToken());
+            } else {
+                y = Integer.valueOf(l2.nextToken());
+            }
+        }
+    }
 
     @Override
     public IPalette[] getColorPaletes() {
@@ -75,12 +91,12 @@ public class Test implements IGenerator {
 
     @Override
     public int getWidth() {
-        return 100;
+        return x;
     }
 
     @Override
     public int getHeight() {
-        return 100;
+        return y;
     }
     
 }

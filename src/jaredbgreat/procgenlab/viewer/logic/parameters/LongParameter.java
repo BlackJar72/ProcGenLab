@@ -32,7 +32,7 @@ public class LongParameter implements IParameter {
         widget.setEditable(true);
         widget.setEnabled(true);
         widget.setHorizontalAlignment(JTextField.TRAILING);
-        label = new JLabel(name + "Label");
+        label = new JLabel(name);
         label.setLabelFor(widget);
         this.name = name;
     }
@@ -59,6 +59,11 @@ public class LongParameter implements IParameter {
     @Override
     public JLabel getLabel() {
         return label;
+    }
+
+    @Override
+    public void set(String setting) {
+        widget.setText(setting);
     }
     
 }

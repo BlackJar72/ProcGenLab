@@ -31,7 +31,7 @@ public class StringParameter implements IParameter {
         widget.setEnabled(true);
         widget.setEditable(true);
         widget.setHorizontalAlignment(JTextField.CENTER);
-        label = new JLabel(name + "Label");
+        label = new JLabel(name);
         label.setLabelFor(widget);
         this.name = name;
     }
@@ -43,12 +43,17 @@ public class StringParameter implements IParameter {
 
     @Override
     public String getSetting() {
-        return typeName + SRS + name + SRS +widget.getText() + SGS;
+        return typeName + SRS + name + SRS + widget.getText() + SGS;
     }
 
     @Override
     public JLabel getLabel() {
         return label;
+    }
+
+    @Override
+    public void set(String setting) {
+        widget.setText(setting);
     }
     
 }

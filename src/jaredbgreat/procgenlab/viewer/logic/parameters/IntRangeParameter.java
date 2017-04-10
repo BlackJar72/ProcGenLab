@@ -32,7 +32,7 @@ public class IntRangeParameter implements IParameter {
         widget = new JSlider();
         setupSlider(definition);
         widget.setEnabled(true);
-        label = new JLabel(name + "Label");
+        label = new JLabel(name);
         label.setLabelFor(widget);
         this.name = name;
     }
@@ -58,6 +58,11 @@ public class IntRangeParameter implements IParameter {
     @Override
     public JLabel getLabel() {
         return label;
+    }
+
+    @Override
+    public void set(String setting) {
+        widget.setValue(Integer.valueOf(setting));
     }
     
 }

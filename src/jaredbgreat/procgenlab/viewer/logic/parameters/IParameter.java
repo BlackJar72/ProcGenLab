@@ -51,5 +51,5 @@ public interface IParameter {
      * @return A string containing data type, name, and the contents gui widget
      */
     public String getSetting();
-    //void set(String setting); // Later, get working prototype before too fancy
+    void set(String setting);
 }

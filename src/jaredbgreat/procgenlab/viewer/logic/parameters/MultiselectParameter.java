@@ -39,7 +39,7 @@ public class MultiselectParameter implements IParameter {
         setupWidget(fields);
         widget.setEditable(false);
         widget.setEnabled(true);
-        label = new JLabel(name + "Label");
+        label = new JLabel(name);
         label.setLabelFor(widget);
         this.name = name;
     }
@@ -67,6 +67,11 @@ public class MultiselectParameter implements IParameter {
     @Override
     public JLabel getLabel() {
         return label;
+    }
+
+    @Override
+    public void set(String setting) {
+        widget.setSelectedItem(setting);
     }
     
 }

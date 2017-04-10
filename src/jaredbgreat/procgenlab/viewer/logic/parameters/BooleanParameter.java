@@ -31,7 +31,7 @@ public class BooleanParameter implements IParameter {
         this.name = name;
         widget = new JCheckBox(name);
         widget.setEnabled(true);
-        label = new JLabel(name + "Label");
+        label = new JLabel(name);
         label.setLabelFor(widget);
         label.setText(name);
     }
@@ -51,6 +51,11 @@ public class BooleanParameter implements IParameter {
     @Override
     public JLabel getLabel() {
         return label;
+    }
+
+    @Override
+    public void set(String setting) {
+        widget.setSelected(Boolean.valueOf(setting));
     }
     
 }

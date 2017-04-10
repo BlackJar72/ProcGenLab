@@ -35,28 +35,40 @@ public class ParameterFactory {
                 SRS);
         switch(ParameterType.valueOf(tokens.nextToken().trim().toUpperCase())) {
             case BOOL:
-                return new BooleanParameter(tokens.nextToken());
+                out = new BooleanParameter(tokens.nextToken());
+                break;
             case INT:
-                return new IntParameter(tokens.nextToken());
+                out = new IntParameter(tokens.nextToken());
+                break;
             case LONG:
-                return new LongParameter(tokens.nextToken());
+                out = new LongParameter(tokens.nextToken());
+                break;
             case FLOAT:
-                return new FloatParameter(tokens.nextToken());
+                out = new FloatParameter(tokens.nextToken());
+                break;
             case DOUBLE:
-                return new DoubleParameter(tokens.nextToken());
+                out = new DoubleParameter(tokens.nextToken());
+                break;
             case RANGE:
-                return new IntRangeParameter(tokens.nextToken(), 
+                out = new IntRangeParameter(tokens.nextToken(), 
                         tokens.nextToken());
+                break;
             case STRING:
-                return new StringParameter(tokens.nextToken());
+                out = new StringParameter(tokens.nextToken());
+                break;
             case MULTI:
-                return new MultiselectParameter(tokens.nextToken(), 
+                out = new MultiselectParameter(tokens.nextToken(), 
                         tokens.nextToken());
+                break;
             default:
                 System.err.println("ERROR: Parameter factory recieved "
                         + "invalid type!");
                 throw new RuntimeException();
         }
+        if(tokens.hasMoreTokens()) {
+            out.set(tokens.nextToken());
+        }
+        return out;
     }
     
 }
