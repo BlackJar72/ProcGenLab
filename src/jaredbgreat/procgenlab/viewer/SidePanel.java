@@ -9,6 +9,7 @@ package jaredbgreat.procgenlab.viewer;
 
 import jaredbgreat.procgenlab.viewer.control.GenerateCommand;
 import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -43,6 +44,10 @@ public class SidePanel extends JPanel {
             controls.addAll(in);
             for(IParameter param : controls) {
                 add(param.getLabel());
+                JComponent comp = param.getComponent();
+                Dimension size = new Dimension(comp.getMaximumSize().width, 
+                                               comp.getPreferredSize().height);
+                comp.setMaximumSize(size);
                 add(param.getComponent());
             }
             GenerateCommand.setParameters(controls);

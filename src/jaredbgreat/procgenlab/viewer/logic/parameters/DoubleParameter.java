@@ -31,6 +31,7 @@ public class DoubleParameter implements IParameter {
         widget.setText("0.0");
         widget.setEditable(true);
         widget.setEnabled(true);
+        widget.setHorizontalAlignment(JTextField.TRAILING);
         label = new JLabel(name + "Label");
         label.setLabelFor(widget);
         this.name = name;

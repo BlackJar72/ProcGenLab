@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import static java.awt.GridBagConstraints.*;
 import java.awt.Insets;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -21,6 +22,7 @@ public class GeneratorPanel extends JPanel {
     SidePanel options;
     ViewPanel viewing;
     GridBagLayout layout;
+    JScrollPane scroll;
     
     
     GeneratorPanel() {
@@ -35,10 +37,12 @@ public class GeneratorPanel extends JPanel {
                         BOTH, nothing, 0, 0);
         options = new SidePanel();
         viewing = new ViewPanel();
-        add(options, optConstraints);
+        scroll = new JScrollPane(options);
+        add(scroll, optConstraints);
         add(viewing, viewConstraints);
         MainWindow.registerComponenent("SidePanel", options);
         MainWindow.registerComponenent("ViewPanel", viewing);
+        MainWindow.registerComponenent("SideScroll", scroll);
     }
     
 }

@@ -30,6 +30,7 @@ public class StringParameter implements IParameter {
         widget = new JTextField(name);
         widget.setEnabled(true);
         widget.setEditable(true);
+        widget.setHorizontalAlignment(JTextField.CENTER);
         label = new JLabel(name + "Label");
         label.setLabelFor(widget);
         this.name = name;

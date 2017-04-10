@@ -35,6 +35,7 @@ public class Interpreter implements ActionListener {
     private void addCommands() {
         commands.put("exit", new ExitCommand());
         commands.put("generate", new GenerateCommand());
+        commands.put("selectGenerator", new SelectGeneratorCommand());
     }
     
     

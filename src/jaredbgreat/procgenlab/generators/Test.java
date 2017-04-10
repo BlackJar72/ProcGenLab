@@ -7,6 +7,7 @@ package jaredbgreat.procgenlab.generators;
 
 import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.api.IPalette;
+import static jaredbgreat.procgenlab.api.util.Delims.*;
 import jaredbgreat.procgenlab.tranforms.DiscretePalette;
 import java.util.Random;
 
@@ -46,7 +47,7 @@ public class Test implements IGenerator {
 
     @Override
     public String getParameters() {
-        return "";
+        return "INT" + SRS + "Width" + SGS + "INT" + SRS + "Height" + SFS;
     }
 
     @Override

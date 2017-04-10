@@ -9,7 +9,6 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
 
 import static jaredbgreat.procgenlab.api.util.Delims.SGS;
 import static jaredbgreat.procgenlab.api.util.Delims.SRS;
-import static jaredbgreat.procgenlab.viewer.logic.parameters.IntParameter.typeName;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -32,6 +31,7 @@ public class LongParameter implements IParameter {
         widget.setText("0");
         widget.setEditable(true);
         widget.setEnabled(true);
+        widget.setHorizontalAlignment(JTextField.TRAILING);
         label = new JLabel(name + "Label");
         label.setLabelFor(widget);
         this.name = name;

@@ -37,13 +37,13 @@ public class MapGenView {
     }
     
     
-    private static void init() {        
-        InternalLoader.listClasses();
+    private static void winInit() {
+        win = MainWindow.getMainWindow();
     }
     
     
-    private static void winInit() {
-        win = MainWindow.getMainWindow();
+    private static void init() {        
+        InternalLoader.listClasses();
     }
     
     
