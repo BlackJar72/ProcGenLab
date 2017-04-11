@@ -7,7 +7,7 @@ package jaredbgreat.procgenlab.viewer.logic.parameters;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-import static jaredbgreat.procgenlab.api.util.Delims.*;
+import static jaredbgreat.procgenlab.api.Delims.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;

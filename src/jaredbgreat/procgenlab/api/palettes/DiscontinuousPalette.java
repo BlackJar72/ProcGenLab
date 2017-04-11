@@ -37,4 +37,9 @@ public class DiscontinuousPalette extends AbstractPalette {
         }
         return null;
     }
+    
+    
+    public void setPalette(ContinuousPalette[] in) {
+        ps = in;
+    }
 }

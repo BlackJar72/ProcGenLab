@@ -9,7 +9,7 @@ package jaredbgreat.procgenlab.viewer.control;
 
 import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.registries.Registrar;
-import static jaredbgreat.procgenlab.api.util.Delims.SFS;
+import static jaredbgreat.procgenlab.api.Delims.SFS;
 import jaredbgreat.procgenlab.viewer.MainWindow;
 import jaredbgreat.procgenlab.viewer.ViewPanel;
 import jaredbgreat.procgenlab.viewer.logic.RandomHelper;

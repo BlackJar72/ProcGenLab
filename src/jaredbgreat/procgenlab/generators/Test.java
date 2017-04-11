@@ -7,7 +7,7 @@ package jaredbgreat.procgenlab.generators;
 
 import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.api.IPalette;
-import static jaredbgreat.procgenlab.api.util.Delims.*;
+import static jaredbgreat.procgenlab.api.Delims.*;
 import jaredbgreat.procgenlab.api.palettes.ContinuousPalette;
 import jaredbgreat.procgenlab.api.palettes.DiscretePalette;
 import jaredbgreat.procgenlab.api.palettes.LiteralPalette;
