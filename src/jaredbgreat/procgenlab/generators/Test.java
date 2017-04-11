@@ -8,7 +8,9 @@ package jaredbgreat.procgenlab.generators;
 import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.api.IPalette;
 import static jaredbgreat.procgenlab.api.util.Delims.*;
+import jaredbgreat.procgenlab.tranforms.ContinuousPalette;
 import jaredbgreat.procgenlab.tranforms.DiscretePalette;
+import jaredbgreat.procgenlab.tranforms.LiteralPalette;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -26,7 +28,10 @@ public class Test implements IGenerator {
     public Test() {
         palettes = new IPalette[1];
         DiscretePalette pal = new DiscretePalette();
+        //ContinuousPalette pal = new ContinuousPalette();
+        //LiteralPalette pal = new LiteralPalette();
         pal.setPalette(new int[]{0xff000000, 0xffffffff});
+        //pal.setPalette(0, 65535, 0x00000000, 0x00ffffff);        
         palettes[0] = pal;
     }
     
