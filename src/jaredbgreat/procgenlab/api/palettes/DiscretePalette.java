@@ -1,4 +1,4 @@
-package jaredbgreat.procgenlab.tranforms;
+package jaredbgreat.procgenlab.api.palettes;
 
 /*
  * Copyright (C) Jared Blackburn 2017

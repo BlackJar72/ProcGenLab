@@ -8,9 +8,9 @@ package jaredbgreat.procgenlab.generators;
 import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.api.IPalette;
 import static jaredbgreat.procgenlab.api.util.Delims.*;
-import jaredbgreat.procgenlab.tranforms.ContinuousPalette;
-import jaredbgreat.procgenlab.tranforms.DiscretePalette;
-import jaredbgreat.procgenlab.tranforms.LiteralPalette;
+import jaredbgreat.procgenlab.api.palettes.ContinuousPalette;
+import jaredbgreat.procgenlab.api.palettes.DiscretePalette;
+import jaredbgreat.procgenlab.api.palettes.LiteralPalette;
 import java.util.Random;
 import java.util.StringTokenizer;
 
