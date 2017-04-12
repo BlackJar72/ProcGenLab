@@ -11,6 +11,6 @@ package jaredbgreat.procgenlab;
  */
 public class Info {
     public static final String NAME = "Prodecural Content Generation Lab";
-    public static final String VERSION = "0.5";
+    public static final String VERSION = "0.6";
     
 }
