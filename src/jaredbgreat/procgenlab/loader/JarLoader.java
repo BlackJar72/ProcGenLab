@@ -46,8 +46,13 @@ public class JarLoader {
     public static void loadClassFile(File file) 
                     throws ClassNotFoundException, 
                            InstantiationException, 
-                           IllegalAccessException {
-        Class theClass = ClassLoader.getSystemClassLoader().loadClass(file.getAbsolutePath());
+                           IllegalAccessException,
+                           FileNotFoundException,
+                           IOException {
+        FileInputStream data = new FileInputStream(file);
+        ObjectInputStream ois = new ObjectInputStream(data);
+        Class theClass = (Class)ois.readObject();
+        ClassLoader.getSystemClassLoader().loadClass(theClass.getCanonicalName());
         if(IGenerator.class.isAssignableFrom(theClass)) {            
             IGenerator newGen = (IGenerator) theClass.newInstance();
             System.out.println("IGnerator found: " + newGen.getName());
