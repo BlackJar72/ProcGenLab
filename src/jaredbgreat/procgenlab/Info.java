@@ -10,7 +10,7 @@ package jaredbgreat.procgenlab;
  * @author Jared Blackburn
  */
 public class Info {
-    public static final String NAME = "Prodecural Content Generation Lab";
+    public static final String NAME = "Map Generation Viewer";
     public static final String VERSION = "1.0";
     
 }
