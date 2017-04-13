@@ -29,17 +29,13 @@ public class InternalLoader extends ClassLoader {
     public static void listClasses() {
         // FIXME:  This only works from within an IDE, fails when run as jar
         URL resource = InternalLoader.class.getResource(dir);
-        System.out.println(resource);
         File directory = new File(resource.getFile());
-        System.out.println(directory.getPath());
-        System.out.println(directory.isDirectory() + "   " + directory.canRead());
         String[] contents = directory.list();
         for(int i = 0; i < contents.length; i++) {
             try {
                 if(contents[i].endsWith(".class")) {
                     String name = pac + contents[i].substring(0, contents[i].length() - 6);
-                    System.out.println(name);
-                    Class theClass = ClassLoader.getSystemClassLoader().loadClass(name);
+                    Class theClass = it.loadClass(name, true);
                     if(IGenerator.class.isAssignableFrom(theClass)) {
                         IGenerator newGen = (IGenerator) theClass.newInstance();
                         System.out.println("IGnerator found: " + newGen.getName());

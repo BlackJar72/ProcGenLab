@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -26,6 +25,13 @@ import java.util.zip.ZipInputStream;
  */
 public class JarLoader extends ClassLoader {
     private static JarLoader it = new JarLoader();
+    
+    
+    private class classData {
+        public Class cl;
+        public byte[] data;
+    }
+    
     
     public static void loadFile(File file) {
         if(!(file.exists() && file.canRead() && file.isFile())) {
@@ -85,15 +91,19 @@ public class JarLoader extends ClassLoader {
         try (ZipInputStream jar = new ZipInputStream(new BufferedInputStream(data))) {
             ZipEntry entry;
             while((entry = jar.getNextEntry()) != null) {
-                if(entry.getName().endsWith(".class"));
-                int size = (int)entry.getSize();
-                byte[] buffer = new byte[size];
-                jar.read(buffer);
-                Class theClass = it.defineClass(null, buffer, 0, size);
-                if(IGenerator.class.isAssignableFrom(theClass)) {
-                    IGenerator newGen = (IGenerator) theClass.newInstance();
-                    System.out.println("IGnerator found: " + newGen.getName());
-                    Registrar.getRegistrar().registerGenerator(null);
+                if(entry.getName().endsWith(".class")) {
+                    System.out.print(entry.getName());
+                    int size = (int)entry.getSize();
+                    System.out.println(" = " + size);
+                    byte[] buffer = new byte[size];
+                    jar.read(buffer);
+                    Class theClass = it.defineClass(null, buffer, 0, size);                    
+                    System.out.println("Successfully difined class " + entry.getName());
+                    if(IGenerator.class.isAssignableFrom(theClass)) {
+                        IGenerator newGen = (IGenerator) theClass.newInstance();
+                        System.out.println("IGnerator found: " + newGen.getName());
+                        Registrar.getRegistrar().registerGenerator(null);
+                    }
                 }
                 
             }
