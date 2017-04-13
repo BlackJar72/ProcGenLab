@@ -40,7 +40,6 @@ public class MainWindow extends JFrame {
     private JMenuBar menuBar;
     private JMenu fileMenu;
     private JMenuItem menuExit;
-    private JMenuItem menuOpenJar;
     
     private MainWindow() {
         setupWindow();
@@ -81,11 +80,6 @@ public class MainWindow extends JFrame {
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
         MainWindow.registerComponenent("FileMenu", fileMenu);
-        menuOpenJar = new JMenuItem("Open Java File");
-        menuOpenJar.setActionCommand("openJar");
-        menuOpenJar.addActionListener(Interpreter.getInterpeter());
-        fileMenu.add(menuOpenJar);
-        MainWindow.registerComponenent("MenuOpenJar", menuOpenJar);
         menuExit = new JMenuItem("Exit");
         menuExit.setActionCommand("exit");
         menuExit.addActionListener(Interpreter.getInterpeter());        

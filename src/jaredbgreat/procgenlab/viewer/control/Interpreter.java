@@ -36,7 +36,6 @@ public class Interpreter implements ActionListener {
         commands.put("exit", new ExitCommand());
         commands.put("generate", new GenerateCommand());
         commands.put("selectGenerator", new SelectGeneratorCommand());
-        commands.put("openJar", new FileChooserCommand());
     }
     
     
