@@ -10,7 +10,10 @@ package jaredbgreat.procgenlab.loader;
 import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.registries.Registrar;
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.file.FileSystem;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,19 +21,24 @@ import java.util.logging.Logger;
  *
  * @author Jared Blackburn
  */
-public class InternalLoader {
+public class InternalLoader extends ClassLoader {
+    private static InternalLoader it = new InternalLoader();
     private static final String dir = "/jaredbgreat/procgenlab/generators";
     private static final String pac = "jaredbgreat.procgenlab.generators.";
     
     public static void listClasses() {
+        // FIXME:  This only works from within an IDE, fails when run as jar
         URL resource = InternalLoader.class.getResource(dir);
         System.out.println(resource);
         File directory = new File(resource.getFile());
+        System.out.println(directory.getPath());
+        System.out.println(directory.isDirectory() + "   " + directory.canRead());
         String[] contents = directory.list();
         for(int i = 0; i < contents.length; i++) {
             try {
                 if(contents[i].endsWith(".class")) {
                     String name = pac + contents[i].substring(0, contents[i].length() - 6);
+                    System.out.println(name);
                     Class theClass = ClassLoader.getSystemClassLoader().loadClass(name);
                     if(IGenerator.class.isAssignableFrom(theClass)) {
                         IGenerator newGen = (IGenerator) theClass.newInstance();

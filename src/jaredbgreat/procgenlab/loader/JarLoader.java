@@ -24,7 +24,8 @@ import java.util.zip.ZipInputStream;
  *
  * @author Jared Blackburn
  */
-public class JarLoader {
+public class JarLoader extends ClassLoader {
+    private static JarLoader it = new JarLoader();
     
     public static void loadFile(File file) {
         if(!(file.exists() && file.canRead() && file.isFile())) {
@@ -43,16 +44,28 @@ public class JarLoader {
     }
     
     
+    /**
+     * Loads a class file not found in a jar.
+     * 
+     * @param file
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public static void loadClassFile(File file) 
                     throws ClassNotFoundException, 
                            InstantiationException, 
                            IllegalAccessException,
                            FileNotFoundException,
                            IOException {
+        // THIS IS TESTED AND WORKDS!
         FileInputStream data = new FileInputStream(file);
-        ObjectInputStream ois = new ObjectInputStream(data);
-        Class theClass = (Class)ois.readObject();
-        ClassLoader.getSystemClassLoader().loadClass(theClass.getCanonicalName());
+        int size = (int)file.length();
+        byte[] buffer = new byte[size];
+        data.read(buffer);
+        Class theClass = it.defineClass(null, buffer, 0, size);
         if(IGenerator.class.isAssignableFrom(theClass)) {            
             IGenerator newGen = (IGenerator) theClass.newInstance();
             System.out.println("IGnerator found: " + newGen.getName());
@@ -61,15 +74,22 @@ public class JarLoader {
     }
     
     
-    public static void loadJar(File file) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static void loadJar(File file) 
+                        throws FileNotFoundException, 
+                               IOException, 
+                               ClassNotFoundException, 
+                               InstantiationException, 
+                               IllegalAccessException {
+        // FIXME:  This does not work so far!
         FileInputStream data = new FileInputStream(file);
         try (ZipInputStream jar = new ZipInputStream(new BufferedInputStream(data))) {
             ZipEntry entry;
             while((entry = jar.getNextEntry()) != null) {
                 if(entry.getName().endsWith(".class"));
-                ObjectInputStream ois = new ObjectInputStream(data);
-                Class theClass = (Class)ois.readObject();
-                ClassLoader.getSystemClassLoader().loadClass(theClass.getCanonicalName());
+                int size = (int)entry.getSize();
+                byte[] buffer = new byte[size];
+                jar.read(buffer);
+                Class theClass = it.defineClass(null, buffer, 0, size);
                 if(IGenerator.class.isAssignableFrom(theClass)) {
                     IGenerator newGen = (IGenerator) theClass.newInstance();
                     System.out.println("IGnerator found: " + newGen.getName());
