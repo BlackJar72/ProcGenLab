@@ -133,4 +133,16 @@ public class TopPanel extends JPanel {
             generators.setEnabled(false);
         }
     }
+    
+    
+    public void batchMode() {
+        seedLabel.setText("Number of Trials: ");
+        generate.setActionCommand("batch");
+    }
+    
+    
+    public void viewMode() {
+        seedLabel.setText("Seed: ");
+        generate.setActionCommand("generate");
+    }
 }

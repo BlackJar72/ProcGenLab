@@ -42,6 +42,10 @@ public class MainWindow extends JFrame {
     private JMenuItem menuExit;
     private JMenuItem menuOpenJar;
     
+    private JMenu modeMenu;
+    private JMenuItem menuGenerateMode;
+    private JMenuItem menuBatchMode;
+    
     private MainWindow() {
         setupWindow();
         setupMenuBar();
@@ -92,6 +96,19 @@ public class MainWindow extends JFrame {
         fileMenu.add(menuExit);
         MainWindow.registerComponenent("MenuExit", menuExit);
         menuBar.add(fileMenu);
+        modeMenu = new JMenu("Mode");
+        MainWindow.registerComponenent("ModeMenu", modeMenu);
+        menuGenerateMode = new JMenuItem("Generate and View");
+        menuGenerateMode.setActionCommand("viewMode");
+        menuGenerateMode.addActionListener(Interpreter.getInterpeter());
+        MainWindow.registerComponenent("MenuGenerateMode", menuGenerateMode);
+        modeMenu.add(menuGenerateMode);
+        menuBatchMode = new JMenuItem("Generate Batch for Time Stats");
+        menuBatchMode.setActionCommand("batchMode");
+        menuBatchMode.addActionListener(Interpreter.getInterpeter());
+        MainWindow.registerComponenent("MenuBatchMode", topPanel);
+        modeMenu.add(menuBatchMode);
+        menuBar.add(modeMenu);
         menuBar.setBorder(BorderFactory.createRaisedBevelBorder());
         setJMenuBar(menuBar);  
         MainWindow.registerComponenent("MenuBar", menuBar);
