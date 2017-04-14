@@ -1,4 +1,8 @@
 # ProcGenLab
 
-A failed experiment.  Supposedly a GUI framework for for experimenting and prototyping with in procedural content generation, or at least map generation.  However, I can't get it to load user created jars.  Anyway, done -- may find some use with its in-IDE hacking method -- but not something I'd want to publicize and actively distribute.  Failure, and only begs the question, "Why do I put myself through this?"
+A simple tool for testing, prototyping, and experimenting with procedural content generation.  It will allow any system which produces or can readily be reprented as a tile map or sort of time map to be tested visually, tweaked, and profiled independed 
+a game (or similar).  Systems can be hacked in within the generators package in an IDE or written with the jar link as a 
+dependency / library and then loaded into the gui at run time.
+
+Actual documentation comming soon.
 
