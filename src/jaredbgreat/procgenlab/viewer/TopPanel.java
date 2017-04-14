@@ -90,7 +90,6 @@ public class TopPanel extends JPanel {
         seedLabel.setHorizontalAlignment(JLabel.TRAILING);
         seedbox = new JTextField();
         seedLabel.setLabelFor(seedbox);
-        GenerateCommand.setSeedbox(seedbox);
         add(seedLabel);
         add(seedbox);
         MainWindow.registerComponenent("SeedboxLabel", seedLabel);
@@ -108,7 +107,6 @@ public class TopPanel extends JPanel {
         profiler = new JTextField();
         profiler.setEditable(false);
         profLabel.setLabelFor(profiler);
-        GenerateCommand.setTimebox(profiler);
         add(profLabel);
         add(profiler);
         MainWindow.registerComponenent("ProfilingTimeLabel", profLabel);

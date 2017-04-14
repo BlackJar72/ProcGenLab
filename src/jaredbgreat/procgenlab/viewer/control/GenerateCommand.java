@@ -29,23 +29,24 @@ public class GenerateCommand implements ICommand {
     private static final long  UNIT        = 1000000000;
     private static final float FLOAT_UNIT  = 1000000000f;
     
-    private static JTextField seedbox;
-    private static JTextField timebox;
-    private static JComboBox  selection;
-    private static List<IParameter> parameters;
+    protected static JComboBox  selection;
+    protected static List<IParameter> parameters;
 
     @Override
     public void execute() {
-        long seed = RandomHelper.getSeedFromText(seedbox.getText());
+        long seed = RandomHelper.getSeedFromText(((JTextField)MainWindow
+                .getComponenent("Seedbox")).getText());
         if((selection == null) || (selection.getSelectedItem() == null)) {
-            timebox.setText("*(ERROR: no generators!)*");  
+            ((JTextField)MainWindow.getComponenent("ProfileTimeBox"))
+                    .setText("*(ERROR: no generators!)*");  
             return;
         }
         IGenerator generator 
                 = Registrar.getRegistrar()
                         .getGenerator(selection.getSelectedItem().toString());
         if(generator == null) {
-            timebox.setText("*(No Such Generator)*");
+            ((JTextField)MainWindow.getComponenent("ProfileTimeBox"))
+                    .setText("*(No Such Generator)*");
             return;
         }
         generator.setParameters(getArgumentString());
@@ -60,35 +61,9 @@ public class GenerateCommand implements ICommand {
         } else {
             timeString = (((float)time) / FLOAT_UNIT) + " s";
         }
-        timebox.setText(timeString);
+        ((JTextField)MainWindow.getComponenent("ProfilingTimeBox")).setText(timeString);
         ViewPanel view = (ViewPanel)MainWindow.getComponenent("ViewPanel");
         view.setWorldMap(new WorldMap(generator));
-    }
-    
-    
-    /**
-     * This sets the JTextBox from which the provided 
-     * seed (if any) should be read.  This should only  
-     * be called by the GUI's TopPanel to attach its 
-     * widget to this command.
-     * 
-     * @param input 
-     */
-    public static void setSeedbox(JTextField input) {
-        seedbox = input;
-    }
-    
-    
-    /**
-     * This sets the JTextBox into which the time taken 
-     * to complete generation should be written.  This should 
-     * only be called by the GUI's TopPanel instance in order 
-     * to link its widget to this command.
-     * 
-     * @param input 
-     */
-    public static void setTimebox(JTextField input) {
-        timebox = input;
     }
     
     
@@ -123,7 +98,7 @@ public class GenerateCommand implements ICommand {
      * 
      * @return 
      */
-    private String getArgumentString() {
+    protected String getArgumentString() {
         if(parameters == null || parameters.isEmpty()) {
             return "";
         }

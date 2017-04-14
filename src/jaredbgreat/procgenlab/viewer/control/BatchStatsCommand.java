@@ -1,5 +1,18 @@
 package jaredbgreat.procgenlab.viewer.control;
 
+import jaredbgreat.procgenlab.api.IGenerator;
+import jaredbgreat.procgenlab.registries.Registrar;
+import jaredbgreat.procgenlab.viewer.GeneratorPanel;
+import jaredbgreat.procgenlab.viewer.MainWindow;
+import jaredbgreat.procgenlab.viewer.TopPanel;
+import jaredbgreat.procgenlab.viewer.ViewPanel;
+import jaredbgreat.procgenlab.viewer.logic.StatsHelper;
+import jaredbgreat.procgenlab.viewer.logic.WorldMap;
+import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
+import java.util.List;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+
 /*
  * Copyright (C) Jared Blackburn 2017
  *
@@ -11,11 +24,32 @@ package jaredbgreat.procgenlab.viewer.control;
  *
  * @author jared
  */
-public class BatchStatsCommand implements ICommand {
+public class BatchStatsCommand extends GenerateCommand implements ICommand {  
 
     @Override
     public void execute() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int trials = Integer.valueOf(((JTextField)MainWindow
+                .getComponenent("Seedbox")).getText());
+        IGenerator generator 
+                = Registrar.getRegistrar()
+                        .getGenerator(selection.getSelectedItem().toString());
+        if(generator == null) {
+            ((JTextField)MainWindow.getComponenent("ProfileTimeBox"))
+                    .setText("*(No Such Generator)*");
+            return;
+        }
+        long[] data = new long[trials];
+        for(int i = 0; i < trials; i++) {
+            long seed = System.nanoTime();
+            generator.setParameters(getArgumentString());
+            data[i] = System.nanoTime();
+            generator.generate(seed);
+            data[i] = System.nanoTime() - data[i];            
+        }
+        ((JTextField)MainWindow.getComponenent("ProfilingTimeBox")).setText("");
+        ViewPanel view = (ViewPanel)MainWindow.getComponenent("ViewPanel");
+        view.setStatsView(new StatsHelper(data));
+        
     }
     
 }
