@@ -69,7 +69,7 @@ public class JarLoader extends ClassLoader {
                            IllegalAccessException,
                            FileNotFoundException,
                            IOException {
-        // THIS IS TESTED AND WORKDS!
+        // THIS IS TESTED AND WORKS!
         FileInputStream data = new FileInputStream(file);
         int size = (int)file.length();
         byte[] buffer = new byte[size];
@@ -88,14 +88,14 @@ public class JarLoader extends ClassLoader {
         // FIXME:  This does not work so far!
         FileInputStream data = new FileInputStream(file);
         List<String> classes = listClasses(file);
-        URL url = new URL("jar", "", file.getCanonicalPath() + "!/");
+        URL url = new URL("jar:file://" + file.getCanonicalPath() + "!/");
+        System.out.println(url);
         URLClassLoader loader = new URLClassLoader(new URL[]{url}, getParent());
         for(String path : classes) {
             String name = path.substring(0, path.length() - 6).replace(File.separator, ".");
             System.out.println(path);
-            System.out.println(name);
             Class theClass = loader.loadClass(name);
-            System.out.println(theClass.getName());
+            System.out.println(theClass.getName()  + " -> " + IGenerator.class.isAssignableFrom(theClass));
             register(theClass);
         }
     }
@@ -124,10 +124,16 @@ public class JarLoader extends ClassLoader {
     private static Class register(Class theClass) 
                         throws InstantiationException, 
                                IllegalAccessException {
-        if(IGenerator.class.isAssignableFrom(theClass)) {            
-            IGenerator newGen = (IGenerator) theClass.newInstance();
-            System.out.println("IGeerator found: " + newGen.getName());
-            Registrar.getRegistrar().registerGenerator(newGen);
+        if(IGenerator.class.isAssignableFrom(theClass) 
+                && !theClass.isInterface()) {
+            try {
+                IGenerator newGen = (IGenerator) theClass.newInstance();
+                System.out.println("IGenerator found: " + newGen.getName());
+                Registrar.getRegistrar().registerGenerator(newGen);
+            } catch (InstantiationException e) {
+                System.out.println("IGenerator class " + theClass.getName() 
+                    + " could not be instantiated.  (Is it abstract?)");
+            }
         }
         return theClass;
     }
