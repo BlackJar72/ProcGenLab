@@ -29,7 +29,7 @@ public abstract class AbstractPalette implements IPalette {
         BufferedImage out = new BufferedImage(w, h, TYPE_INT_ARGB);
         for(int i = 0; i < w; i++) 
             for(int j = 0; j < h; j++) {
-                out.setRGB(i, j, getColor(data[(i * h) + j]));
+                out.setRGB(i, j, getColor(data[(j * w) + i]));
             }
         return out;
     }

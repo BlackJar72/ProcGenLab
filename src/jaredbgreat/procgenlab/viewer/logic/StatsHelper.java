@@ -37,14 +37,22 @@ public class StatsHelper {
     
     public String getStatsText() {
         StringBuilder out = new StringBuilder();
-        out.append("Mean: " + getMeanText() + System.lineSeparator());
-        out.append("Range: " + getTextForLong(max - min) + "     (" 
-                + getTextForLong(min) + " to " + getTextForLong(max) + ")" 
-                + System.lineSeparator());
-        out.append("Standard Deviation: " + getStdevText() + "   (95% bewteen " 
-                + getTextForDouble(((double)mean) + (2 * stdev)) + " and "
-                + getTextForDouble(((double)mean) - (2 * stdev)) 
-                + " if normally distributed*)" + System.lineSeparator());
+        out.append("Mean: ")
+                .append(getMeanText())
+                .append(System.lineSeparator());
+        out.append("Range: ")
+                .append(getTextForLong(max - min))
+                .append("     (").append(getTextForLong(min))
+                .append(" to ")
+                .append(getTextForLong(max))
+                .append(")")
+                .append(System.lineSeparator());
+        out.append("Standard Deviation: ")
+                .append(getStdevText())
+                .append("   (95% bewteen ")
+                .append(getTextForDouble(((double)mean) + (2 * stdev)))
+                .append(" and ").append(getTextForDouble(((double)mean) - (2 * stdev)))
+                .append(" if normally distributed*)").append(System.lineSeparator());
         return out.toString();
     }
     

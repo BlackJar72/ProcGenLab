@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jaredbgreat.procgenlab.generators;
 
 import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.api.IPalette;
 import static jaredbgreat.procgenlab.api.Delims.*;
-import jaredbgreat.procgenlab.api.palettes.ContinuousPalette;
 import jaredbgreat.procgenlab.api.palettes.DiscretePalette;
-import jaredbgreat.procgenlab.api.palettes.LiteralPalette;
+import jaredbgreat.procgenlab.generators.test.Caves;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -26,25 +20,29 @@ public class Test implements IGenerator {
     
     
     public Test() {
-        palettes = new IPalette[1];
+        palettes = new IPalette[3];
         DiscretePalette pal = new DiscretePalette();
         //ContinuousPalette pal = new ContinuousPalette();
         //LiteralPalette pal = new LiteralPalette();
         pal.setPalette(new int[]{0xff000000, 0xffffffff});
-        //pal.setPalette(0, 65535, 0x00000000, 0x00ffffff);        
+        //pal.setPalette(0, 65535, 0x00000000, 0x00ffffff);
         palettes[0] = pal;
+        palettes[1] = pal;
+        palettes[2] = pal;
     }
     
 
     @Override
     public void generate(Long seed) {
         random = new Random(seed);
-        data = new int[1][x * y];
-        for(int i = 0; i < 1; i++) {
-            for(int j = 0; j < x * y; j++) {
-                data[i][j] = random.nextInt(2);
+        data = new int[3][x * y];
+        for(int i = 0; i < x; i++) {
+            for(int j = 0; j < y; j++) {
+                data[0][(j * y) + i] = random.nextInt(2);
+                data[1][(j * y) + i] = i % 2;
             }
         }
+        data[2] = new Caves(x, y, random).Generate();
     }
 
     @Override
@@ -86,12 +84,12 @@ public class Test implements IGenerator {
 
     @Override
     public String[] getLayerNames() {
-        return new String[]{"Test"};
+        return new String[]{"Noise Test", "Stripe Test", "Caves Test"};
     }
 
     @Override
     public int getNumLayers() {
-        return 1;
+        return 3;
     }
 
     @Override
