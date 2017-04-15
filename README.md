@@ -6,3 +6,5 @@ dependency / library and then loaded into the gui at run time.
 
 Actual documentation comming soon.
 
+Doomlike Dungeons by is now licensed under a Creative Commons Attribution 4.0 International License: http://creativecommons.org/licenses/by/4.0/
+
