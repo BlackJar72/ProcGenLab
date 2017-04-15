@@ -20,14 +20,14 @@ public class Caves {
     
     public int[] Generate() {
         int[][] noise = new int[w + 2][h + 2];
-        for(int i = 0; i < w; i++)
-            for(int j = 0; j < h; j++) {
+        for(int i = 0; i < (w + 2); i++)
+            for(int j = 0; j < (h + 2); j++) {
                 noise[i][j] = random.nextInt(2);
             }
         int[] out = new int[w * h];
         // Could be better optimized, but this is a test of the gui and api
-        for(int i = 1; i < (w - 1); i++) 
-            for(int j = 1; j < (h - 1); j++) {
+        for(int i = 1; i < (w + 1); i++) 
+            for(int j = 1; j < (h + 1); j++) {
                 out[((j - 1) * w) + (i - 1)] = refineCell(noise, i, j);
             }
         return out;
