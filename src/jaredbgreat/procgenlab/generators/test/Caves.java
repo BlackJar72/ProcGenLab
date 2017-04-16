@@ -7,8 +7,8 @@ import java.util.Random;
  * @author jared
  */
 public class Caves {
-    private int w, h;
-    private Random random;
+    private final int w, h;
+    private final Random random;
     
     
     public Caves(int width, int height, Random random) {

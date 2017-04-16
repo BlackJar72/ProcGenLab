@@ -38,8 +38,8 @@ public class Test implements IGenerator {
         data = new int[3][x * y];
         for(int i = 0; i < x; i++) {
             for(int j = 0; j < y; j++) {
-                data[0][(j * y) + i] = random.nextInt(2);
-                data[1][(j * y) + i] = i % 2;
+                data[0][(i * y) + j] = random.nextInt(2);
+                data[1][(i * y) + j] = i % 2;
             }
         }
         data[2] = new Caves(x, y, random).Generate();
