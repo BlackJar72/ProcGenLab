@@ -99,7 +99,7 @@ public class Test implements IGenerator {
     @Override
     public String[] getLayerNames() {
         return new String[]{"Noise Test", "Stripe Test", "Caves Test", 
-            "Nested Fractal Cave Test"};
+            "Fractal Cave Test"};
     }
 
     @Override

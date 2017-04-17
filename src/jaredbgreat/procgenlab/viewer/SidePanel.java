@@ -36,10 +36,8 @@ public class SidePanel extends JPanel {
         
         
         public void setControls(List<IParameter> in) {
-            for(IParameter param : controls) {
-                remove(param.getLabel());
-                remove(param.getComponent());
-            }
+            setVisible(false);
+            removeAll();
             controls.clear();
             controls.addAll(in);
             for(IParameter param : controls) {
@@ -48,9 +46,10 @@ public class SidePanel extends JPanel {
                 Dimension size = new Dimension(comp.getMaximumSize().width, 
                                                comp.getPreferredSize().height);
                 comp.setMaximumSize(size);
-                add(param.getComponent());
+                add(comp);
             }
             GenerateCommand.setParameters(controls);
+            setVisible(true);
             repaint();
         }
 }

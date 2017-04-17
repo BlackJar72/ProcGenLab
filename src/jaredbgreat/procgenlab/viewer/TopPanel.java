@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import jaredbgreat.procgenlab.viewer.control.GenerateCommand;
 import jaredbgreat.procgenlab.viewer.control.Interpreter;
 import jaredbgreat.procgenlab.viewer.control.SelectGeneratorCommand;
+import java.awt.event.ItemListener;
 import javax.swing.BorderFactory;
 
 /**
@@ -71,9 +72,9 @@ public class TopPanel extends JPanel {
         generators.setEnabled(false);
         GenerateCommand.setSelector(generators);
         SelectGeneratorCommand.setSource(generators);
-        //TODO: setup combo box
         
         generators.setActionCommand("selectGenerator");
+        generators.addItemListener(Interpreter.getInterpeter());
         generators.addActionListener(Interpreter.getInterpeter());        
         
         add(generators);        

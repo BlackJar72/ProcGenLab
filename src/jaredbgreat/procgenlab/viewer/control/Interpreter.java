@@ -9,8 +9,12 @@ package jaredbgreat.procgenlab.viewer.control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 
 /**
  * A class to store, retrieve, and execute commands defined with GUI components.
@@ -19,7 +23,7 @@ import java.util.Map;
  * 
  * @author Jared Blackburn
  */
-public class Interpreter implements ActionListener {
+public class Interpreter implements ActionListener, ItemListener {
     private final Map<String, ICommand> commands;
     private static Interpreter it;
     
@@ -88,5 +92,11 @@ public class Interpreter implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         execute(e.getActionCommand());
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        JComboBox sender = (JComboBox) e.getSource();
+        execute(sender.getActionCommand());
     }
 }
