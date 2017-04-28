@@ -7,7 +7,6 @@ package jaredbgreat.procgenlab.viewer;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;

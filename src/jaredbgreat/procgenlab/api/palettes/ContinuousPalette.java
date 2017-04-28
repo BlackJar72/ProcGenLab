@@ -24,9 +24,12 @@ public class ContinuousPalette extends AbstractPalette {
 
     @Override
     public int getColor(int value) throws ImageCreationException {
-        if((value < inMin) || (value > inMax)) {
+        if(inRange(value)) {
             throw new ImageCreationException("Tried to use value outside "
-                            + "defined range of palette to produce a color.");
+                            + "defined range of palette to produce a color."
+                            + System.lineSeparator() + " Value was " + value 
+                            + "; should be between " + inMin + " and  "
+                            + inMax + ".");
         }
         double val = (double)value;
         val -= inMin;

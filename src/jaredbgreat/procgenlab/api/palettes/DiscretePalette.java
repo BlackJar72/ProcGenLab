@@ -19,8 +19,9 @@ public class DiscretePalette extends AbstractPalette {
     @Override
     public int getColor(int value) throws ImageCreationException {
         if((value < 0) || (value >= palette.length)) {
-            throw new ImageCreationException("Tried to use value not in color "
-                            + "paletta (outside bounds of color array).");
+            throw new ImageCreationException("Tried to use value of " + value 
+                            + " not in color "
+                            + "palette (outside bounds of color array).");
         }
         return palette[value];
     }

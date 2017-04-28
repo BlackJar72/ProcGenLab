@@ -11,6 +11,7 @@ import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.api.IPalette;
 import static jaredbgreat.procgenlab.api.Delims.*;
 import jaredbgreat.procgenlab.api.palettes.DiscretePalette;
+import jaredbgreat.procgenlab.api.util.SpatialNoise;
 import jaredbgreat.procgenlab.generators.test.Caves;
 import jaredbgreat.procgenlab.generators.test.Caves2;
 import java.util.Random;
@@ -22,7 +23,7 @@ import java.util.StringTokenizer;
  */
 public class Test implements IGenerator {
     int x = 100, y = 100, depth = 0;
-    Random random;
+    SpatialNoise random;
     int[][] data;
     IPalette[] palettes;
     
@@ -43,11 +44,11 @@ public class Test implements IGenerator {
 
     @Override
     public void generate(Long seed) {
-        random = new Random(seed);
+        random = new SpatialNoise(seed);
         data = new int[4][x * y];
         for(int i = 0; i < x; i++) {
             for(int j = 0; j < y; j++) {
-                data[0][(i * y) + j] = random.nextInt(2);
+                data[0][(i * y) + j] = absModulus(random.intFor(i, j, 0, 0), 2);
                 data[1][(i * y) + j] = j % 2;
             }
         }
@@ -115,6 +116,14 @@ public class Test implements IGenerator {
     @Override
     public int getHeight() {
         return y;
+    }
+    
+    public static int absModulus(int in, int bound) {
+        if(in < 0) {
+            return -(in % bound);             
+        } else {
+            return (in % bound);
+        }
     }
     
 }

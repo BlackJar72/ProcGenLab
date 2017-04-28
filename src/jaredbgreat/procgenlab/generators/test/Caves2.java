@@ -7,7 +7,9 @@ package jaredbgreat.procgenlab.generators.test;
  * https://creativecommons.org/licenses/by/4.0/legalcode
 */
 
+import jaredbgreat.procgenlab.api.util.SpatialNoise;
 import java.util.Random;
+import static jaredbgreat.procgenlab.generators.Test.absModulus;
 
 /**
  *
@@ -15,7 +17,7 @@ import java.util.Random;
  */
 public class Caves2 extends Caves {
 
-    public Caves2(int width, int height, Random random) {
+    public Caves2(int width, int height, SpatialNoise random) {
         super(width, height, random);
     }
     
@@ -27,11 +29,11 @@ public class Caves2 extends Caves {
     
     private int[][] partialGeneration(int depth) {
         if(depth == 0) {
-            return expandScale(partiallyRefineNoise(makeNoise()));
+            return expandScale(partiallyRefineNoise(makeNoise()), depth);
         } else {
             return expandScale(partiallyRefineNoise(new 
                     Caves2((w / 2) + 2, (h / 2) + 2, random)
-                    .partialGeneration(depth - 1)));
+                    .partialGeneration(depth - 1)), depth);
         }
     }
     
@@ -47,7 +49,7 @@ public class Caves2 extends Caves {
     }
     
     
-    protected int[][] expandScale(int[][] map) {
+    protected int[][] expandScale(int[][] map, int depth) {
         // Making some assumptions about input since I know I won't violate them
         int[][] out = new int[map.length * 2][map[0].length * 2];
         for(int i = 0; i < map.length; i++)
@@ -58,10 +60,14 @@ public class Caves2 extends Caves {
                     out[2 * i][(2 * j) + 1]         = map[i][j];
                     out[(2 * i) + 1][(2 * j) + 1]   = map[i][j];
                 } else {                    
-                    out[2 * i][2 * j]               = random.nextInt(2);
-                    out[(2 * i) + 1][2 * j]         = random.nextInt(2);
-                    out[2 * i][(2 * j) + 1]         = random.nextInt(2);
-                    out[(2 * i) + 1][(2 * j) + 1]   = random.nextInt(2);
+                    out[2 * i][2 * j]               
+                            = absModulus(random.intFor(2 * i, 2 * j, 0, depth), 2);
+                    out[(2 * i) + 1][2 * j]         
+                            = absModulus(random.intFor((2 *  i) + 1, 2 * j, 0, depth), 2);
+                    out[2 * i][(2 * j) + 1]         
+                            = absModulus(random.intFor(2 * i, (2 * j) + 1, 0, depth), 2);
+                    out[(2 * i) + 1][(2 * j) + 1]   
+                            = absModulus(random.intFor((2 * i) + 1, (2 * j) + 1, 0, depth), 2);
                 }
             }
         return out;
