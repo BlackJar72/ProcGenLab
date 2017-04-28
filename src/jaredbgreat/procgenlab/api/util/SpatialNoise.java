@@ -1,15 +1,13 @@
-package jaredbgreat.procgenlab.api.util;
-
 /*
- * Copyright (C) Jared Blackburn 2017
- *
- * Currently under the Creative Commons Attribution License version 4.0:  
- * https://creativecommons.org/licenses/by/4.0/legalcode
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
+package jaredbgreat.procgenlab.api.util;
 
 /**
  *
- * @author Jared Blackburn
+ * @author jared
  */
 public class SpatialNoise {
     private final long seed;
@@ -347,9 +345,7 @@ public class SpatialNoise {
      * @return 
      */
     private static long rotateLeft(long in, int dist) {
-        long out = in << dist;
-        out += (in >>> (64 - dist));    
-        return out;
+        return (in << dist) | (in >>> (64 - dist));
     }
     
     
@@ -361,9 +357,7 @@ public class SpatialNoise {
      * @return 
      */
     private static long rotateRight(long in, int dist) {
-        long out = in >>> dist;
-        out += (in << (64 - dist));    
-        return out;
+        return (in >>> dist) | (in << (64 - dist));
     }
     
     
