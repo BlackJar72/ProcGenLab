@@ -26,13 +26,19 @@ public class SpatialNoise {
     public SpatialNoise() {
         long theSeed = System.nanoTime();
         seed1 = theSeed;
-        seed2 = new java.util.Random(seed1).nextLong() * 15485863;
+        seed2 = new java.util.Random(seed1).nextLong();
+    }
+    
+    
+    public SpatialNoise(final long theSeed) {
+        seed1 = theSeed;
+        seed2 = new Random(seed1).nextLong();
     }
     
     
     public SpatialNoise(final long theSeed, final long altSeed) {
         seed1 = theSeed;
-        seed2 = altSeed * 15485863;
+        seed2 = altSeed;
     }
     
     

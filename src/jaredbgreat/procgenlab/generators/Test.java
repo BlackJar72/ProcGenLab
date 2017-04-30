@@ -49,7 +49,7 @@ public class Test implements IGenerator {
     @Override
     public void generate(Long seed) {
         numZeros = 0;
-        random = new SpatialNoise(seed, seed ^ (seed << 17));
+        random = new SpatialNoise(seed);
         data = new int[5][x * y];
         for(int i = 0; i < x; i++) {
             for(int j = 0; j < y; j++) {
