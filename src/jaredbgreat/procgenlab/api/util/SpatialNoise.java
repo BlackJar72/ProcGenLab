@@ -1,17 +1,21 @@
-/*
-  * Copyright (C) Jared Blackburn 2017
-- *
-- * Currently under the Creative Commons Attribution License version 4.0:  
-- * https://creativecommons.org/licenses/by/4.0/legalcode
- */
 package jaredbgreat.procgenlab.api.util;
+
+/*
+ * Copyright (C) Jared Blackburn 2017
+ *
+ * Currently under the Creative Commons Attribution License version 4.0:  
+ * https://creativecommons.org/licenses/by/4.0/legalcode
+ */
+
+import java.util.Random;
 
 /**
  *
- * @author jared
+ * @author Jared Blackburn
  */
 public class SpatialNoise {
-    private final long seed;
+    private final long seed1;
+    protected final long seed2;
     
     
     /*=====================================*
@@ -21,18 +25,20 @@ public class SpatialNoise {
     
     public SpatialNoise() {
         long theSeed = System.nanoTime();
-        seed = theSeed ^ (theSeed << 32);
+        seed1 = theSeed;
+        seed2 = new java.util.Random(seed1).nextLong() * 15485863;
     }
     
     
-    public SpatialNoise(final long theSeed) {
-        seed = theSeed;
+    public SpatialNoise(final long theSeed, final long altSeed) {
+        seed1 = theSeed;
+        seed2 = altSeed * 15485863;
     }
     
     
     @Override
     public int hashCode() {
-        return (int)seed;
+        return (int)seed1;
     }
     
     
@@ -42,12 +48,12 @@ public class SpatialNoise {
             return false;
         }
         final SpatialNoise other = (SpatialNoise) obj;
-        return (seed == other.seed);
+        return (seed1 == other.seed1);
     }
     
     
     protected long getSeed() {
-        return seed;
+        return seed1;
     }
     
     
@@ -59,35 +65,13 @@ public class SpatialNoise {
     /**
      * Generate a boolean from a given seed and coords.
      * 
-     * @param x
-     * @param y
+     * @param 
      * @param z
      * @param t a fake iteration
      * @return 
      */
-    public boolean booleanFor(int x, int y, int z, int t) {
-        return ((longFromSeed(seed, x, y, z, t) & 1) == 1);
-    }
-    
-    
-    /** 
-     * Should generate num boolean values using longFor.
-     * 
-     * @param x
-     * @param y
-     * @param z
-     * @param t a fake iteration
-     * @param num
-     * @return 
-     */
-    public boolean[] booleansFor(int x, int y, int z, int t, int num) {
-        boolean[] out = new boolean[num];
-        long nextSeed = intFor(x, y, z, t);
-        for(int i = 0; i < num; i++) {
-            out[i] = booleanFromSeed(nextSeed, x, y, z, t);
-            nextSeed = longFromSeed(nextSeed, x, y, z, t);
-        }
-        return out;
+    public boolean booleanFor(int x, int z, int t) {
+        return ((longFor(x, z, t) & 1) == 1);
     }
     
     
@@ -95,200 +79,26 @@ public class SpatialNoise {
      * Generate a float from a given seed and coords.
      * 
      * @param x
-     * @param y
      * @param z
      * @param t a fake iteration
      * @return 
      */
-    public float floatFor(int x, int y, int z, int t) {
-        return ((float)(longFromSeed(seed, x, y, z, t) & 0x7fffffff)) 
+    public float floatFor(int x, int z, int t) {
+        return ((float)(longFor(x, z, t) & 0x7fffffff)) 
                 / ((float)Long.MAX_VALUE);
     }
     
     
-    /** 
-     * should generate num float values using longFor.
-     * 
-     * @param x
-     * @param y
-     * @param z
-     * @param t a fake iteration
-     * @param num
-     * @return 
-     */
-    public float[] floatsFor(int x, int y, int z, int t, int num) {
-        float[] out = new float[num];
-        long nextSeed = intFromSeed(seed, x, y, z, t);
-        for(int i = 0; i < num; i++) {
-            out[i] = ((float)(nextSeed & 0x7fffffff) / (float)Long.MAX_VALUE);
-            nextSeed = longFromSeed(nextSeed, x, y, z, t);
-        }
-        return out;
-    }
-    
-    
     /**
      * Generate a double from a given seed and coords.
      * 
      * @param x
-     * @param y
      * @param z
      * @param t a fake iteration
      * @return 
      */
-    public double doubleFor(int x, int y, int z, int t) {
-        return ((double)(longFromSeed(seed, x, y, z, t) 
-                & 0x7fffffffffffffffl)) 
-                / ((double)Long.MAX_VALUE);
-    }
-    
-    
-    /** 
-     * should generate num double values using longFor.
-     * 
-     * @param x
-     * @param y
-     * @param z
-     * @param t a fake iteration
-     * @param num
-     * @return 
-     */
-    public double[] doublesFor(int x, int y, int z, int t, int num) {
-        double[] out = new double[num];
-        long nextSeed = longFromSeed(seed, x, y, z, t);
-        for(int i = 0; i < num; i++) {
-            out[i] = ((double)(nextSeed & 0x7fffffffffffffffl) 
-                    / (double)Long.MAX_VALUE);
-            nextSeed = longFromSeed(nextSeed, x, y, z, t);
-        }
-        return out;
-    }
-    
-    
-    /**
-     * Should produce a random int from seed at coordinates x, y, t
-     * 
-     * @param x
-     * @param y
-     * @param z
-     * @param t a fake iteration
-     * @return 
-     */
-    public int intFor(int x, int y, int z, int t) {
-        return (int) longFromSeed(seed, x, y, z, t);
-    }
-    
-    
-    /** 
-     * should generate num int values using longFor.
-     * 
-     * @param x
-     * @param y
-     * @param z
-     * @param t a fake iteration
-     * @param num
-     * @return 
-     */
-    public int[] intsFor(int x, int y, int z, int t, int num) {
-        int[] out = new int[num];
-        out[0] = intFromSeed(seed, x, y, z, t);
-        for(int i = 1; i < num; i++) {
-            out[i] = intFromSeed(out[i-1], x, y, z, t);
-        }
-        return out;
-    }
-    
-    
-    /**
-     * Should produce a random long from seed at coordinates x, y, t
-     * 
-     * @param x
-     * @param y
-     * @param z
-     * @param t a fake iteration
-     * @return 
-     */
-    public long longFor(int x, int y, int z, int t) {
-        long out = seed + (15485077L * (long)t)
-                        + (12338621L * (long)x) 
-                        + (15485863L * (long)y)
-                        + (14416417L * (long)z);
-        out ^= rotateLeft(out, (x % 29) + 13);
-        out ^= rotateRight(out, (y % 31) + 7);  
-        out ^= rotateLeft(out, (z % 23) + 19); 
-        out ^= rotateRight(out, (t % 43) + 11);
-        return out;
-    }
-    
-    
-    /** 
-     * should generate num long values using longFor.
-     * 
-     * @param x
-     * @param y
-     * @param z
-     * @param t a fake iteration
-     * @param num
-     * @return 
-     */
-    public long[] longsFor(int x, int y, int z, int t, int num) {
-        long[] out = new long[num];
-        out[0] = longFromSeed(seed, x, y, z, t);
-        for(int i = 1; i < num; i++) {
-            out[i] = longFromSeed(out[i-1], x, y, z, t);
-        }
-        return out;
-    }
-    
-    
-    /*==========================================*
-     *  STATIC METHODS TAKING A   SEED DIRECTLY *
-     *==========================================*/
-    
-    
-    /**
-     * Generate a boolean from a given seed and coords.
-     * 
-     * @param seed
-     * @param x
-     * @param y
-     * @param z
-     * @param t a fake iteration
-     * @return 
-     */
-    public static boolean booleanFromSeed(long seed, int x, int y, int z, int t) {
-        return ((longFromSeed(seed, x, y, z, t) % 2) == 0);
-    }
-    
-    
-    /**
-     * Generate a float from a given seed and coords.
-     * 
-     * @param seed
-     * @param x
-     * @param y
-     * @param z
-     * @param t a fake iteration
-     * @return 
-     */
-    public static float floatFromSeed(long seed, int x, int y, int z, int t) {
-        return ((float)(longFromSeed(seed, x, y, z, t) & 0x7fffffffffffffffl)) /
-               ((float)Long.MAX_VALUE);
-    }
-    
-    
-    /**
-     * Generate a double from a given seed and coords.
-     * 
-     * @param seed
-     * @param x
-     * @param y
-     * @param z
-     * @param t a fake iteration
-     * @return 
-     */
-    public static double doubleFromSeed(long seed, int x, int y, int z, int t) {
-        return ((double)(longFromSeed(seed, x, y, z, t) 
+    public double doubleFor(int x, int z, int t) {
+        return ((double)(longFor(x, z, t) 
                 & 0x7fffffffffffffffl)) 
                 / ((double)Long.MAX_VALUE);
     }
@@ -299,37 +109,37 @@ public class SpatialNoise {
      * 
      * @param seed
      * @param x
-     * @param y
      * @param z
      * @param t a fake iteration
      * @return 
      */
-    public static int intFromSeed(long seed, int x, int y, int z, int t) {
-        return (int) longFromSeed(seed, x, y, z, t);
+    public int intFor(int x, int z, int t) {
+        return (int)(longFor(x, z, t) & 0xffffffff);
     }
     
     
     /**
      * Should produce a random long from seed at coordinates x, y, t
      * 
-     * @param seed
      * @param x
-     * @param y
      * @param z
      * @param t a fake iteration
      * @return 
      */
-    public static long longFromSeed(long seed, int x, int y, int z, int t) {
-        long out = seed + (15485077L * (long)t) 
-                        + (12338621L * (long)x) 
-                        + (15485863L * (long)y)
-                        + (14416417L * (long)z)
-                        +  32452841L;
-        out ^= rotateLeft(out, (x % 29) + 13);
-        out ^= rotateRight(out, (y % 31) + 7);  
-        out ^= rotateLeft(out, (z % 23) + 19);
-        out ^= rotateRight(out, (t % 43) + 11);
-        return out;
+    public long longFor(int x, int z, int t) {
+        long out = seed1 + (15485077L * (long)t)
+                         + (12338621L * (long)x) 
+                         + (14416417L * (long)z);
+        long alt = seed2 + (179424743L * (long)t)
+                         + (179426003L * (long)x) 
+                         + (179425819L * (long)z);
+        alt ^= rotateLeft(alt, (x % 29) + 13);
+        alt ^= rotateRight(alt, (z % 31) + 7);
+        alt ^= rotateLeft(alt, (t % 23) + 19);
+        out ^= rotateLeft(out, ((x & 0x7fffffff) % 13) + 5);
+        out ^= rotateRight(out, ((z & 0x7fffffff) % 11) + 28);  
+        out ^= rotateLeft(out, ((t & 0x7ffffff)% 17) + 45); 
+        return (out ^ alt);
     }
     
     
@@ -362,8 +172,13 @@ public class SpatialNoise {
     }
     
     
-    public RandomAt getRandomAt(int x, int y, int z, int t) {
-        return new RandomAt(this, x, y, z, t);
+    public Random getRandom(int x, int z, int t) {
+        return new Random(longFor(x, z, t));
+    }
+    
+    
+    public RandomAt getRandomAt(int x, int z, int t) {
+        return new RandomAt(this, x, z, t);
     }
     
     
@@ -376,25 +191,31 @@ public class SpatialNoise {
      */
     public static class RandomAt extends SpatialNoise {
         private long nextSeed;
-        private final int x, y, z, t;
-        
-        
+        private final int x1, x2, z1, z2, t1, t2;
+        private final long addative1;
+        private final long addative2;
         /**
          * Create a RandomAt using a given seed.
          * 
          * @param seed
          * @param x
-         * @param y
          * @param z
          * @param t 
          */
-        public RandomAt(long seed, int x, int y, int z, int t) {
-            super(seed);
+        public RandomAt(long seed1, long seed2, int x, int z, int t) {
+            super(seed1, seed2);
             nextSeed = super.getSeed();
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.t = t;
+            addative1 = (15485077L * (long)t) + (12338621L * (long)x) 
+                        +  (14416417L * (long)z) + 32452841L;
+            addative2 = seed2 + (179424743L * (long)t)
+                         + (179426003L * (long)x) 
+                         + (179425819L * (long)z);
+            x1 = ((x & 0x7fffffff) % 29) + 13;
+            z1 = ((z & 0x7fffffff)% 31) + 7;
+            t1 = ((t & 0x7fffffff)% 23) + 19;
+            x2 = (x % 13) + 5;
+            z2 = (z % 11) + 28;
+            t2 = (t % 17) + 45;
         }
         
         
@@ -403,16 +224,23 @@ public class SpatialNoise {
          * given.
          * @param from
          * @param x
-         * @param y
          * @param z
          * @param t 
          */
-        public RandomAt(SpatialNoise from, int x, int y, int z, int t) {
+        public RandomAt(SpatialNoise from, int x, int z, int t) {
+            super(from.seed1, from.seed2);
             nextSeed = from.getSeed();
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.t = t;
+            addative1 = (15485077L * (long)t) + (12338621L * (long)x) 
+                        + (14416417L * (long)z) + 32452841L;
+            addative2 = seed2 + (179424743L * (long)t)
+                         + (179426003L * (long)x) 
+                         + (179425819L * (long)z);
+            this.x1 = ((x & 0x0fffffff) % 29) + 13;
+            this.z1 = ((z & 0x0fffffff) % 31) + 7;
+            this.t1 = ((t & 0x0fffffff) % 23) + 19;
+            x2 = (x % 13) + 5;
+            z2 = (z % 11) + 28;
+            t2 = (t % 17) + 45;
         }
         
         
@@ -422,7 +250,15 @@ public class SpatialNoise {
          * @return a pseudorandom long.
          */
         public long nextLong() {
-            nextSeed = longFromSeed(nextSeed, x, y, z, t);
+            nextSeed += addative1;
+            long alt = seed2 + addative2;
+            alt ^= rotateLeft(seed2, x2);
+            alt ^= rotateRight(alt, z2);
+            alt ^= rotateLeft(alt, t2);
+            nextSeed ^= rotateLeft(nextSeed, x1); 
+            nextSeed ^= rotateLeft(nextSeed, z1);
+            nextSeed ^= rotateRight(nextSeed, t1);
+            nextSeed += alt;
             return nextSeed;
         }
         
@@ -433,8 +269,7 @@ public class SpatialNoise {
          * @return a pseudorandom int.
          */
         public int nextInt() {
-            nextSeed = longFromSeed(nextSeed, x, y, z, t);
-            return (int)nextSeed;
+            return (int)nextLong();
         }
         
         
@@ -447,8 +282,7 @@ public class SpatialNoise {
          * @return a pseudorandom in between 0 and bounds
          */
         public int nextInt(int bound) {
-            nextSeed = longFromSeed(nextSeed, x, y, z, t);
-            return (((int)nextSeed) & 0x7fffffff) % bound;
+            return (((int)nextLong()) & 0x7fffffff) % bound;
         }
         
         
@@ -458,8 +292,7 @@ public class SpatialNoise {
          * @return a pseudorandom boolean
          */
         public boolean nextBoolean() {
-            nextSeed = longFromSeed(nextSeed, x, y, z, t);
-            return ((nextSeed & 1) == 1);
+            return ((nextLong() & 1) == 1);
         }
         
         
@@ -469,8 +302,8 @@ public class SpatialNoise {
          * @return a pseudorandom float
          */
         public float nextFloat() {
-            nextSeed = longFromSeed(nextSeed, x, y, z, t);
-            return ((float)(nextSeed & 0x7fffffffffffffffl) / (float)Long.MAX_VALUE);
+            return ((float)(nextLong() 
+                    & 0x7fffffffffffffffl) / (float)Long.MAX_VALUE);
         }
         
         
@@ -480,8 +313,7 @@ public class SpatialNoise {
          * @return a pseudorandom double
          */
         public double nextDouble() {
-            nextSeed = longFromSeed(nextSeed, x, y, z, t);
-            return ((double)(nextSeed & 0x7fffffffffffffffl) 
+            return ((double)(nextLong() & 0x7fffffffffffffffl) 
                     / (double)Long.MAX_VALUE);
         }        
     }

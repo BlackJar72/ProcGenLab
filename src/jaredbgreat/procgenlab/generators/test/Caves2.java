@@ -61,13 +61,13 @@ public class Caves2 extends Caves {
                     out[(2 * i) + 1][(2 * j) + 1]   = map[i][j];
                 } else {                    
                     out[2 * i][2 * j]               
-                            = absModulus(random.intFor(2 * i, 2 * j, 0, depth), 2);
+                            = absModulus(random.intFor(2 * i, 2 * j, depth), 2);
                     out[(2 * i) + 1][2 * j]         
-                            = absModulus(random.intFor((2 *  i) + 1, 2 * j, 0, depth), 2);
+                            = absModulus(random.intFor((2 *  i) + 1, 2 * j, depth), 2);
                     out[2 * i][(2 * j) + 1]         
-                            = absModulus(random.intFor(2 * i, (2 * j) + 1, 0, depth), 2);
+                            = absModulus(random.intFor(2 * i, (2 * j) + 1, depth), 2);
                     out[(2 * i) + 1][(2 * j) + 1]   
-                            = absModulus(random.intFor((2 * i) + 1, (2 * j) + 1, 0, depth), 2);
+                            = absModulus(random.intFor((2 * i) + 1, (2 * j) + 1, depth), 2);
                 }
             }
         return out;

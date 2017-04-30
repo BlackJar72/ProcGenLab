@@ -11,6 +11,7 @@ import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.api.IPalette;
 import static jaredbgreat.procgenlab.api.Delims.*;
 import jaredbgreat.procgenlab.api.palettes.DiscretePalette;
+import jaredbgreat.procgenlab.api.palettes.LiteralPalette;
 import jaredbgreat.procgenlab.api.util.SpatialNoise;
 import jaredbgreat.procgenlab.generators.test.Caves;
 import jaredbgreat.procgenlab.generators.test.Caves2;
@@ -25,40 +26,54 @@ public class Test implements IGenerator {
     int x = 100, y = 100, depth = 0;
     SpatialNoise random;
     int[][] data;
+    int[][] data2;
     IPalette[] palettes;
+    int numZeros;
     
     
     public Test() {
-        palettes = new IPalette[4];
+        palettes = new IPalette[5];
         DiscretePalette pal = new DiscretePalette();
         //ContinuousPalette pal = new ContinuousPalette();
         //LiteralPalette pal = new LiteralPalette();
         pal.setPalette(new int[]{0xff000000, 0xffffffff});
         //pal.setPalette(0, 65535, 0x00000000, 0x00ffffff);
         palettes[0] = pal;
-        palettes[1] = pal;
+        palettes[1] = new LiteralPalette();
         palettes[2] = pal;
         palettes[3] = pal;
+        palettes[4] = pal;
     }
     
 
     @Override
     public void generate(Long seed) {
-        random = new SpatialNoise(seed);
-        data = new int[4][x * y];
+        numZeros = 0;
+        random = new SpatialNoise(seed, seed ^ (seed << 17));
+        data = new int[5][x * y];
         for(int i = 0; i < x; i++) {
             for(int j = 0; j < y; j++) {
-                data[0][(i * y) + j] = absModulus(random.intFor(i, j, 0, 0), 2);
-                data[1][(i * y) + j] = j % 2;
+                data[0][(i * y) + j] = absModulus(random.intFor(i, j, 0), 2);
+                data[1][(i * y) + j] = random.intFor(i, j, 1) | 0xff000000;
+                if(data[1][(i * y) + j] == 0) {
+                    numZeros++;
+                }
+                data[2][(i * y) + j] = j % 2;
             }
         }
-        data[2] = new Caves(x, y, random).generate();
-        data[3] = new Caves2(x, y, random).generate(depth);
+        data[3] = new Caves(x, y, random).generate();
+        data[4] = new Caves2(x, y, random).generate(depth);
     }
 
     @Override
     public int[][] getData() {
+        System.out.println();
+        System.out.println(numZeros + " zeros");
+        System.out.println(((numZeros  / (x * y)) * 100) + " percent zeros");
+        System.out.println((1 / 0x00ffffff) + " percent zeros ");
+        System.out.println();
         return data;
+        
     }
 
     @Override
@@ -99,13 +114,13 @@ public class Test implements IGenerator {
 
     @Override
     public String[] getLayerNames() {
-        return new String[]{"Noise Test", "Stripe Test", "Caves Test", 
+        return new String[]{"Noise Test", "Color Noise Test", "Stripe Test", "Caves Test", 
             "Fractal Cave Test"};
     }
 
     @Override
     public int getNumLayers() {
-        return 4;
+        return 5;
     }
 
     @Override

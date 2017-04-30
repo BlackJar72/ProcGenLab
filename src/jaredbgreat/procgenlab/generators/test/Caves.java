@@ -36,7 +36,7 @@ public class Caves {
         int[][] noise = new int[w + 2][h + 2];
         for(int i = 0; i < (w + 2); i++)
             for(int j = 0; j < (h + 2); j++) {
-                noise[i][j] = absModulus(random.intFor(i, j, 0, 0), 2);
+                noise[i][j] = absModulus(random.intFor(i, j, 0), 2);
             }
         return noise;
     }
