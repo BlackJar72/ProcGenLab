@@ -34,15 +34,15 @@ public class ClimateNode extends BasinNode {
     }
     
     
-    public static int summateEffect(ClimateNode[] n, Tile t, double noise) {
+    public static int summateEffect(ClimateNode[] n, ChunkTile t, double noise) {
         double effect = 0.0;
         double sum    = 0.0;
         double power, weakness;
         for(int i = 0; i < n.length; i++) {
-            if((n[i].x == t.x) && (n[i].y == t.y) && (n[i].faintness == 0)) {
+            if((n[i].x == t.x) && (n[i].y == t.z) && (n[i].faintness == 0)) {
                 return (int)n[i].value;
             }
-            weakness = n[i].getWeaknessAt(t.x, t.y);
+            weakness = n[i].getWeaknessAt(t.x, t.z);
             power = 1.0 / weakness;
             sum += power;
             effect += ((double)n[i].value) * power;

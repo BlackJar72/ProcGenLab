@@ -15,6 +15,7 @@ import jaredbgreat.procgenlab.api.palettes.ContinuousPalette;
 import jaredbgreat.procgenlab.api.palettes.DiscretePalette;
 import jaredbgreat.procgenlab.api.palettes.LiteralPalette;
 import jaredbgreat.procgenlab.generators.chunkyregion.chunk.*;
+import jaredbgreat.procgenlab.generators.chunkyregion.chunk.Region;
 import java.util.StringTokenizer;
 
 /**
@@ -24,10 +25,11 @@ import java.util.StringTokenizer;
 public class ZChunkyRegion implements IGenerator {
     ChunkMaker maker;
     ChunkTile[] map;
-    int size;
-    
+    int size;    
     
     int numZeros = 0, numNums = 0;
+    private static volatile long timestamp;
+    private static final Runtime runtime = Runtime.getRuntime();
     
     
     @Override
@@ -42,15 +44,55 @@ public class ZChunkyRegion implements IGenerator {
         int endz = startz + ChunkMaker.RSIZE;
         int arEnd = 0;
         map = new ChunkTile[size];
+        timestamp = System.currentTimeMillis();
         for(int i = startx; i < endx; i ++) 
             for(int j = startz; j < endz; j++) {
-                map[arEnd++] = maker.makeChunk(i, j)[44];
+                //profileOut();
+                map[arEnd++] = maker.makeChunk(i, j)[25];
                 numNums++;
                 if(map[arEnd - 1].getBiome() == 0) {
                     numZeros++;
                 }
             }
     }
+    
+    
+    private void profileOut() {
+        long t = System.currentTimeMillis() - timestamp;
+        if((t > 250) || (t < 0)) {            
+            timestamp = t;            
+            maker.cleanCaches();
+            // Total Memory Usage:
+            System.out.println("Total memory usage: ");
+            System.out.println("          USED MEMORY: " 
+                    + ((runtime.totalMemory() - runtime.freeMemory()) / 1048576) 
+                    + " MB");
+            // Object in Memory  
+            System.out.println("     " + BasinNode.num + " Basin nodes"); 
+            System.out.println("     " + BiomeBasin.num + " BiomeBasins");
+            System.out.println("     " + ChunkTile.num + " ChunkTiles");
+            System.out.println("     " + Region.num + " Regions");
+            System.out.println("     " + SpatialNoise.num + " Spatial noise generators");
+            System.out.println();
+        }
+    }
+    
+    
+    private void printMemory() {
+            // Total Memory Usage:
+            System.out.println("Total memory usage: ");
+            System.out.println("          Free Memory: " 
+                    + (runtime.freeMemory() / 1048576) + " MB");
+            System.out.println("     Allocated Memory: " 
+                    + (runtime.maxMemory() / 1048576) + " MB");
+            System.out.println("       Maximum Memory: " 
+                    + (runtime.totalMemory() / 1048576) + " MB");
+            System.out.println("          USED MEMORY: " 
+                    + ((runtime.totalMemory() - runtime.freeMemory()) / 1048576) 
+                    + " MB");
+            System.out.println();
+    }
+    
 
     @Override
     public int[][] getData() {
@@ -93,7 +135,7 @@ public class ZChunkyRegion implements IGenerator {
         out[1] = new ContinuousPalette();
         ((ContinuousPalette)out[1]).setPalette(0, 10, 0xff000000, 0xffffffff);
         out[2] = new ContinuousPalette();
-        ((ContinuousPalette)out[2]).setPalette(0, 4, 0xff0022ff, 0xffff8800);
+        ((ContinuousPalette)out[2]).setPalette(0, 24, 0xff0022ff, 0xffff8800);
         out[3] = new ContinuousPalette();
         ((ContinuousPalette)out[3]).setPalette(0, 9, 0xffff8800, 0xff00ff44);
         out[4] = new LiteralPalette();

@@ -38,15 +38,15 @@ public class BasinNode {
     }
     
     
-    public static int summateEffect(BasinNode[] n, Tile t) {
+    public static int summateEffect(BasinNode[] n, ChunkTile t) {
         double effect = 0.0;
         double sum    = 0.0;
         double power, weakness;
         for(int i = 0; i < n.length; i++) {
-            if((n[i].x == t.x) && (n[i].y == t.y)) {
+            if((n[i].x == t.x) && (n[i].y == t.z)) {
                 return (int)n[i].value;
             }
-            weakness = n[i].getWeaknessAt(t.x, t.y);
+            weakness = n[i].getWeaknessAt(t.x, t.z);
             power = 1.0 / (weakness * weakness);
             sum += power;
             effect += Math.max(((double)n[i].value) * power, 0);
@@ -56,15 +56,15 @@ public class BasinNode {
     }
     
     
-    public static int summateEffect(BasinNode[] n, Tile t, double noise) {
+    public static int summateEffect(BasinNode[] n, ChunkTile t, double noise) {
         double effect = 0.0;
         double sum    = 0.0;
         double power, weakness;
         for(int i = 0; i < n.length; i++) {
-            if((n[i].x == t.x) && (n[i].y == t.y)) {
+            if((n[i].x == t.x) && (n[i].y == t.z)) {
                 return (int)n[i].value;
             }
-            weakness = n[i].getWeaknessAt(t.x, t.y);
+            weakness = n[i].getWeaknessAt(t.x, t.z);
             power = 1.0 / (weakness * weakness);
             sum += power;
             effect += Math.max(((double)n[i].value) * power, 0);

@@ -72,7 +72,7 @@ public class NoiseRegion implements IGenerator {
         out[1] = new ContinuousPalette();
         ((ContinuousPalette)out[1]).setPalette(0, 10, 0xff000000, 0xffffffff);
         out[2] = new ContinuousPalette();
-        ((ContinuousPalette)out[2]).setPalette(0, 4, 0xff0022ff, 0xffff8800);
+        ((ContinuousPalette)out[2]).setPalette(0, 24, 0xff0022ff, 0xffff8800);
         out[3] = new ContinuousPalette();
         ((ContinuousPalette)out[3]).setPalette(0, 9, 0xffff8800, 0xff00ff44);
         out[4] = new LiteralPalette();

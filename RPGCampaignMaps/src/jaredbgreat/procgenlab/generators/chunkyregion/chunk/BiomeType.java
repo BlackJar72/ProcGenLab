@@ -18,10 +18,15 @@ public enum BiomeType {
     MOUNTAIN (0xff888888),
     TUNDRA (0xffffffff),
     GRASS (0xff22ff55),
+    CGRASS (0xff22ee77),
+    SGRASS (0xff44ee55),
     SAVANNA (0xff88ff44),
     TAIGA (0xff22aa99),
     FOREST (0xff00aa22),
-    JUNGLE (0xff22cc44),
+    SFOREST (0xff11bb22),
+    TFOREST (0xff22cc33),
+    PARK (0xff11d43b),
+    JUNGLE (0xff22ff44),
     DESERT (0xffaa9900),
     //CHAPARELLE,
     SCRUB (0xff668844),
@@ -34,9 +39,43 @@ public enum BiomeType {
     }
     
     
+        private static final BiomeType[] table = {
+    	//Arctic
+    	TUNDRA, TUNDRA,  TUNDRA,  TUNDRA,  TUNDRA,  TUNDRA, TUNDRA, TUNDRA, TUNDRA, TUNDRA,
+    	TUNDRA, TUNDRA,  TUNDRA,  TUNDRA,  TUNDRA,  TUNDRA, TUNDRA, TUNDRA, TUNDRA, TUNDRA,
+    	TUNDRA, TUNDRA,  TUNDRA,  TUNDRA,  TUNDRA,  TUNDRA, TUNDRA, TUNDRA, TUNDRA, TUNDRA,
+    	TUNDRA, TUNDRA,  TUNDRA,  TUNDRA,  TUNDRA,  TUNDRA, TUNDRA, TUNDRA, TUNDRA, TUNDRA,
+    	TUNDRA, TUNDRA,  TUNDRA,  TUNDRA,  TUNDRA,  TUNDRA, TUNDRA, TUNDRA, TUNDRA, TUNDRA,
+    	//Sub-Arctic
+    	TUNDRA, TUNDRA,    TAIGA,   TAIGA,   TAIGA,   TAIGA,  TAIGA,  TAIGA,  TAIGA,  TAIGA,
+    	TUNDRA, CGRASS,    TAIGA,   TAIGA,   TAIGA,   TAIGA,  TAIGA,  TAIGA,  TAIGA,  TAIGA,
+    	CGRASS, CGRASS,   TAIGA,   TAIGA,   TAIGA,   TAIGA,  TAIGA,  TAIGA,  TAIGA,  TAIGA,
+    	CGRASS, CGRASS,   TAIGA,   TAIGA,   TAIGA,   TAIGA,  TAIGA,  TAIGA,  TAIGA,  TAIGA,
+    	CGRASS, CGRASS,   TAIGA,   TAIGA,   TAIGA,   TAIGA,  TAIGA,  TAIGA,  TAIGA,  TAIGA,
+    	//Temperate
+    	GRASS,  GRASS,   GRASS,   GRASS,   FOREST,  FOREST, FOREST, FOREST, FOREST, FOREST,
+    	SCRUB,  GRASS,   GRASS,   GRASS,   FOREST,  FOREST, FOREST, FOREST, FOREST, FOREST,
+    	SCRUB,  GRASS,   GRASS,   GRASS,   FOREST,  FOREST, FOREST, FOREST, FOREST, FOREST,
+    	DESERT, SCRUB,   GRASS,   GRASS,   FOREST,  FOREST, FOREST, FOREST, FOREST, FOREST,
+    	DESERT, DESERT,  SCRUB,   GRASS,   FOREST,  FOREST, FOREST, FOREST, FOREST, FOREST,
+    	//Sub-Tropical
+    	DESERT, DESERT,  DESERT,  SCRUB,   SGRASS,   SFOREST, SFOREST, SFOREST, SFOREST, SFOREST,
+    	DESERT, DESERT,  DESERT,  SCRUB,   SGRASS,   SFOREST, SFOREST, SFOREST, SFOREST, JUNGLE,
+    	DESERT, DESERT,  DESERT,  SCRUB,   SGRASS,   SFOREST, SFOREST, SFOREST, SFOREST, JUNGLE,
+    	DESERT, DESERT,  DESERT,  SCRUB,   SGRASS,   SFOREST, SFOREST, SFOREST, JUNGLE,  JUNGLE,
+    	DESERT, DESERT,  DESERT,  SCRUB,   SGRASS,   SFOREST, SFOREST, JUNGLE,  JUNGLE,  JUNGLE,
+    	//Tropical
+    	DESERT, DESERT,  SAVANNA, SAVANNA, TFOREST, TFOREST, JUNGLE, JUNGLE, JUNGLE, JUNGLE,
+    	DESERT, SAVANNA, SAVANNA, SAVANNA, TFOREST, JUNGLE,  JUNGLE, JUNGLE, JUNGLE, JUNGLE,
+    	DESERT, SAVANNA, SAVANNA, SAVANNA, TFOREST, JUNGLE,  JUNGLE, JUNGLE, JUNGLE, JUNGLE,
+    	DESERT, SAVANNA, SAVANNA, SAVANNA, TFOREST, JUNGLE,  JUNGLE, JUNGLE, JUNGLE, JUNGLE,
+    	DESERT, SAVANNA, SAVANNA, SAVANNA, TFOREST, JUNGLE,  JUNGLE, JUNGLE, JUNGLE, JUNGLE
+    };
+    
+    
     public static void makeBiomes(ChunkTile[] map, ChunkMaker maker, 
             SpatialNoise random) {
-        int[] noise = refineNoise(maker.makeNoise(map[44].x, map[44].z, 4), map);
+        int[] noise = refineNoise(maker.makeNoise(map[25].x, map[25].z, 4), map);
         for(int i = 0; i < map.length; i++) {
             findBiome(map[i], noise[i]);
         }
@@ -50,33 +89,11 @@ public enum BiomeType {
             }
             return;
         }
-        if(chunk.isRiver) {
-            chunk.rlBiome = RIVER.ordinal();
-            return;
-        }
-        if(chunk.temp > 1 && ((chunk.wet - chunk.val) > noise - 1)) {
+        if(chunk.temp > 7 && ((chunk.wet - chunk.val) > noise - 1)) {
             chunk.rlBiome = SWAMP.ordinal();
             return;
         }
-        switch(chunk.temp) {
-            case 0:
-                chunk.rlBiome = TUNDRA.ordinal();
-                return;
-            case 1: 
-                chunk.rlBiome = findSubarctic(chunk.wet);
-                return;
-            case 2:
-                chunk.rlBiome = findTemporate(chunk.wet);
-                return;
-            case 3:
-                chunk.rlBiome = findSubtropical(chunk.wet);
-                return;
-            case 4:
-                chunk.rlBiome = findTropical(chunk.wet);
-                return;
-            default:
-                return;
-        }
+    	chunk.rlBiome = table[(chunk.temp * 10) + chunk.wet].ordinal();
     }
     
     
@@ -89,6 +106,7 @@ public enum BiomeType {
     public static int findTemporate(int wet) {
         if(wet < 1) return SCRUB.ordinal();
         else if(wet < 4) return GRASS.ordinal();
+        else if(wet < 5) return PARK.ordinal();
         else return FOREST.ordinal();
     }
     
@@ -97,6 +115,7 @@ public enum BiomeType {
         if(wet < 3) return DESERT.ordinal();
         else if(wet < 4) return SCRUB.ordinal();
         else if(wet < 5) return GRASS.ordinal();
+        else if(wet < 6) return PARK.ordinal();
         else if(wet < 9) return FOREST.ordinal();
         else return JUNGLE.ordinal();
     }

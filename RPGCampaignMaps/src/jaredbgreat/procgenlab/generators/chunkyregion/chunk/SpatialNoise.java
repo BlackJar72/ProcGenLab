@@ -16,6 +16,19 @@ public class SpatialNoise {
     protected final long seed2;
     
     
+    
+//*********************************************************************************/
+//                         DEBUGGING / PROFILING                                   /
+//*********************************************************************************/
+public static volatile long num = 0;
+@Override
+public void finalize() throws Throwable {
+	num--;
+	super.finalize();
+}
+//*********************************************************************************/
+    
+    
     /*=====================================*
      * CONSTRUCTORS & BASIC CLASS METHODS  *
      *=====================================*/
@@ -25,18 +38,24 @@ public class SpatialNoise {
         long theSeed = System.nanoTime();
         seed1 = theSeed;
         seed2 = new java.util.Random(seed1).nextLong();
+        // Profile
+        num++;
     }
     
     
     public SpatialNoise(final long theSeed) {
         seed1 = theSeed;
         seed2 = new Random(seed1).nextLong();
+        // Profile
+        num++;
     }
     
     
     public SpatialNoise(final long theSeed, final long altSeed) {
         seed1 = theSeed;
         seed2 = altSeed;
+        // Profile
+        num++;
     }
     
     

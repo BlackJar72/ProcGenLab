@@ -5,25 +5,59 @@
  */
 package jaredbgreat.procgenlab.generators.chunkyregion.chunk;
 
+import jaredbgreat.procgenlab.generators.chunkyregion.cache.AbstractCachable;
+import jaredbgreat.procgenlab.generators.chunkyregion.cache.ICachable;
+import jaredbgreat.procgenlab.generators.chunkyregion.cache.MutableCoords;
+
 /**
  *
  * @author jared
  */
-public final class Region {
+public final class Region extends AbstractCachable {
     BasinNode[] basins;
     ClimateNode[] temp;
     ClimateNode[] wet;
     // FIXME: These should not really be duplicated
     private static final int w = ChunkMaker.RSIZE, h = ChunkMaker.RSIZE;
-    final int cx, cz;
+    int cx, cz;
     
+    
+//*********************************************************************************/
+//                         DEBUGGING / PROFILING                                   /
+//*********************************************************************************/
+public static volatile long num = 0;
+@Override
+public void finalize() throws Throwable {
+	num--;
+	super.finalize();
+}
+//*********************************************************************************/
+        
+    
+    public Region() {
+        // Profile
+        num++;
+    }
     
     public Region(int x, int z, SpatialNoise random) {
+        super(x, z);
         cx = (x * ChunkMaker.RSIZE) - ChunkMaker.RADIUS;
         cz = (z * ChunkMaker.RSIZE) - ChunkMaker.RADIUS;
         makeBasins(5, 10, 15, random.getRandomAt(x, z, 0));
         makeTempBasins(10, random.getRandomAt(x, z, 1));
         makeRainBasins(12, random.getRandomAt(x, z, 2));
+        // Profile
+        num++;
+    }
+    
+    
+    public Region init(int x, int z, SpatialNoise random) {
+        cx = (x * ChunkMaker.RSIZE) - ChunkMaker.RADIUS;
+        cz = (z * ChunkMaker.RSIZE) - ChunkMaker.RADIUS;
+        makeBasins(5, 10, 15, random.getRandomAt(x, z, 0));
+        makeTempBasins(10, random.getRandomAt(x, z, 1));
+        makeRainBasins(12, random.getRandomAt(x, z, 2));
+        return this;
     }
     
     
@@ -78,7 +112,7 @@ public final class Region {
         angle = angle + random.nextDouble() + (Math.PI / 2);
         x = cx + (ChunkMaker.RADIUS) + (int)(dist * Math.cos(angle));
         y = cz + (ChunkMaker.RADIUS) + (int)(dist * Math.sin(angle));
-        nodes[1] = new ClimateNode(x, y, 5, 
+        nodes[1] = new ClimateNode(x, y, 25, 
                 (BasinNode.getLogScaled(-15) / 40) * 1.5, 0);        
     }
     
@@ -90,7 +124,7 @@ public final class Region {
             temp[i] = new ClimateNode(
                 cx + random.nextInt(ChunkMaker.RSIZE), 
                 cz + random.nextInt(ChunkMaker.RSIZE), 
-                random.nextInt(6), 
+                random.nextInt(25), 
                 (BasinNode.getLogScaled(random.nextInt(5) - 12) / 30) * 1.5, 
                 random.nextInt(5) + 5);
         }
@@ -129,5 +163,4 @@ public final class Region {
             }
         }
     }
-    
 }

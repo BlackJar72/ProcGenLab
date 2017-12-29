@@ -15,11 +15,25 @@ public class BasinNode {
     private static final double[] logtable = makeLogTable();
     
     
+//*********************************************************************************/
+//                         DEBUGGING / PROFILING                                   /
+//*********************************************************************************/
+public static volatile long num = 0;
+@Override
+public void finalize() throws Throwable {
+	num--;
+	super.finalize();
+}
+//*********************************************************************************/
+    
+    
     public BasinNode(int x, int y, int value, double decay) {
         this.x = x;
         this.z = y;
         this.value = value;
         this.decay = decay;
+        // Profile 
+        num++;
     }
     
     

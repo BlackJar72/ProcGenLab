@@ -5,8 +5,11 @@
  */
 package jaredbgreat.procgenlab.generators.chunkyregion.chunk;
 
+import jaredbgreat.procgenlab.generators.chunkyregion.cache.Cache;
+import jaredbgreat.procgenlab.generators.chunkyregion.cache.CachedPool;
+import jaredbgreat.procgenlab.generators.chunkyregion.cache.CachedPool.ObjectFactory;
+import jaredbgreat.procgenlab.generators.chunkyregion.cache.MutableCoords;
 import static jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise.absModulus;
-import jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise.RandomAt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -23,12 +26,28 @@ public class ChunkMaker {
     public static final int RADIUS = RSIZE / 2; // radius for basin effect range
     public static final int SQRADIUS = RADIUS * RADIUS;
     public static final int BSIZE = 256 / CSIZE; // base size for (sub)biomes
-    public static final int GENSIZE = 10; // area of chunks to looks at
+    public static final int GENSIZE = 7; // area of chunks to looks at
+    public static final int GENHALF1 = GENSIZE  / 2;
+    public static final int GENHALF0 = GENHALF1 - 1;
+    public static final int GENHALF2 = GENHALF1 + 1;
     public static final int GENSQ = GENSIZE * GENSIZE; // area of chunks to looks at
     
     public final SpatialNoise chunkNoise;
     public final SpatialNoise regionNoise;
     public final SpatialNoise biomeNoise;
+        
+//    private volatile ObjectFactory<Region> regionFact = new ObjectFactory() {
+//		@Override
+//		public Region create() {
+//			return new Region();
+//		}
+//    };
+//    private CachedPool<Region> regionPool = new CachedPool<>(regionFact, 144);
+    
+    private Cache<Region> regionCache = new Cache(144);
+    
+    private MutableCoords regionCoords = new MutableCoords(); 
+    private MutableCoords chunkCoords = new MutableCoords(); 
     
     
     public ChunkMaker(long seed) {
@@ -95,9 +114,20 @@ public class ChunkMaker {
         int index = 0;
         for(int i = -1; i < 2; i++)
             for(int j = -1; j < 2; j++) {
-                out[index++] = new Region(coords[0] + i, coords[1] + j, regionNoise);
+            	regionCoords.init(coords[0] + i, coords[1] + j);
+                //out[index] = regionPool.getEntry(regionCoords);
+                out[index] = regionCache.get(regionCoords);
+                if(out[index] == null) {
+                	out[index] = new Region(coords[0] + i, coords[1] + j, 
+                                regionNoise);
+                        regionCache.add(out[index]);
+                } else {
+                        out[index].use();
+                	//out[index].init(coords[0] + i, coords[1] + j, regionNoise);
+                	//regionPool.add(out[index], regionCoords);
+                }
+                index++;
             }
-        // Region being generated in out[4].
         return out;
     }
     
@@ -118,14 +148,14 @@ public class ChunkMaker {
         ChunkTile[] map = new ChunkTile[GENSQ];
         for(int i = 0; i < GENSIZE; i++)
             for(int j = 0; j < GENSIZE; j++) {                
-                map[(j * 10) + i] = new ChunkTile(x + i - 4, z + j -4);
+                map[(j * GENSIZE) + i] = new ChunkTile(x + i - 4, z + j -4);
             }
         double[] tempNoise = averageNoise(makeDoubleNoise(x, z, 0));
         double[] wetNoise = averageNoise(makeDoubleNoise(x, z, 1));
         for(int i = 0; i < map.length; i++) {
             map[i].val = BasinNode.summateEffect(basinAr, map[i]);            
             map[i].temp = Math.min(ClimateNode.summateTemp(tempAr, map[i], 
-                    tempNoise[i]), 4);
+                    tempNoise[i]), 24);
             map[i].wet = Math.min(ClimateNode.summateWet(wetAr, map[i], 
                     wetNoise[i]), 9);
         }        
@@ -145,7 +175,7 @@ public class ChunkMaker {
         int[][] noise = new int[GENSIZE + 2][GENSIZE + 2];
         for(int i = 1; i < (GENSIZE + 1); i++)
             for(int j = 0; j < (GENSIZE + 2); j++) {
-                noise[i][j] = absModulus(chunkNoise.intFor(x + i - 5, z + j - 5, 
+                noise[i][j] = absModulus(chunkNoise.intFor(x + i - 4, z + j - 4, 
                         t), 2);
             }
         return noise;
@@ -202,7 +232,7 @@ public class ChunkMaker {
         double[][] noise = new double[GENSIZE + 4][GENSIZE + 4];
         for(int i = 0; i < (GENSIZE + 2); i++)
             for(int j = 0; j < (GENSIZE + 2); j++) {
-                noise[i][j] = (chunkNoise.doubleFor(x + i - 6, z + j - 6, t) / 5) - 0.1;
+                noise[i][j] = (chunkNoise.doubleFor(x + i - 3, z + j - 3, t) / 5) - 0.1;
             }
         return noise;
     }
@@ -264,56 +294,9 @@ public class ChunkMaker {
     }
     
     
-    private void MakeRivers(RiverBorderBasin[] rivers, Region region, 
-                ChunkTile[] map) {
-        for (ChunkTile tile : map) {
-            tile.isRiver = findRiver(rivers, region.basins, tile);
-        }
+    public void cleanCaches() {
+        regionCache.cleanup();
     }
-    
-    
-    private boolean findRiver(RiverBorderBasin[] rivers, BasinNode[] basins, 
-                ChunkTile tile) {
-        for(int i = 0; i < 5; i++) {
-            if(RiverBorderBasin.summateEffect(rivers[i * 2], 
-                    rivers[(i * 2) + 1], basins[i], basins[i + 15], tile)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    
-    private RiverBorderBasin[] MakeRiverMap(Region region) {
-        RiverBorderBasin[] out = new RiverBorderBasin[10];
-        for(int i = 0; i < 5; i++) {
-            RiverBorderBasin[] tmp 
-                    = makeRiverBorderBasin(region.basins[i], 
-                            region.basins[i + 15], 
-                            regionNoise.getRandomAt(region.cx, region.cz, 3));
-            out[i * 2] = tmp[0];
-            out[(i * 2) + 1] = tmp[1];
-        }
-        return out;
-    }
-    
-    
-    private RiverBorderBasin[] makeRiverBorderBasin(BasinNode n1, BasinNode n2, 
-                RandomAt random) {
-        RiverBorderBasin[] out = new RiverBorderBasin[2];        
-        int px = n1.x + n2.x;
-        int pz = n1.z + n2.z;
-        int dx = n1.z - n2.z;
-        int dz = n1.x - n2.x;
-        out[0] = new RiverBorderBasin((px + dx) / 2, (pz - dz) / 2, 
-                0.5 + random.nextDouble());
-        out[1] = new RiverBorderBasin((px - dx) / 2, (pz + dz) / 2, 
-                0.5 + random.nextDouble());        
-        return out;
-    }
-    
-    
-    
     
     
 }

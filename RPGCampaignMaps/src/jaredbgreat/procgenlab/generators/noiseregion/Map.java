@@ -14,7 +14,7 @@ import static jaredbgreat.procgenlab.generators.noiseregion.SpatialNoise.absModu
  */
 public class Map {
     final int w, h;
-    final Tile[] map;
+    final ChunkTile[] map;
     private BasinNode[] basins;
     private ClimateNode[] temp;
     private ClimateNode[] wet;
@@ -23,12 +23,12 @@ public class Map {
     
     
     public Map(int width, int height) {
-        map = new Tile[width * height];
+        map = new ChunkTile[width * height];
         w = width;
         h = height;
         for(int i = 0; i < width; i++) 
             for(int j = 0; j < height; j++) {
-                map[(i * h) + j] = new Tile(i, j);
+                map[(i * h) + j] = new ChunkTile(i, j);
             }
     }
     
@@ -49,7 +49,7 @@ public class Map {
         doubleNoise = averageNoise(makeDoubleNoise(random, 1));
         for(int i = 0; i < map.length; i++) {
             map[i].temp = Math.min(ClimateNode.summateEffect(temp, map[i], 
-                    doubleNoise[i]), 4);
+                    doubleNoise[i]), 24);
         }
         makeRainBasins(12, random.getRandomAt(0, 0, 2));
         doubleNoise = averageNoise(makeDoubleNoise(random, 2));
@@ -57,21 +57,21 @@ public class Map {
             map[i].wet = Math.min(ClimateNode.summateEffect(wet, map[i], 
                     doubleNoise[i]), 9);
         }
-        BiomeType.makeBiomes(this, random);
         makeBiomes(256, random.getRandomAt(0, 0, 3));
+        BiomeType.makeBiomes(this, random);
     }
     
     
-    private void edgeFix(Tile t) {
+    private void edgeFix(ChunkTile t) {
         if(t.x < 10) {
             t.val += (t.x - 10);
         } else if(t.x >= (w - 10)) {
             t.val -= (t.x - w + 10);
         }
-        if(t.y < 10) {
-            t.val += (t.y - 10);
-        } else if(t.y >= (h - 10)) {
-            t.val -= (t.y - h + 10) * 2;
+        if(t.z < 10) {
+            t.val += (t.z - 10);
+        } else if(t.z >= (h - 10)) {
+            t.val -= (t.z - h + 10) * 2;
         }
     }
     
@@ -105,14 +105,6 @@ public class Map {
         int[] out = new int[map.length];
         for(int i = 0; i < out.length; i++) {
             out[i] = Math.max(map[i].wet, 0);
-        }
-        return out;
-     }
-
-    public int[] getFakeHeight() {
-        int[] out = new int[map.length];
-        for(int i = 0; i < out.length; i++) {
-            out[i] = Math.max(map[i].fakeheight, 0);
         }
         return out;
      }
@@ -181,13 +173,13 @@ public class Map {
         nodes[0] = new ClimateNode(x, y, 0, 
                 (BasinNode.getLogScaled(-9) / 40) * Size.setting.falloff, 0);
         dist = (Size.setting.size / 6) + random.nextInt(Size.setting.size / 3);
-        angle = angle + random.nextDouble() + (Math.PI / 2);
+        angle = angle + (random.nextDouble() * (Math.PI / 2) + (Math.PI / 2));
         //if(angle > Math.PI) {
         //    angle -= Math.PI;
         //}
         x = (Size.setting.size / 2) + (int)(dist * Math.cos(angle));
         y = (Size.setting.size / 2) + (int)(dist * Math.sin(angle));
-        nodes[1] = new ClimateNode(x, y, 5, 
+        nodes[1] = new ClimateNode(x, y, 24, 
                 (BasinNode.getLogScaled(-10) / 40) * Size.setting.falloff, 0);        
     }
     
@@ -198,7 +190,7 @@ public class Map {
         for(int i = 2; i < temp.length; i++) {
             temp[i] = new ClimateNode(random.nextInt(Size.setting.size), 
                 random.nextInt(Size.setting.size), 
-                random.nextInt(6), 
+                random.nextInt(25), 
                 (BasinNode.getLogScaled(random.nextInt(4) - 8) / 30) * Size.setting.falloff, 
                 random.nextInt(5) + 5);
         }
@@ -232,18 +224,6 @@ public class Map {
                         random.nextInt(5));
                     break;
             }
-        }
-    }
-    
-    
-    private void makeFakeHeight(RandomAt random) {
-        height = new ClimateNode[basins.length];
-        for(int i = 0; i < height.length; i++) {
-            height[i] = new ClimateNode(basins[i].x, basins[i].y, 
-                        random.nextInt(basins[i].value + 1) + (basins[i].value / 2), 
-                        (BasinNode.getLogScaled(random.nextInt(2) - 9) / (random.nextInt(11) + 10)) 
-                                * Size.setting.srfalloff, 
-                        random.nextInt(3) + 2);
         }
     }
     
@@ -349,8 +329,9 @@ public class Map {
                                     random.nextInt() | 0xff000000,
                                     1.0 + random.nextDouble());
             }
-        for (Tile tile : map) {
+        for (ChunkTile tile : map) {
             tile.biome = BiomeBasin.summateEffect(subbiomes, tile, size);
+            tile.biomeSeed = tile.biome & 0x7fffffff;
         }
     }
     

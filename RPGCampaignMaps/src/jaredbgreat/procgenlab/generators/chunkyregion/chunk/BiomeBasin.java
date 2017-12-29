@@ -12,12 +12,25 @@ package jaredbgreat.procgenlab.generators.chunkyregion.chunk;
 public class BiomeBasin {
     int x, z, value;
     double strength;
+    
+//*********************************************************************************/
+//                         DEBUGGING / PROFILING                                   /
+//*********************************************************************************/
+public static volatile long num = 0;
+@Override
+public void finalize() throws Throwable {
+	num--;
+	super.finalize();
+}
+//*********************************************************************************/
 
     public BiomeBasin(int x, int y, int value, double strength) {
         this.x = x;
         this.z = y;
         this.value = value;
         this.strength = strength;
+        // Profile
+        num++;
     }
     
     
