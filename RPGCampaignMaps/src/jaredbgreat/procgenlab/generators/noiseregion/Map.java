@@ -7,6 +7,7 @@ package jaredbgreat.procgenlab.generators.noiseregion;
 
 import jaredbgreat.procgenlab.generators.noiseregion.SpatialNoise.RandomAt;
 import static jaredbgreat.procgenlab.generators.noiseregion.SpatialNoise.absModulus;
+import jaredbgreat.procgenlab.generators.region.Tile;
 
 /**
  *
@@ -125,6 +126,15 @@ public class Map {
         return out;
      }
     
+    public ChunkTile getTile(int x, int y) {
+        int index = (x * h) + y;
+        if(index >= map.length) {
+            return null;
+        } else {
+            return map[(x * h) + y];
+        }
+    }
+    
     
     private BasinNode makeBasin(int value, double decay, RandomAt random) {
         int place = random.nextInt( map.length);
@@ -161,6 +171,19 @@ public class Map {
             basins[i] = makeBasin(0, 
                     BasinNode.getLogScaled(random.nextInt(10) - 10) / 10, random);
         }
+    }
+    
+    public BasinNode[] getBasins(int num, boolean beginning) {
+        if(num > basins.length) {
+            num = basins.length;
+        }
+        BasinNode[] out = new BasinNode[num];
+        if(beginning) {
+            System.arraycopy(basins, 0, out, 0, num);
+        } else {
+            System.arraycopy(basins, basins.length - num, out, 0, num);
+        }
+        return out;
     }
     
     

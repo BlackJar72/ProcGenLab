@@ -1,5 +1,4 @@
-package jaredbgreat.procgenlab.generators.region;
-
+package jaredbgreat.procgenlab.generators.noiseregion;
 
 import java.util.Random;
 
@@ -14,13 +13,14 @@ public class River {
     double cx, cy, rx, ry;
     AS s;
     final ChangeQueue Q;
+    private int oc;
     
     private enum AS {
-        P2 (7,   0),
-        P1 (9,  -3),
-        Z0 (11, -5),
-        N1 (-9,  3),
-        N2 (-7,  0);        
+        P2 (2,   0),
+        P1 (3,  -1),
+        Z0 (0, 0),
+        N1 (-3,  1),
+        N2 (-2,  0);        
         public double a, b;
         private static final AS[] vals = values();
         AS(double a, double b) {
@@ -42,9 +42,9 @@ public class River {
     }    
     
     private class ChangeQueue {
-        private final Tile[] data = new Tile[16];
+        private final ChunkTile[] data = new ChunkTile[16];
         private int head = 0, tail = 0;
-        public Tile push(Tile in) {
+        public ChunkTile push(ChunkTile in) {
             data[head] = in;
             head = (head + 1) % data.length;
             if(head == tail) {
@@ -54,11 +54,11 @@ public class River {
                 return null;
             }
         }
-        public Tile pop() {
+        public ChunkTile pop() {
             if(head == tail) {
                 return null;
             } else {
-                Tile out = data[tail];
+                ChunkTile out = data[tail];
                 tail = (tail + 1) % data.length;
                 return out;
             }
@@ -70,7 +70,8 @@ public class River {
         Q = new ChangeQueue();
         map = mapIn;
         begin = high;
-        end   = low;        
+        end   = low;
+        oc = 0;
         da = angle = 0; 
         cx = begin.x;
         cy = begin.y;
@@ -87,6 +88,8 @@ public class River {
     }
     
     public void build(Random r) {
+        s = AS.getRandom(r);
+        da = (r.nextDouble() * 9) - 4;
         double l, das, dac, f, p;
         do {
             // TODO: Optimize: Keep angle in Radians, don't convert 
@@ -97,36 +100,42 @@ public class River {
             incrementAngle(r);
             cx += (f * dx) + (p * dy);
             cy += (f * dy) + (p * dx);
-            Tile toChange = Q.push(map.getTile((int)cx, (int)cy));
+            ChunkTile toChange = Q.push(map.getTile((int)cx, (int)cy));
             if(toChange != null) {
                 makeRiver(toChange);
             }
         } while(!shouldEnd((int)cx, (int)cy));
-        Tile toChange;
+        ChunkTile toChange;
         while((toChange = Q.pop()) != null) {
             makeRiver(toChange);
         }
     }
     
     private boolean shouldEnd(int x, int y) {
-        Tile t = map.getTile(x, y);
+        ChunkTile t = map.getTile(x, y);
         if(t == null) {
             return true;
         } else {
             // This will be true if the biome is water
-            return t.rlBiome < 3;
+            if(t.rlBiome < 3) {
+                oc++;
+            }
+            return t.rlBiome == 3 || ((t.rlBiome < 3) 
+                    && ((t.val < 4) || oc > 8));
         }
     }
     
     private void incrementAngle(Random r) {        
         angle += da;
-        if(angle > 360) {
+        // Do I need to worry about fixing the angle over 
+        // the rivers relatively short run?  Possibly not.
+        /*if(angle > 360) {
             angle -= 360;
         } else if(angle < 0) {
             angle += 360;
-        }
+        }*/
         da += (s.a * r.nextDouble()) + s.b;
-        if(r.nextInt(10) == 0) {
+        if(r.nextBoolean()) {
             if(r.nextBoolean()) {
                 s = AS.getRandom(r);
             } else {
@@ -135,9 +144,14 @@ public class River {
         }        
     }
     
-    private void makeRiver(Tile t) {
+    private void makeRiver(ChunkTile t) {
         // TODO: Expand to effect chunks in a radius of r = 1
-        t.rlBiome = BiomeType.RIVER.ordinal();
+        int rb = BiomeType.RIVER.ordinal();
+        t.rlBiome = rb;
+        map.getTile(t.x + 1, t.z).rlBiome = rb;
+        map.getTile(t.x + 1, t.z + 1).rlBiome = rb;
+        map.getTile(t.x, t.z + 1).rlBiome = rb;
+        
     }
     
 }

@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jaredbgreat.procgenlab.generators.region;
 
 import java.util.Random;
 
 /**
  *
- * @author jared
+ * @author Jared Blackburn
  */
 public class Map {
     final int w, h;
@@ -176,6 +171,19 @@ public class Map {
             basins[i] = makeBasin(0, 
                     BasinNode.getLogScaled(random.nextInt(10) - 10) / 10, random);
         }
+    }
+    
+    public BasinNode[] getBasins(int num, boolean beginning) {
+        if(num > basins.length) {
+            num = basins.length;
+        }
+        BasinNode[] out = new BasinNode[num];
+        if(beginning) {
+            System.arraycopy(basins, 0, out, 0, num);
+        } else {
+            System.arraycopy(basins, 0, out, basins.length - num, num);
+        }
+        return out;
     }
     
     

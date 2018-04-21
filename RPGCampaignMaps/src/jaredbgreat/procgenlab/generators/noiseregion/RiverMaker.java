@@ -1,4 +1,4 @@
-package jaredbgreat.procgenlab.generators.region;
+package jaredbgreat.procgenlab.generators.noiseregion;
 
 import java.util.Random;
 
@@ -15,9 +15,9 @@ public class RiverMaker {
     public RiverMaker(Map mapIn, long seed) {
         map = mapIn;
         rand = new Random(seed);
-        num = rand.nextInt(3) + 5;
+        num = rand.nextInt(3) + 5;  
         starts = map.getBasins(num, true);
-        ends = map.getBasins(num, false);        
+        ends = map.getBasins(num, false);      
     }
     
     public void build() {

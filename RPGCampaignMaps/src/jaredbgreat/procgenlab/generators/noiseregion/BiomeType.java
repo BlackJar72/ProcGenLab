@@ -14,6 +14,7 @@ public enum BiomeType {
     OCEAN (0xff1122ff),
     DOCEAN (0xff111199),
     FROCEAN (0xff2244ff),
+    RIVER (0xff1133ff),
     UNKOWN (0xff00ff44),
     SWAMP (0xff228844),
     MOUNTAIN (0xff888888),
@@ -77,6 +78,8 @@ public enum BiomeType {
         for(int i = 0; i < map.map.length; i++) {
             findBiome(map.map[i], noise[i], ice[i], cn[i]);
         }
+        RiverMaker rm = new RiverMaker(map, random.longFor(0, 0, 16));
+        rm.build();
     }
     
     
