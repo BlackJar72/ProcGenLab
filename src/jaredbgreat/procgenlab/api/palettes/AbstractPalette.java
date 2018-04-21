@@ -21,7 +21,7 @@ public abstract class AbstractPalette implements IPalette {
     @Override
     public BufferedImage getImage(int w, int h, int[] data) 
                                         throws ImageCreationException {
-        if(data.length != (w * h)) {
+        if(data.length != (w * h) ) {
             throw new ImageCreationException("Data size (" + data.length 
                     + ") for image did not match height (" + h 
                     + ") and width (" + w + ").");

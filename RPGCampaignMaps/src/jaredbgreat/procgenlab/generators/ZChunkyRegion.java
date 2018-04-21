@@ -31,9 +31,12 @@ public class ZChunkyRegion implements IGenerator {
     private static volatile long timestamp;
     private static final Runtime runtime = Runtime.getRuntime();
     
+    private int mem, maxMem;
+    
     
     @Override
     public void generate(Long seed) {
+        maxMem = 0;
         numZeros = 0;
         numNums = 0;
         maker = new ChunkMaker(seed);
@@ -64,9 +67,11 @@ public class ZChunkyRegion implements IGenerator {
             maker.cleanCaches();
             // Total Memory Usage:
             System.out.println("Total memory usage: ");
+            mem = (int)((runtime.totalMemory() - runtime.freeMemory()) / 1048576);
+            maxMem = Math.max(mem, maxMem);
             System.out.println("          USED MEMORY: " 
-                    + ((runtime.totalMemory() - runtime.freeMemory()) / 1048576) 
-                    + " MB");
+                    + mem 
+                    + " MB   (Max: " + maxMem +")");
             // Object in Memory  
             System.out.println("     " + BasinNode.num + " Basin nodes"); 
             System.out.println("     " + BiomeBasin.num + " BiomeBasins");

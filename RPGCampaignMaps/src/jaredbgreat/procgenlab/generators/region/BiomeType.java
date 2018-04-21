@@ -15,6 +15,7 @@ public enum BiomeType {
     
     OCEAN (0xff1122ff),
     FROCEAN (0xff2244ff),
+    RIVER (0xff1133ff),
     UNKOWN (0xff00ff44),
     SWAMP (0xff228844),
     MOUNTAIN (0xff888888),
@@ -25,7 +26,6 @@ public enum BiomeType {
     FOREST (0xff00aa22),
     JUNGLE (0xff22cc44),
     DESERT (0xffaa9900),
-    //CHAPARELLE,
     SCRUB (0xff668844);   
     
     public final int color;

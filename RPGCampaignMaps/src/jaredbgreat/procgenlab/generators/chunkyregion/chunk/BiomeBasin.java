@@ -24,9 +24,9 @@ public void finalize() throws Throwable {
 }
 //*********************************************************************************/
 
-    public BiomeBasin(int x, int y, int value, double strength) {
+    public BiomeBasin(int x, int z, int value, double strength) {
         this.x = x;
-        this.z = y;
+        this.z = z;
         this.value = value;
         this.strength = strength;
         // Profile

@@ -41,6 +41,7 @@ public void finalize() throws Throwable {
     
     public Region(int x, int z, SpatialNoise random) {
         super(x, z);
+        
         cx = (x * ChunkMaker.RSIZE) - ChunkMaker.RADIUS;
         cz = (z * ChunkMaker.RSIZE) - ChunkMaker.RADIUS;
         makeBasins(5, 10, 15, random.getRandomAt(x, z, 0));
@@ -102,14 +103,15 @@ public void finalize() throws Throwable {
     
     private void makePoles(ClimateNode[] nodes, SpatialNoise.RandomAt random) {
         int dist = (ChunkMaker.RSIZE / 6) 
-                + random.nextInt(ChunkMaker.RSIZE / 3);
+                + random.nextInt(ChunkMaker.RSIZE / 4);
         double angle = random.nextDouble() * 2 * Math.PI;
         int x = cx + ChunkMaker.RADIUS + (int)(dist * Math.cos(angle));
         int y = cz + ChunkMaker.RADIUS + (int)(dist * Math.sin(angle));
         nodes[0] = new ClimateNode(x, y, 0, 
                 (BasinNode.getLogScaled(-14) / 40) * 1.5, 0);
-        dist = (ChunkMaker.RSIZE / 6) + random.nextInt(ChunkMaker.RSIZE / 3);
-        angle = angle + random.nextDouble() + (Math.PI / 2);
+        dist = (ChunkMaker.RSIZE / 6) + random.nextInt(ChunkMaker.RSIZE / 4);
+        angle = angle + (random.nextDouble() 
+                * (Math.PI / 2)) + ((Math.PI * 3) / 4);
         x = cx + (ChunkMaker.RADIUS) + (int)(dist * Math.cos(angle));
         y = cz + (ChunkMaker.RADIUS) + (int)(dist * Math.sin(angle));
         nodes[1] = new ClimateNode(x, y, 25, 

@@ -5,10 +5,8 @@
  */
 package jaredbgreat.procgenlab.generators.chunkyregion.chunk;
 
-import jaredbgreat.procgenlab.generators.chunkyregion.cache.Cache;
-import jaredbgreat.procgenlab.generators.chunkyregion.cache.CachedPool;
-import jaredbgreat.procgenlab.generators.chunkyregion.cache.CachedPool.ObjectFactory;
 import jaredbgreat.procgenlab.generators.chunkyregion.cache.MutableCoords;
+import jaredbgreat.procgenlab.generators.chunkyregion.cache.Cache;
 import static jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise.absModulus;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,16 +33,8 @@ public class ChunkMaker {
     public final SpatialNoise chunkNoise;
     public final SpatialNoise regionNoise;
     public final SpatialNoise biomeNoise;
-        
-//    private volatile ObjectFactory<Region> regionFact = new ObjectFactory() {
-//		@Override
-//		public Region create() {
-//			return new Region();
-//		}
-//    };
-//    private CachedPool<Region> regionPool = new CachedPool<>(regionFact, 144);
     
-    private Cache<Region> regionCache = new Cache(144);
+    private final Cache<Region> regionCache = new Cache(32);
     
     private MutableCoords regionCoords = new MutableCoords(); 
     private MutableCoords chunkCoords = new MutableCoords(); 
@@ -52,7 +42,6 @@ public class ChunkMaker {
     
     public ChunkMaker(long seed) {
         Random random = new Random(seed);
-        Random fuck = new Random(System.nanoTime());
         chunkNoise = new SpatialNoise(random.nextLong(), random.nextLong());
         regionNoise = new SpatialNoise(random.nextLong(), random.nextLong());
         biomeNoise = new SpatialNoise(random.nextLong(), random.nextLong());
@@ -148,7 +137,7 @@ public class ChunkMaker {
         ChunkTile[] map = new ChunkTile[GENSQ];
         for(int i = 0; i < GENSIZE; i++)
             for(int j = 0; j < GENSIZE; j++) {                
-                map[(j * GENSIZE) + i] = new ChunkTile(x + i - 4, z + j -4);
+                map[(j * GENSIZE) + i] = new ChunkTile(x + i - 3, z + j -3);
             }
         double[] tempNoise = averageNoise(makeDoubleNoise(x, z, 0));
         double[] wetNoise = averageNoise(makeDoubleNoise(x, z, 1));
@@ -278,15 +267,6 @@ public class ChunkMaker {
                                     zcoord, 1), BSIZE),
                         biomeNoise.intFor(xcoord, zcoord, 2),
                         1.0 + biomeNoise.doubleFor(xcoord, zcoord, 3));
-                if(subBiomes[i][j].value == 0) {
-                    System.out.println(
-                          xcoord + ", "
-                        + zcoord + ", "
-                        + (subBiomes[i][j].x - (xcoord * BSIZE)) + ", " 
-                        + (subBiomes[i][j].z - (zcoord * BSIZE)) + ", "
-                        + subBiomes[i][j].value + ", "
-                        + subBiomes[i][j].strength);
-                }
             }
         for (ChunkTile tile : map) {
             tile.biome = BiomeBasin.summateEffect(subBiomes, tile, BSIZE);

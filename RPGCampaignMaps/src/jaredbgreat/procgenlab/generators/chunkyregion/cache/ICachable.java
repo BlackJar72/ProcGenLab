@@ -11,7 +11,7 @@ public interface ICachable {
 	 * 
 	 * @return
 	 */
-	public boolean isOld();
+	public boolean isOldData();
 	/**
 	 * Was this an old item returned from the cache.
 	 * 
@@ -31,11 +31,4 @@ public interface ICachable {
 	 * 
 	 * @return
 	 */
-        public ICachable getNextCacheBucket();
-	/**
-	 * Sets the next item in the cache bucket.
-	 * 
-	 * @return
-	 */
-        public void setNextCacheBucket(ICachable item);
 }

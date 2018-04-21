@@ -132,6 +132,14 @@ public class Map {
         return out;
      }
     
+    public Tile getTile(int x, int y) {
+        int index = (x * h) + y;
+        if(index >= map.length) {
+            return null;
+        } else {
+            return map[(x * h) + y];
+        }
+    }
     
     private BasinNode makeBasin(int value, double decay, Random random) {
         int place = random.nextInt(map.length);
