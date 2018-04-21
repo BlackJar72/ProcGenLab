@@ -1,5 +1,6 @@
 package jaredbgreat.procgenlab.generators.region;
 
+
 import java.util.Random;
 
 /**
@@ -14,11 +15,11 @@ public class River {
     AS s;
     
     private enum AS {
-        P2 (2,  0),
-        P1 (3, -1),
-        Z0 (2, -1),
-        N1 (-3, 1),
-        N2 (-2, 0);        
+        P2 (7,   0),
+        P1 (9,  -3),
+        Z0 (11, -5),
+        N1 (-9,  3),
+        N2 (-7,  0);        
         public double a, b;
         private static final AS[] vals = values();
         AS(double a, double b) {
@@ -61,10 +62,10 @@ public class River {
     public void build(Random r) {
         double l, das, dac, f, p;
         do {
-            das = Math.sin(angle);
-            dac = 1 - Math.cos(angle);
-            l = Math.sqrt((das * das) + (dac * dac));
-            f = dac / l;
+            // TODO: Optimize: Keep angle in Radians, don't convert 
+            das = Math.sin(Math.toRadians(angle)); 
+            l = Math.sqrt((das * das) + 1);
+            f = 1 / l;
             p = das / l;
             incrementAngle(r);
             cx += (f * dx) + (p * dy);
