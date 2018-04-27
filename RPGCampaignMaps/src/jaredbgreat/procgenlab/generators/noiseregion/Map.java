@@ -20,6 +20,7 @@ public class Map {
     private ClimateNode[] temp;
     private ClimateNode[] wet;
     private ClimateNode[] height;
+    private TectonicNode[] plates;
     private BiomeBasin[][] subbiomes;
     
     
@@ -59,6 +60,7 @@ public class Map {
                     doubleNoise[i]), 9);
         }
         makeBiomes(256, random.getRandomAt(0, 0, 3));
+        makeTectonicPlates(5, random.getRandomAt(0, 0, 4));
         BiomeType.makeBiomes(this, random);
     }
     
@@ -247,6 +249,19 @@ public class Map {
                         random.nextInt(5));
                     break;
             }
+        }
+    }
+    
+    
+    public void makeTectonicPlates(int numPairs, RandomAt random) {
+        plates = new TectonicNode[numPairs * 2];
+        for(int i = 0; i < numPairs; i += 2) {
+            plates[i] = new TectonicNode(random.nextInt(Size.setting.size), 
+                                         random.nextInt(Size.setting.size),
+                                         1.0);
+            plates[i + 1] = new TectonicNode(random.nextInt(Size.setting.size), 
+                                         random.nextInt(Size.setting.size),
+                                         1.0);
         }
     }
     

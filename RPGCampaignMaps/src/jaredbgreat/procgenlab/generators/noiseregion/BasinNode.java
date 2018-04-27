@@ -1,20 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jaredbgreat.procgenlab.generators.noiseregion;
 
 import jaredbgreat.procgenlab.generators.region.*;
 
 /**
  *
- * @author jared
+ * @author Jared Blackburn
  */
 public class BasinNode {
     final int x, y, value;
     final double decay;
-    private static final double[] logtable = makeLogTable();
+    private static final double[] LOGTABLE = makeLogTable();
     
     
     public BasinNode(int x, int y, int value, double decay) {
@@ -84,7 +79,7 @@ public class BasinNode {
     
     
     public static double getLogScaled(int in) {
-        return logtable[in + 10];
+        return LOGTABLE[in + 10];
     }
     
     
