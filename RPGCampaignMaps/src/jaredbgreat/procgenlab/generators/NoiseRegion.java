@@ -34,13 +34,14 @@ public class NoiseRegion implements IGenerator {
 
     @Override
     public int[][] getData() {
-        int[][] out = new int[6][];
+        int[][] out = new int[7][];
         out[0] = map.getLandmass();
         out[1] = map.getLandiness();
         out[2] = map.getTemps();
         out[3] = map.getRain();
         out[4] = map.getBiomes();
         out[5] = map.getBiomes2();
+        out[6] = map.getFaultlines();
         return out;
     }
 
@@ -62,7 +63,7 @@ public class NoiseRegion implements IGenerator {
 
     @Override
     public IPalette[] getColorPaletes() {
-        IPalette[] out = new IPalette[6];
+        IPalette[] out = new IPalette[7];
         out[0] = new DiscretePalette();
         int[] biomeColors = new int[BiomeType.values().length];
         for(int i = 0; i < biomeColors.length; i++) {
@@ -77,6 +78,8 @@ public class NoiseRegion implements IGenerator {
         ((ContinuousPalette)out[3]).setPalette(0, 9, 0xffff8800, 0xff00ff44);
         out[4] = new LiteralPalette();
         out[5] = new LiteralPalette();
+        out[6] = new ContinuousPalette();
+        ((ContinuousPalette)out[6]).setPalette(0, 10, 0xffffffff, 0xff000000);
         return out;
     }
 
@@ -88,7 +91,7 @@ public class NoiseRegion implements IGenerator {
     @Override
     public String[] getLayerNames() {
         return new String[]{"Landmass", "Landiness", "Temperature", "Wetness", 
-                            "Biomal Areas", "Biomes"};
+                            "Biomal Areas", "Biomes", "Plates / Faults"};
     }
 
     @Override

@@ -5,6 +5,10 @@ package jaredbgreat.procgenlab.generators.noiseregion;
  * @author jared
  */
 public class ClimateNode extends BasinNode {
+
+    static int summateEffect(TectonicNode[] plates, ChunkTile chunkTile, double d) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     final double faintness;
 
     public ClimateNode(int x, int y, int value, double decay, int faintness) {

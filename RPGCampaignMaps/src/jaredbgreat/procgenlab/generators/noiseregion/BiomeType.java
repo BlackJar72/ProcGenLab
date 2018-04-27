@@ -29,7 +29,8 @@ public enum BiomeType {
     TFOREST (0xff00aa22),
     JUNGLE (0xff22ff44),
     DESERT (0xffaa9900),
-    SCRUB (0xff668844);   
+    SCRUB (0xff668844),
+    ALPINE (0xff776688);   
     
     public final int color;
     
@@ -97,6 +98,10 @@ public enum BiomeType {
         }
         if(tile.temp > 4 && ((tile.wet - tile.val) > noise - 1)) {
             tile.rlBiome = SWAMP.ordinal();
+            return;
+        }
+        if((tile.faults * 10)  + 15 - tile.val < 9) {
+            tile.rlBiome = ALPINE.ordinal();
             return;
         }
         findLandBiome(tile);

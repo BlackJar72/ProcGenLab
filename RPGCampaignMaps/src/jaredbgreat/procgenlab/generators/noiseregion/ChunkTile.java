@@ -18,6 +18,7 @@ public class ChunkTile {
     int temp = 0, wet = 0;
     int biomeSeed = 0, biome = 0;
     int noiseVal = 0;
+    double faults;
     boolean mountain = false, hilly = false, land = false;
     
     public ChunkTile(int x, int y) {

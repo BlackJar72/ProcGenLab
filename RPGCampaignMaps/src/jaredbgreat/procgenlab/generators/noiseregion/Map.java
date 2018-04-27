@@ -59,8 +59,11 @@ public class Map {
             map[i].wet = Math.min(ClimateNode.summateEffect(wet, map[i], 
                     doubleNoise[i]), 9);
         }
-        makeBiomes(256, random.getRandomAt(0, 0, 3));
         makeTectonicPlates(5, random.getRandomAt(0, 0, 4));
+        for(int i = 0; i < map.length; i++) {
+            map[i].faults = Math.min(TectonicNode.summateEffect(plates, map[i]), 1.0);
+        }
+        makeBiomes(256, random.getRandomAt(0, 0, 3));
         BiomeType.makeBiomes(this, random);
     }
     
@@ -127,6 +130,15 @@ public class Map {
         }
         return out;
      }
+    
+    
+    public int[] getFaultlines() {
+        int[] out = new int[map.length];
+        for(int i = 0; i < out.length; i++) {
+            out[i] = (int) Math.min(Math.max((map[i].faults * 10)  + 15 - map[i].val, 0), 10);
+        }
+        return out;
+    }
     
     public ChunkTile getTile(int x, int y) {
         int index = (x * h) + y;
@@ -255,7 +267,7 @@ public class Map {
     
     public void makeTectonicPlates(int numPairs, RandomAt random) {
         plates = new TectonicNode[numPairs * 2];
-        for(int i = 0; i < numPairs; i += 2) {
+        for(int i = 0; i < plates.length; i += 2) {
             plates[i] = new TectonicNode(random.nextInt(Size.setting.size), 
                                          random.nextInt(Size.setting.size),
                                          1.0);

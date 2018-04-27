@@ -17,10 +17,13 @@ public class TectonicNode {
     
     
     public double getWeaknessAt(int atx, int aty) {
+        //System.out.println(x + " - " + atx + " = " + (x - atx) + "; " + y + " - " + aty + " = " + (y - aty));
         double xdisplace = (double)(x - atx);
         double ydisplace = (double)(y - aty);
-        return Math.min(Math.sqrt(Math.sqrt((xdisplace * xdisplace) 
-                + (ydisplace * ydisplace))), 1.0);
+        //System.out.println(Math.sqrt(Math.sqrt((xdisplace * xdisplace) 
+        //        + (ydisplace * ydisplace))));
+        return Math.sqrt(Math.sqrt((xdisplace * xdisplace) 
+                + (ydisplace * ydisplace)));
     }
     
     
@@ -33,14 +36,15 @@ public class TectonicNode {
                 return 1.0;
             }
             weakness = n[i].getWeaknessAt(t.x, t.z);
-            power = 1.0 / weakness;
+            power = weakness;
             weakness = n[i + 1].getWeaknessAt(t.x, t.z);
-            power -= 1.0 / weakness;
+            power -= weakness;
             power = Math.abs(power);
             if(power < effect) {
                 effect = power;
             }
         }
+        //System.out.println(effect);
         return effect;
     }
     
