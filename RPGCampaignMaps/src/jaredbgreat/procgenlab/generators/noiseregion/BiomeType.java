@@ -30,7 +30,9 @@ public enum BiomeType {
     JUNGLE (0xff22ff44),
     DESERT (0xffaa9900),
     SCRUB (0xff668844),
-    ALPINE (0xff776688);   
+    ALPINE (0xff776688), 
+    ALPINE2 (0xffaaaacc),  
+    HILLY (0xff556666);  
     
     public final int color;
     
@@ -100,9 +102,21 @@ public enum BiomeType {
             tile.rlBiome = SWAMP.ordinal();
             return;
         }
-        if((tile.faults * 10)  + 15 - tile.val < 9) {
-            tile.rlBiome = ALPINE.ordinal();
-            return;
+        int mval = (int)(tile.faults * 10)  + 15 - tile.val - tile.noiseVal;
+        if(mval < 12) {
+            if(mval < 10) {
+                tile.mountain = true;
+                if(mval < 7) {                    
+                    tile.rlBiome = ALPINE2.ordinal();
+                } else {
+                    tile.rlBiome = ALPINE.ordinal();
+                }
+                return;
+            } else {
+                tile.rlBiome = HILLY.ordinal();
+                tile.hilly = true;
+                return;
+            }
         }
         findLandBiome(tile);
     }

@@ -12,8 +12,9 @@ package jaredbgreat.procgenlab.generators.chunkyregion.chunk;
 public enum BiomeType {
     
     OCEAN (0xff1122ff),
+    DOCEAN (0xff111199),
     FROCEAN (0xff2244ff),
-    UNKOWN (0xff00ff44),
+    RIVER (0xff1133ff),
     SWAMP (0xff228844),
     MOUNTAIN (0xff888888),
     TUNDRA (0xffffffff),
@@ -29,7 +30,9 @@ public enum BiomeType {
     JUNGLE (0xff22ff44),
     DESERT (0xffaa9900),
     SCRUB (0xff668844),
-    RIVER (0xff2233ff);   
+    ALPINE (0xff776688), 
+    ALPINE2 (0xffaaaacc),  
+    HILLY (0xff556666);   
     
     public final int color;
     
