@@ -1,6 +1,4 @@
-package jaredbgreat.procgenlab.generators.noiseregion;
-
-import jaredbgreat.procgenlab.generators.region.*;
+package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
 
 /**
  *

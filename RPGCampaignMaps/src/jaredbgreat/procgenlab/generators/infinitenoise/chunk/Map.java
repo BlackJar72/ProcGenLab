@@ -3,19 +3,41 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jaredbgreat.procgenlab.generators.noiseregion;
+package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
 
-import jaredbgreat.procgenlab.generators.noiseregion.cache.Cache;
-import jaredbgreat.procgenlab.generators.noiseregion.SpatialNoise.RandomAt;
-import static jaredbgreat.procgenlab.generators.noiseregion.SpatialNoise.absModulus;
-import jaredbgreat.procgenlab.generators.noiseregion.cache.MutableCoords;
-import java.util.Random;
+import jaredbgreat.procgenlab.generators.chunkyregion.cache.Cache;
+import jaredbgreat.procgenlab.generators.chunkyregion.cache.MutableCoords;
+import jaredbgreat.procgenlab.generators.infinitenoise.chunk.SpatialNoise.RandomAt;
+import static jaredbgreat.procgenlab.generators.infinitenoise.chunk.SpatialNoise.absModulus;
+
+
 
 /**
  *
  * @author jared
  */
-public class Map {  
+public class Map { 
+    // Using division to make the derivation obvious; this should be done
+    // at compile time with no loss of performance.
+    public static final int CSIZE = 16; // chuck size
+    public static final int RSIZE = 4096 / CSIZE; // region / "continent" size
+    public static final int RADIUS = RSIZE / 2; // radius for basin effect range
+    public static final int SQRADIUS = RADIUS * RADIUS;
+    public static final int BSIZE = 256 / CSIZE; // base size for (sub)biomes
+    public static final int GENSIZE = 7; // area of chunks to looks at
+    public static final int GENHALF1 = GENSIZE  / 2;
+    public static final int GENHALF0 = GENHALF1 - 1;
+    public static final int GENHALF2 = GENHALF1 + 1;
+    public static final int GENSQ = GENSIZE * GENSIZE; // area of chunks to looks at
+    
+    public final jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise chunkNoise;
+    public final jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise regionNoise;
+    public final jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise biomeNoise;
+    
+    private final Cache<jaredbgreat.procgenlab.generators.chunkyregion.chunk.Region> regionCache = new Cache(32);
+    
+    private MutableCoords regionCoords = new MutableCoords(); 
+    private MutableCoords chunkCoords = new MutableCoords(); 
     
     final int w, h;
     final ChunkTile[] map;

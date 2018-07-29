@@ -28,7 +28,7 @@ public class NoiseRegion implements IGenerator {
     
     @Override
     public void generate(Long seed) {
-        map = new Map(Size.setting.size, Size.setting.size);
+        map = new Map(Size.setting.size, Size.setting.size, seed);
         map.generate(seed);
     }
 

@@ -153,9 +153,9 @@ public class ChunkMaker {
             map[i].rlBiome = 1 - landNoise[i];
         }        
         //RiverBorderBasin[] rivers = MakeRiverMap(regions[4]);
-        //MakeRivers(rivers, regions[4], map);
-        BiomeType.makeBiomes(map, this, chunkNoise);        
+        //MakeRivers(rivers, regions[4], map);      
         makeBiomes(x, z, map);
+        BiomeType.makeBiomes(map, this, chunkNoise);  
         return map;
     }
     

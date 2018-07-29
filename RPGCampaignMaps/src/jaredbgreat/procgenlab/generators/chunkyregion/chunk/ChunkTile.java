@@ -72,5 +72,12 @@ public void finalize() throws Throwable {
 
     public int getBiome() {
         return biome;
+    }  
+    
+    public void nextBiomeSeed() {
+    	biome ^= biome << 13;
+    	biome ^= biome >> 19;
+    	biome ^= biome << 7;
+    	biome &= 0x7fffffff;
     }
 }

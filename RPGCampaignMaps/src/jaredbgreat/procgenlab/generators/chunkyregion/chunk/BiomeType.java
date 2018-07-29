@@ -92,8 +92,13 @@ public enum BiomeType {
             return;
         }
         if(chunk.temp > 7 && ((chunk.wet - chunk.val) > noise - 1)) {
-            chunk.rlBiome = SWAMP.ordinal();
-            return;
+            //System.out.println(chunk.biome);
+            if((chunk.biome & 0x1) == 1) {
+                chunk.rlBiome = SWAMP.ordinal();
+                //chunk.nextBiomeSeed();
+                return;
+            }
+            //chunk.nextBiomeSeed();
         }
     	chunk.rlBiome = table[(chunk.temp * 10) + chunk.wet].ordinal();
     }

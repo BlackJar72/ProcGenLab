@@ -1,8 +1,4 @@
-package jaredbgreat.procgenlab.generators.chunkyregion.chunk;
-
-/*
- * DO NOT ACTUALLY USE THIS, CHANGE TO REGION AT ONCE STRATEGY (NoiseRegion)!
- */
+package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
 
 import java.util.Random;
 
@@ -10,7 +6,7 @@ import java.util.Random;
  * @author Jared Blackburn
  */
 public class River {
-    Region map;
+    Map map;
     BasinNode begin, end;
     double dx, dy;
     double angle, da;
@@ -70,7 +66,7 @@ public class River {
     }
     
     
-    public River(BasinNode high, BasinNode low, Region mapIn) {
+    public River(BasinNode high, BasinNode low, Map mapIn) {
         Q = new ChangeQueue();
         map = mapIn;
         begin = high;
@@ -78,10 +74,10 @@ public class River {
         oc = 0;
         da = angle = 0; 
         cx = begin.x;
-        cy = begin.z;
-        double length = findLength(cx, cy, end.x, end.z);
+        cy = begin.y;
+        double length = findLength(cx, cy, end.x, end.y);
         dx = (end.x - begin.x) / length;
-        dy = (end.z - begin.z) / length;
+        dy = (end.y - begin.y) / length;
         s = AS.Z0;
     }
     
@@ -104,23 +100,19 @@ public class River {
             incrementAngle(r);
             cx += (f * dx) + (p * dy);
             cy += (f * dy) + (p * dx);
-            // TODO: Replace following line with one to get val (landiness) from
-            // the region, no reference to real chunk!
-            /*ChunkTile toChange = Q.push(map.getTile((int)cx, (int)cy));
+            ChunkTile toChange = Q.push(map.getTile((int)cx, (int)cy));
             if(toChange != null) {
                 makeRiver(toChange);
-            }*/
+            }
         } while(!shouldEnd((int)cx, (int)cy));
         ChunkTile toChange;
-        /*while((toChange = Q.pop()) != null) {
+        while((toChange = Q.pop()) != null) {
             makeRiver(toChange);
-        }*/
+        }
     }
     
     private boolean shouldEnd(int x, int y) {
-        // TODO: Replace following line with one to get val (landiness) from
-        // the region, no reference to real chunk!
-        /*ChunkTile t = map.getChunk(x, y); // FIXME: No, needs the region!
+        ChunkTile t = map.getTile(x, y);
         if(t == null) {
             return true;
         } else {
@@ -130,8 +122,7 @@ public class River {
             }
             return t.rlBiome == 3 || ((t.rlBiome < 3) 
                     && ((t.val < 4) || oc > 8));
-        }*/
-        return true; // FIXME: Temporary until the function is working
+        }
     }
     
     private void incrementAngle(Random r) {        
@@ -153,8 +144,14 @@ public class River {
         }        
     }
     
-    // TODO: A way to get this for a requested chunk rather than calculating 
-    // it.  No, not really -- do bother with this, just switch to using 
-    // pre-generated maps.
+    private void makeRiver(ChunkTile t) {
+        // TODO: Expand to effect chunks in a radius of r = 1
+        int rb = BiomeType.RIVER.ordinal();
+        t.rlBiome = rb;
+        map.getTile(t.x + 1, t.z).rlBiome = rb;
+        map.getTile(t.x + 1, t.z + 1).rlBiome = rb;
+        map.getTile(t.x, t.z + 1).rlBiome = rb;
+        
+    }
     
 }
