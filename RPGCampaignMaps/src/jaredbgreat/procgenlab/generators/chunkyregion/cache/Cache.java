@@ -1,11 +1,6 @@
 package jaredbgreat.procgenlab.generators.chunkyregion.cache;
 
-/**
- * A cache system using a skiplist based hash map.
- * 
- * @author Jared Blackburn
- * @param <T>
- */
+
 public class Cache <T extends ICachable> {
     private ICachable[] data;
     private final int minSize;

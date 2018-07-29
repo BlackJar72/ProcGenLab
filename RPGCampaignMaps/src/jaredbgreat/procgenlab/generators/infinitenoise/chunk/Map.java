@@ -30,10 +30,13 @@ public class Map {
     public static final int GENHALF2 = GENHALF1 + 1;
     public static final int GENSQ = GENSIZE * GENSIZE; // area of chunks to looks at
     
+    //TODO: Implement initialiations and use fo thses
+    /*
     public final jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise chunkNoise;
     public final jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise regionNoise;
     public final jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise biomeNoise;
-    
+    */
+
     private final Cache<jaredbgreat.procgenlab.generators.chunkyregion.chunk.Region> regionCache = new Cache(32);
     
     private MutableCoords regionCoords = new MutableCoords(); 

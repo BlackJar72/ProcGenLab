@@ -6,6 +6,7 @@
 package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
 
 import jaredbgreat.procgenlab.generators.infinitenoise.cache.AbstractCachable;
+import static jaredbgreat.procgenlab.generators.infinitenoise.chunk.Map.*;
 
 /**
  *
@@ -16,7 +17,7 @@ public final class Region extends AbstractCachable {
     ClimateNode[] temp;
     ClimateNode[] wet;
     // FIXME: These should not really be duplicated
-    private static final int w = ChunkMaker.RSIZE, h = ChunkMaker.RSIZE;
+    private static final int w = RSIZE, h = RSIZE;
     int cx, cz;
     
     
@@ -40,8 +41,8 @@ public void finalize() throws Throwable {
     public Region(int x, int z, SpatialNoise random) {
         super(x, z);
         
-        cx = (x * ChunkMaker.RSIZE) - ChunkMaker.RADIUS;
-        cz = (z * ChunkMaker.RSIZE) - ChunkMaker.RADIUS;
+        cx = (x * RSIZE) - RADIUS;
+        cz = (z * RSIZE) - RADIUS;
         makeBasins(5, 10, 15, random.getRandomAt(x, z, 0));
         makeTempBasins(10, random.getRandomAt(x, z, 1));
         makeRainBasins(12, random.getRandomAt(x, z, 2));
@@ -51,8 +52,8 @@ public void finalize() throws Throwable {
     
     
     public Region init(int x, int z, SpatialNoise random) {
-        cx = (x * ChunkMaker.RSIZE) - ChunkMaker.RADIUS;
-        cz = (z * ChunkMaker.RSIZE) - ChunkMaker.RADIUS;
+        cx = (x * RSIZE) - RADIUS;
+        cz = (z * RSIZE) - RADIUS;
         makeBasins(5, 10, 15, random.getRandomAt(x, z, 0));
         makeTempBasins(10, random.getRandomAt(x, z, 1));
         makeRainBasins(12, random.getRandomAt(x, z, 2));
@@ -100,18 +101,18 @@ public void finalize() throws Throwable {
     
     
     private void makePoles(ClimateNode[] nodes, SpatialNoise.RandomAt random) {
-        int dist = (ChunkMaker.RSIZE / 6) 
-                + random.nextInt(ChunkMaker.RSIZE / 4);
+        int dist = (RSIZE / 6) 
+                + random.nextInt(RSIZE / 4);
         double angle = random.nextDouble() * 2 * Math.PI;
-        int x = cx + ChunkMaker.RADIUS + (int)(dist * Math.cos(angle));
-        int y = cz + ChunkMaker.RADIUS + (int)(dist * Math.sin(angle));
+        int x = cx + RADIUS + (int)(dist * Math.cos(angle));
+        int y = cz + RADIUS + (int)(dist * Math.sin(angle));
         nodes[0] = new ClimateNode(x, y, 0, 
                 (BasinNode.getLogScaled(-14) / 40) * 1.5, 0);
-        dist = (ChunkMaker.RSIZE / 6) + random.nextInt(ChunkMaker.RSIZE / 4);
+        dist = (RSIZE / 6) + random.nextInt(RSIZE / 4);
         angle = angle + (random.nextDouble() 
                 * (Math.PI / 2)) + ((Math.PI * 3) / 4);
-        x = cx + (ChunkMaker.RADIUS) + (int)(dist * Math.cos(angle));
-        y = cz + (ChunkMaker.RADIUS) + (int)(dist * Math.sin(angle));
+        x = cx + (RADIUS) + (int)(dist * Math.cos(angle));
+        y = cz + (RADIUS) + (int)(dist * Math.sin(angle));
         nodes[1] = new ClimateNode(x, y, 25, 
                 (BasinNode.getLogScaled(-15) / 40) * 1.5, 0);        
     }
@@ -122,8 +123,8 @@ public void finalize() throws Throwable {
         makePoles(temp, random);
         for(int i = 2; i < temp.length; i++) {
             temp[i] = new ClimateNode(
-                cx + random.nextInt(ChunkMaker.RSIZE), 
-                cz + random.nextInt(ChunkMaker.RSIZE), 
+                cx + random.nextInt(RSIZE), 
+                cz + random.nextInt(RSIZE), 
                 random.nextInt(25), 
                 (BasinNode.getLogScaled(random.nextInt(5) - 12) / 30) * 1.5, 
                 random.nextInt(5) + 5);
@@ -138,24 +139,24 @@ public void finalize() throws Throwable {
             switch(cycle) {
                 case 0:
                     wet[i] = new ClimateNode(
-                        cx + random.nextInt(ChunkMaker.RSIZE), 
-                        cz + random.nextInt(ChunkMaker.RSIZE), 
+                        cx + random.nextInt(RSIZE), 
+                        cz + random.nextInt(RSIZE), 
                         9, 
                         (BasinNode.getLogScaled(random.nextInt(5) - 15) / 30) * 1.5, 
                         random.nextInt(5));
                     break;
                 case 1:
                     wet[i] = new ClimateNode(
-                        cx + random.nextInt(ChunkMaker.RSIZE), 
-                        cz + random.nextInt(ChunkMaker.RSIZE), 
+                        cx + random.nextInt(RSIZE), 
+                        cz + random.nextInt(RSIZE), 
                         0, 
                         (BasinNode.getLogScaled(random.nextInt(5) - 15) / 30) * 1.5, 
                         random.nextInt(5));
                     break;
                 case 2:
                     wet[i] = new ClimateNode(
-                        cx + random.nextInt(ChunkMaker.RSIZE), 
-                        cz + random.nextInt(ChunkMaker.RSIZE), 
+                        cx + random.nextInt(RSIZE), 
+                        cz + random.nextInt(RSIZE), 
                         random.nextInt(10), 
                         (BasinNode.getLogScaled(random.nextInt(5) - 15) / 10) * 1.5, 
                         random.nextInt(5));
