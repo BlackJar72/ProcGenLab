@@ -5,11 +5,8 @@
  */
 package jaredbgreat.procgenlab.generators.noiseregion;
 
-import jaredbgreat.procgenlab.generators.noiseregion.cache.Cache;
 import jaredbgreat.procgenlab.generators.noiseregion.SpatialNoise.RandomAt;
 import static jaredbgreat.procgenlab.generators.noiseregion.SpatialNoise.absModulus;
-import jaredbgreat.procgenlab.generators.noiseregion.cache.MutableCoords;
-import java.util.Random;
 
 /**
  *

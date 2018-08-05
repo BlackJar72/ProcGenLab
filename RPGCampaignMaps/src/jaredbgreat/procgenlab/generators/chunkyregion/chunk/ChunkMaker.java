@@ -66,37 +66,6 @@ public class ChunkMaker {
     }
     
     
-    /**
-     * Returns the distance between the point represented by the two 
-     * set of coordinates.
-     * 
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @return 
-     */
-    private int getSqIntDistance(int x1, int y1, int x2, int y2) {
-        return ((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2));
-    }
-    
-    
-    /**
-     * Returns true if the two points are within a distance less than half 
-     * the distance across a continental region, false if they are farther
-     * apart.  This is for determining if something (usually an attraction / 
-     * influence basin) is within range of a chunk.
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @return 
-     */
-    private boolean inRange(int x1, int y1, int x2, int y2) {
-        return (getSqIntDistance(x1, y1, x2, y2) < SQRADIUS);
-    }
-    
-    
     private Region[] findRegions(int x, int z) {
         Region[] out = new Region[9];
         int[] coords = findRegion(x, z);

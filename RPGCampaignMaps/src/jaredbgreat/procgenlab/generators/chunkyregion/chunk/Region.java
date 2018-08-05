@@ -6,8 +6,6 @@
 package jaredbgreat.procgenlab.generators.chunkyregion.chunk;
 
 import jaredbgreat.procgenlab.generators.chunkyregion.cache.AbstractCachable;
-import jaredbgreat.procgenlab.generators.chunkyregion.cache.ICachable;
-import jaredbgreat.procgenlab.generators.chunkyregion.cache.MutableCoords;
 
 /**
  *

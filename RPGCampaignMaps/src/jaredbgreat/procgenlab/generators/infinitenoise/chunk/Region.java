@@ -41,8 +41,8 @@ public void finalize() throws Throwable {
     public Region(int x, int z, SpatialNoise random) {
         super(x, z);
         
-        cx = (x * RSIZE) - RADIUS;
-        cz = (z * RSIZE) - RADIUS;
+        cx = (x * RSIZE);// - RADIUS;
+        cz = (z * RSIZE);// - RADIUS;
         makeBasins(5, 10, 15, random.getRandomAt(x, z, 0));
         makeTempBasins(10, random.getRandomAt(x, z, 1));
         makeRainBasins(12, random.getRandomAt(x, z, 2));
@@ -164,10 +164,18 @@ public void finalize() throws Throwable {
             }
         }
     }
-
-    private static class ChunkMaker {
-
-        public ChunkMaker() {
+    
+    
+    public BasinNode[] getBasins(int num, boolean beginning) {
+        if(num > basins.length) {
+            num = basins.length;
         }
+        BasinNode[] out = new BasinNode[num];
+        if(beginning) {
+            System.arraycopy(basins, 0, out, 0, num);
+        } else {
+            System.arraycopy(basins, basins.length - num, out, 0, num);
+        }
+        return out;
     }
 }

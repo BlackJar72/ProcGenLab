@@ -12,12 +12,12 @@ public class RiverMaker {
     private final BasinNode[] starts, ends;
     private final int num;
     
-    public RiverMaker(MapMaker mapIn, long seed) {
+    public RiverMaker(MapMaker mapIn, long seed, Region region) {
         map = mapIn;
         rand = new Random(seed);
         num = rand.nextInt(3) + 5;  
-        starts = map.getBasins(num, true);
-        ends = map.getBasins(num, false);      
+        starts = region.getBasins(num, true);
+        ends = region.getBasins(num, false);      
     }
     
     public void build() {
