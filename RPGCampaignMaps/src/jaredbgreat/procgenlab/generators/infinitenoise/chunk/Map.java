@@ -5,421 +5,153 @@
  */
 package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
 
-import jaredbgreat.procgenlab.generators.chunkyregion.cache.Cache;
-import jaredbgreat.procgenlab.generators.chunkyregion.cache.MutableCoords;
-import jaredbgreat.procgenlab.generators.infinitenoise.chunk.SpatialNoise.RandomAt;
-import static jaredbgreat.procgenlab.generators.infinitenoise.chunk.SpatialNoise.absModulus;
-
+import jaredbgreat.procgenlab.generators.infinitenoise.cache.MutableCoords;
 
 
 /**
- *
- * @author jared
+ * This represents a 256x256 chunk map geared toward Minecraft, which this 
+ * will likely become a mod for, though it could be used to hold similar 
+ * data for another game.
+ * 
+ * Biome data for each chunk is held as a single int, with the first 8 bits 
+ * representing the in game biome and the next two bytes representing a biome 
+ * for world gen, which my differ in specialized situation.  The last byte is 
+ * reserved for future use, most likely as a set of bit flag allowing storage 
+ * of up to eight boolean variables.
+ * 
+ * This will likely not be used directly in these simulations, but will be 
+ * created and written too for the purpose of full profiling.
+ * 
+ * @author Jared Blackburn
  */
-public class Map { 
-    // Using division to make the derivation obvious; this should be done
-    // at compile time with no loss of performance.
-    public static final int CSIZE = 16; // chuck size
-    public static final int RSIZE = 4096 / CSIZE; // region / "continent" size
-    public static final int RADIUS = RSIZE / 2; // radius for basin effect range
-    public static final int SQRADIUS = RADIUS * RADIUS;
-    public static final int BSIZE = 256 / CSIZE; // base size for (sub)biomes
-    public static final int GENSIZE = 7; // area of chunks to looks at
-    public static final int GENHALF1 = GENSIZE  / 2;
-    public static final int GENHALF0 = GENHALF1 - 1;
-    public static final int GENHALF2 = GENHALF1 + 1;
-    public static final int GENSQ = GENSIZE * GENSIZE; // area of chunks to looks at
+public class Map {
+    final MutableCoords region;
+    final int[] data = new int[65536];
     
-    //TODO: Implement initialiations and use fo thses
-    /*
-    public final jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise chunkNoise;
-    public final jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise regionNoise;
-    public final jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise biomeNoise;
-    */
-
-    private final Cache<jaredbgreat.procgenlab.generators.chunkyregion.chunk.Region> regionCache = new Cache(32);
+    public Map(int x, int z) {
+        region = new MutableCoords().init(x, z);
+    }
     
-    private MutableCoords regionCoords = new MutableCoords(); 
-    private MutableCoords chunkCoords = new MutableCoords(); 
-    
-    final int w, h;
-    final ChunkTile[] map;
-    private BasinNode[] basins;
-    private ClimateNode[] temp;
-    private ClimateNode[] wet;
-    private ClimateNode[] height;
-    private TectonicNode[] plates;
-    private BiomeBasin[][] subbiomes;
-    
-    
-    public Map(int width, int height, long seed) {
-        map = new ChunkTile[width * height];
-        w = width;
-        h = height;
-        for(int i = 0; i < width; i++) 
-            for(int j = 0; j < height; j++) {
-                map[(i * h) + j] = new ChunkTile(i, j);
-            }
+    /**
+     * Gets the actual in game biome id.
+     * 
+     * @param x relative chunk x within region
+     * @param z relative chunk x within region
+     * @return The biome as a single byte.
+     */
+    public byte getBiomeAsByte(int x, int z) {
+        return (byte)(data[(x * 256) + z] & 0xff);
     }
     
     
-    public void generate(long seed) {
-        SpatialNoise random = new SpatialNoise(seed);
-        makeBasins(5, 10, 15, random.getRandomAt(0, 0, 0));
-        for(int i = 0; i < map.length; i++) {
-            map[i].val = BasinNode.summateEffect(basins, map[i]);
-            edgeFix(map[i]);
-        }
-        int[] noisy = refineNoise(makeNoise(random, 0), 4);
-        for(int i = 0; i < map.length; i++) {
-            map[i].rlBiome = 1 - noisy[i];
-        }
-        double[] doubleNoise;
-        makeTempBasins(10, random.getRandomAt(0, 0, 1));
-        doubleNoise = averageNoise(makeDoubleNoise(random, 1));
-        for(int i = 0; i < map.length; i++) {
-            map[i].temp = Math.min(ClimateNode.summateEffect(temp, map[i], 
-                    doubleNoise[i]), 24);
-        }
-        makeRainBasins(12, random.getRandomAt(0, 0, 2));
-        doubleNoise = averageNoise(makeDoubleNoise(random, 2));
-        for(int i = 0; i < map.length; i++) {
-            map[i].wet = Math.min(ClimateNode.summateEffect(wet, map[i], 
-                    doubleNoise[i]), 9);
-        }
-        makeTectonicPlates(5, random.getRandomAt(0, 0, 4));
-        for(int i = 0; i < map.length; i++) {
-            map[i].faults = Math.min(TectonicNode.summateEffect(plates, map[i]), 1.0);
-        }
-        makeBiomes(256, random.getRandomAt(0, 0, 3));
-        BiomeType.makeBiomes(this, random);
+    /**
+     * Returns in game biome id.
+     * 
+     * @param x relative chunk x within region
+     * @param z relative chunk x within region
+     * @return The biome id as in int
+     */
+    public int getBiome(int x, int z) {
+        return (data[(x * 256) + z] & 0xff);
     }
     
     
-    private void edgeFix(ChunkTile t) {
-        if(t.x < 10) {
-            t.val += (t.x - 10);
-        } else if(t.x >= (w - 10)) {
-            t.val -= (t.x - w + 10);
-        }
-        if(t.z < 10) {
-            t.val += (t.z - 10);
-        } else if(t.z >= (h - 10)) {
-            t.val -= (t.z - h + 10) * 2;
-        }
+    /**
+     * Returns the and id for the biome to be for world gen.  For 
+     * registered biomes this should be there real id, and less than 
+     * 256.  For pseudo-biomes used for generated specialized terrain 
+     * this should be between 356 and 32767 and indexed to a specialized 
+     * registry map (probably actually an ArrayList).
+     * 
+     * The id will be returned as a short.
+     * 
+     * @param x relative chunk x within region
+     * @param z relative chunk x within region
+     * @return The biome id for world-gen as a short
+     */
+    public short getPseudoBiomeAsShort(int x, int z) {
+        return (short)((data[(x * 256) + z] & 0xffff00) >> 8);
     }
     
     
-    public int[] getLandmass() {
-        int[] out = new int[map.length];
-        for(int i = 0; i < out.length; i++) {
-            out[i] = map[i].rlBiome;
-        }
-        return out;
+    
+    
+    /**
+     * Returns the and id for the biome to be for world gen.  For 
+     * registered biomes this should be there real id, and less than 
+     * 256.  For pseudo-biomes used for generated specialized terrain 
+     * this should be between 356 and 32767 and indexed to a specialized 
+     * registry map (probably actually an ArrayList).
+     * 
+     * The id will be returned as an int.
+     * 
+     * @param x relative chunk x within region
+     * @param z relative chunk x within region
+     * @return The biome id for world-gen as an int
+     */
+    public int getPseudoBiome(int x, int z) {
+        return (data[(x * 256) + z] & 0xffff00) >> 8;
     }
     
     
-    public int[] getLandiness() {
-        int[] out = new int[map.length];
-        for(int i = 0; i < out.length; i++) {
-            out[i] = Math.max(map[i].val, 0);
-        }
-        return out;
-    }
-
-    public int[] getTemps() {
-        int[] out = new int[map.length];
-        for(int i = 0; i < out.length; i++) {
-            out[i] = Math.max(map[i].temp, 0);
-        }
-        return out;
-     }
-
-    public int[] getRain() {
-        int[] out = new int[map.length];
-        for(int i = 0; i < out.length; i++) {
-            out[i] = Math.max(map[i].wet, 0);
-        }
-        return out;
-     }
-
-    public int[] getBiomes() {
-        int[] out = new int[map.length];
-        for(int i = 0; i < out.length; i++) {
-            out[i] = map[i].biome;
-        }
-        return out;
-     }
-
-    public int[] getBiomes2() {
-        int[] out = new int[map.length];
-        for(int i = 0; i < out.length; i++) {
-            out[i] = colorBlend(BiomeType.values()[map[i].rlBiome].color, map[i].biome);
-        }
-        return out;
-     }
-    
-    
-    public int[] getFaultlines() {
-        int[] out = new int[map.length];
-        for(int i = 0; i < out.length; i++) {
-            out[i] = (int) Math.min(Math.max((map[i].faults * 10)  + 15 - map[i].val, 0), 10);
-        }
-        return out;
-    }
-    
-    public ChunkTile getTile(int x, int y) {
-        int index = (x * h) + y;
-        if(index >= map.length) {
-            return null;
-        } else {
-            return map[(x * h) + y];
-        }
+    /**
+     * This sets the biome data using a byte.
+     * 
+     * @param biome
+     * @param x relative chunk x within region
+     * @param z relative chunk x within region
+     */
+    public void setBiome(byte biome, int x, int z) {
+        data[(x * 256) + z] &= 0xffffff00;
+        data[(x * 256) + z] |= biome;
     }
     
     
-    private BasinNode makeBasin(int value, double decay, RandomAt random) {
-        int place = random.nextInt( map.length);
-        return new BasinNode(place % w, place / w, value, 
-                decay * Size.setting.falloff);
+    /**
+     * This sets the biome data using an int.
+     * 
+     * @param biome
+     * @param x relative chunk x within region
+     * @param z relative chunk x within region
+     */
+    public void setBiome(int biome, int x, int z) {
+        data[(x * 256) + z] &= 0xffffff00;
+        data[(x * 256) + z] |= (biome & 0xff);
     }
     
     
-    private BasinNode makeCentralBasin1(int value, double decay, RandomAt random) {
-        int x = random.nextInt(w / 2) + (w / 4);
-        int y = random.nextInt(h / 2) + (h / 4);
-        return new BasinNode(x, y, value, decay * Size.setting.falloff);
+    /**
+     * This set the pseudo biome used by world gen.  This will 
+     * most often be the same as the real biome, but may not if 
+     * if specialized terrain generation is desired.
+     * 
+     * @param biome
+     * @param x relative chunk x within region
+     * @param z relative chunk x within region
+     */
+    public void setPseudoBiome(int biome, int x, int z) {
+        data[(x * 256) + z] &= 0xff0000ff;
+        data[(x * 256) + z] |= ((biome & 0xffff) << 8);
     }
     
     
-    private BasinNode makeCentralBasin2(int value, double decay, RandomAt random) {
-        int x = random.nextInt((w * 8) / 10) + (w / 10);
-        int y = random.nextInt((h * 8) / 10) + (h / 10);
-        return new BasinNode(x, y, value, decay * Size.setting.falloff);
+    /**
+     * This will set the real and pseudo-biomes to the same value 
+     * while assuming no data has been stored (i.e., that the array 
+     * is freshly initialized so that the value is zero).
+     * 
+     * @param biome
+     * @param x relative chunk x within region
+     * @param z relative chunk x within region
+     */
+    public void setBiomeExpress(int biome, int x, int z) {
+        data[(x * 256) + z] |= biome;
+        data[(x * 256) + z] |= (biome << 8);        
     }
     
     
-    public void makeBasins(int main, int pos, int neg, RandomAt random) {
-        basins = new BasinNode[main + pos + neg];
-        for(int i = 0; i < main; i++) {
-            basins[i] = makeCentralBasin1(10, 
-                    BasinNode.getLogScaled(-10) / 10, random);
-        }
-        for(int i = main; i < (pos + main); i++) {
-            basins[i] = makeCentralBasin2(9, 
-                    BasinNode.getLogScaled(random.nextInt(5) - 9) / 10, random);
-        }
-        for(int i = (pos + main); i < basins.length; i++) {
-            basins[i] = makeBasin(0, 
-                    BasinNode.getLogScaled(random.nextInt(10) - 10) / 10, random);
-        }
-    }
-    
-    public BasinNode[] getBasins(int num, boolean beginning) {
-        if(num > basins.length) {
-            num = basins.length;
-        }
-        BasinNode[] out = new BasinNode[num];
-        if(beginning) {
-            System.arraycopy(basins, 0, out, 0, num);
-        } else {
-            System.arraycopy(basins, basins.length - num, out, 0, num);
-        }
-        return out;
-    }
     
     
-    private void makePoles(ClimateNode[] nodes, RandomAt random) {
-        int dist = (Size.setting.size / 6) 
-                + random.nextInt(Size.setting.size / 3);
-        double angle = random.nextDouble() * 2 * Math.PI;
-        int x = (Size.setting.size / 2) + (int)(dist * Math.cos(angle));
-        int y = (Size.setting.size / 2) + (int)(dist * Math.sin(angle));
-        nodes[0] = new ClimateNode(x, y, 0, 
-                (BasinNode.getLogScaled(-9) / 40) * Size.setting.falloff, 0);
-        dist = (Size.setting.size / 6) + random.nextInt(Size.setting.size / 3);
-        angle = angle + (random.nextDouble() * (Math.PI / 2) + (Math.PI / 2));
-        //if(angle > Math.PI) {
-        //    angle -= Math.PI;
-        //}
-        x = (Size.setting.size / 2) + (int)(dist * Math.cos(angle));
-        y = (Size.setting.size / 2) + (int)(dist * Math.sin(angle));
-        nodes[1] = new ClimateNode(x, y, 24, 
-                (BasinNode.getLogScaled(-10) / 40) * Size.setting.falloff, 0);        
-    }
-    
-    
-    public void makeTempBasins(int n, RandomAt random) {
-        temp = new ClimateNode[n + 2];
-        makePoles(temp, random);
-        for(int i = 2; i < temp.length; i++) {
-            temp[i] = new ClimateNode(random.nextInt(Size.setting.size), 
-                random.nextInt(Size.setting.size), 
-                random.nextInt(25), 
-                (BasinNode.getLogScaled(random.nextInt(4) - 8) / 30) * Size.setting.falloff, 
-                random.nextInt(5) + 5);
-        }
-    }
-    
-    
-    public void makeRainBasins(int n, RandomAt random) {
-        wet = new ClimateNode[n];
-        for(int i = 0; i < wet.length; i++) {
-            int cycle = i % 3;
-            switch(cycle) {
-                case 0:
-                    wet[i] = new ClimateNode(random.nextInt(Size.setting.size), 
-                        random.nextInt(Size.setting.size), 
-                        9, 
-                        (BasinNode.getLogScaled(random.nextInt(4) - 10) / 30) * Size.setting.falloff, 
-                        random.nextInt(5));
-                    break;
-                case 1:
-                    wet[i] = new ClimateNode(random.nextInt(Size.setting.size), 
-                        random.nextInt(Size.setting.size), 
-                        0, 
-                        (BasinNode.getLogScaled(random.nextInt(4) - 10) / 30) * Size.setting.falloff, 
-                        random.nextInt(5));
-                    break;
-                case 2:
-                    wet[i] = new ClimateNode(random.nextInt(Size.setting.size), 
-                        random.nextInt(Size.setting.size), 
-                        random.nextInt(10), 
-                        (BasinNode.getLogScaled(random.nextInt(4) - 10) / 10) * Size.setting.falloff, 
-                        random.nextInt(5));
-                    break;
-            }
-        }
-    }
-    
-    
-    public void makeTectonicPlates(int numPairs, RandomAt random) {
-        plates = new TectonicNode[numPairs * 2];
-        for(int i = 0; i < plates.length; i += 2) {
-            plates[i] = new TectonicNode(random.nextInt(Size.setting.size), 
-                                         random.nextInt(Size.setting.size),
-                                         1.0);
-            plates[i + 1] = new TectonicNode(random.nextInt(Size.setting.size), 
-                                         random.nextInt(Size.setting.size),
-                                         1.0);
-        }
-    }
-    
-    
-    protected int[][] makeNoise(SpatialNoise random, int t) {
-        int[][] noise = new int[w + 2][h + 2];
-        for(int i = 0; i < (w + 2); i++)
-            for(int j = 0; j < (h + 2); j++) {
-                noise[i][j] = absModulus(random.intFor(i, j, t), 2);
-            }
-        return noise;
-    }
-    
-    
-    protected int[] refineNoise(int[][] noise, int times) {
-        int[][] out = noise;
-        for(int i = times; i > 0; i--) {
-            out = refineNoise2(out);
-        }
-        return refineNoise(out);
-    }
-    
-    
-    protected int[] refineNoise(int[][] noise) {
-        int[] out = new int[map.length];
-        // Could be better optimized, but this is a test of the gui and api
-        for(int i = 1; i < (w + 1); i++) 
-            for(int j = 1; j < (h + 1); j++) {
-                out[((j - 1) * w) + (i - 1)] = refineCell(noise, i, j);
-            }
-        return out;
-    }
-    
-    
-    protected int[][] refineNoise2(int[][] noise) {
-        int[][] out = new int[noise.length][noise[0].length];
-        // Could be better optimized, but this is a test of the gui and api
-        for(int i = 1; i < (w + 1); i++) 
-            for(int j = 1; j < (h + 1); j++) {
-                out[i][j] = refineCell(noise, i, j);
-            }
-        return out;
-    }
-    
-    
-    public int refineCell(int[][] noise, int x, int y) {
-        int sum = 0;
-        // Yes, I include the cell itself -- its simpler and works for me
-        for(int i = x - 1; i <= x + 1; i++) 
-            for(int j = y - 1; j <= y + 1; j++) {
-                sum += noise[i][j];
-            }
-        if(sum < map[((y -1) * w) + (x - 1)].val) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-    
-    
-    private double[][] makeDoubleNoise(SpatialNoise random, int t) {
-        double[][] noise = new double[w + 4][h + 4];
-        for(int i = 0; i < (w + 2); i++)
-            for(int j = 0; j < (h + 2); j++) {
-                noise[i][j] = (random.doubleFor(i, j, t) / 5) - 0.1;
-            }
-        return noise;
-    }
-    
-    
-    public double[] averageNoise(double[][] noise) {
-        double[] out = new double[map.length];
-        // Could be better optimized, but this is a test of the gui and api
-        for(int i = 2; i < (w + 2); i++) 
-            for(int j = 2; j < (h + 2); j++) {
-                out[((j - 2) * w) + (i - 2)] = averageNoise(noise, i, j);
-            }
-        return out;
-    }
-    
-    
-    public double averageNoise(double[][] noise, int x, int y) {
-        double sum = 0;
-        // Yes, I include the cell itself -- its simpler and works for me
-        for(int i = x - 2; i <= x + 2; i++) 
-            for(int j = y - 2; j <= y + 2; j++) {
-                sum += noise[i][j];
-            }
-        return sum / 9;
-    }
-    
-    
-    public void makeBiomes(int sizeBlocks, RandomAt random) {
-        int size = sizeBlocks / 16;
-        int across = Size.setting.size / size;
-        int down = across;
-        subbiomes = new BiomeBasin[across][down];
-        for(int i = 0; i < across; i++) 
-            for(int j = 0; j < down; j++) {
-                subbiomes[i][j]
-                        = new BiomeBasin((i * size) + random.nextInt(size),
-                                    (j * size) + random.nextInt(size),
-                                    random.nextInt() | 0xff000000,
-                                    1.0 + random.nextDouble());
-            }
-        for (ChunkTile tile : map) {
-            tile.biome = BiomeBasin.summateEffect(subbiomes, tile, size);
-            tile.biomeSeed = tile.biome & 0x7fffffff;
-        }
-    }
-    
-    
-    private int colorBlend(int c1, int c2) {
-        int r = ((((0x00ff0000 & c1) >> 16) * 4) + ((0x00ff0000 & c2) >> 16)) / 5; 
-        int g = ((((0x0000ff00 & c1) >> 8) * 4) + ((0x0000ff00 & c2) >> 8))  / 5; 
-        int b = (((0x000000ff & c1) * 4) + (0x000000ff & c2)) / 5; 
-        return 0xff000000 + (r << 16) + (g << 8) + b;
-    }
     
     
 }

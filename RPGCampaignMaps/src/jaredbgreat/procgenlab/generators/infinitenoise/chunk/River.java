@@ -6,7 +6,7 @@ import java.util.Random;
  * @author Jared Blackburn
  */
 public class River {
-    Map map;
+    MapMaker map;
     BasinNode begin, end;
     double dx, dy;
     double angle, da;
@@ -39,7 +39,7 @@ public class River {
             }
             return vals[v];
         }
-    }    
+    }      
     
     private class ChangeQueue {
         private final ChunkTile[] data = new ChunkTile[16];
@@ -63,10 +63,12 @@ public class River {
                 return out;
             }
         }
-    }
+    }  
     
     
-    public River(BasinNode high, BasinNode low, Map mapIn) {
+    
+    
+    public River(BasinNode high, BasinNode low, MapMaker mapIn) {
         Q = new ChangeQueue();
         map = mapIn;
         begin = high;

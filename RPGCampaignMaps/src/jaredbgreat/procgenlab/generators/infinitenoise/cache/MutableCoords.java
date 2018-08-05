@@ -3,7 +3,7 @@ package jaredbgreat.procgenlab.generators.infinitenoise.cache;
 import jaredbgreat.procgenlab.generators.chunkyregion.chunk.SpatialNoise;
 
 public class MutableCoords {
-	private static final SpatialNoise nh = new SpatialNoise(0xADD5C0DE);
+	private static final SpatialNoise NH = new SpatialNoise(0xADD5C0DE);
 	private int x, z;
 	
 	
@@ -34,12 +34,12 @@ public class MutableCoords {
 	
 	@Override
 	public int hashCode() {
-            return nh.intFor(x, z, 0);			
+            return NH.intFor(x, z, 0);			
 	}
         
         
         public static int hashCoords(int x, int z) {
-            return nh.intFor(x, z, 0);			
+            return NH.intFor(x, z, 0);			
         }
         
         

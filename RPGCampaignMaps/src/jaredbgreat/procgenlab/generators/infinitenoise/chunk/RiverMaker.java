@@ -7,12 +7,12 @@ import java.util.Random;
  * @author Jared Blackburn
  */
 public class RiverMaker {
-    private final Map  map;
+    private final MapMaker  map;
     private final Random rand;
     private final BasinNode[] starts, ends;
     private final int num;
     
-    public RiverMaker(Map mapIn, long seed) {
+    public RiverMaker(MapMaker mapIn, long seed) {
         map = mapIn;
         rand = new Random(seed);
         num = rand.nextInt(3) + 5;  

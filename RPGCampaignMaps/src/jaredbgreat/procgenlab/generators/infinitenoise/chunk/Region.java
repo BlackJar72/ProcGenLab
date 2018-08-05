@@ -6,7 +6,7 @@
 package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
 
 import jaredbgreat.procgenlab.generators.infinitenoise.cache.AbstractCachable;
-import static jaredbgreat.procgenlab.generators.infinitenoise.chunk.Map.*;
+import static jaredbgreat.procgenlab.generators.infinitenoise.chunk.MapMaker.*;
 
 /**
  *

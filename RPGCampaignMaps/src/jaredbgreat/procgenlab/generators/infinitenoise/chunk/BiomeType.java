@@ -74,7 +74,7 @@ public enum BiomeType {
     };
     
     
-    public static void makeBiomes(Map map, SpatialNoise random) {
+    public static void makeBiomes(MapMaker map, SpatialNoise random) {
         int[] noise = refineNoise(map.makeNoise(random, 4), map);
         int[] ice   = refineNoise10(map.makeNoise(random, 5), map);
         int[] cn    = refineNoise10(map.makeNoise(random, 6), map);
@@ -131,7 +131,7 @@ public enum BiomeType {
     }
     
     
-    private static int[] refineNoise(int[][] noise, Map map) {
+    private static int[] refineNoise(int[][] noise, MapMaker map) {
         int[] out = new int[map.map.length];
         // Could be better optimized, but this is a test of the gui and api
         for(int i = 1; i < (map.w + 1); i++) 
@@ -153,7 +153,7 @@ public enum BiomeType {
     }
     
     
-    private static int[] refineNoise10(int[][] noise, Map map) {
+    private static int[] refineNoise10(int[][] noise, MapMaker map) {
         int[] out = new int[map.map.length];
         // Could be better optimized, but this is a test of the gui and api
         for(int i = 1; i < (map.w + 1); i++) 
