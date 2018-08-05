@@ -52,8 +52,8 @@ public void finalize() throws Throwable {
     
     
     public Region init(int x, int z, SpatialNoise random) {
-        cx = (x * RSIZE) - RADIUS;
-        cz = (z * RSIZE) - RADIUS;
+        cx = (x * RSIZE); //- RADIUS;
+        cz = (z * RSIZE); //- RADIUS;
         makeBasins(5, 10, 15, random.getRandomAt(x, z, 0));
         makeTempBasins(10, random.getRandomAt(x, z, 1));
         makeRainBasins(12, random.getRandomAt(x, z, 2));
@@ -133,6 +133,7 @@ public void finalize() throws Throwable {
     
     
     public void makeRainBasins(int n, SpatialNoise.RandomAt random) {
+        int fuck;
         wet = new ClimateNode[n];
         for(int i = 0; i < wet.length; i++) {
             int cycle = i % 3;
@@ -142,23 +143,26 @@ public void finalize() throws Throwable {
                         cx + random.nextInt(RSIZE), 
                         cz + random.nextInt(RSIZE), 
                         9, 
-                        (BasinNode.getLogScaled(random.nextInt(5) - 15) / 30) * 1.5, 
-                        random.nextInt(5));
+                        (BasinNode.getLogScaled(random.nextInt(5) - 15) / 30) 
+                                * 1.5, 
+                        0); //fuck = random.nextInt(5);
                     break;
                 case 1:
                     wet[i] = new ClimateNode(
                         cx + random.nextInt(RSIZE), 
                         cz + random.nextInt(RSIZE), 
                         0, 
-                        (BasinNode.getLogScaled(random.nextInt(5) - 15) / 30) * 1.5, 
-                        random.nextInt(5));
+                        (BasinNode.getLogScaled(random.nextInt(5) - 15) / 30) 
+                                * 1.5, 
+                        0); //fuck = random.nextInt(5);
                     break;
                 case 2:
                     wet[i] = new ClimateNode(
                         cx + random.nextInt(RSIZE), 
                         cz + random.nextInt(RSIZE), 
                         random.nextInt(10), 
-                        (BasinNode.getLogScaled(random.nextInt(5) - 15) / 10) * 1.5, 
+                        (BasinNode.getLogScaled(random.nextInt(5) - 15) / 10) 
+                                * 1.5, 
                         random.nextInt(5));
                     break;
             }

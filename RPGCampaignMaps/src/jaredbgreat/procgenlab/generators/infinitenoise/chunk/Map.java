@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
 
 import jaredbgreat.procgenlab.generators.infinitenoise.cache.MutableCoords;
 
+// -6786601185332121418 
 
 /**
  * This represents a 256x256 chunk map geared toward Minecraft, which this 

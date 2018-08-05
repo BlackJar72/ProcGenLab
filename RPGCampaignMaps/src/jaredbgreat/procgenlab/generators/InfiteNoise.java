@@ -12,7 +12,6 @@ import jaredbgreat.procgenlab.api.palettes.DiscretePalette;
 import jaredbgreat.procgenlab.api.palettes.LiteralPalette;
 import jaredbgreat.procgenlab.generators.infinitenoise.chunk.MapMaker;
 import jaredbgreat.procgenlab.generators.infinitenoise.chunk.BiomeType;
-import jaredbgreat.procgenlab.generators.infinitenoise.chunk.Map;
 
 /**
  *

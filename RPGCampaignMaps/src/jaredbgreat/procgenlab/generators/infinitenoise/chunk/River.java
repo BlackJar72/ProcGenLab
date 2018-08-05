@@ -6,6 +6,7 @@ import java.util.Random;
  * @author Jared Blackburn
  */
 public class River {
+    final int MAX;
     MapMaker map;
     BasinNode begin, end;
     double dx, dy;
@@ -66,9 +67,8 @@ public class River {
     }  
     
     
-    
-    
     public River(BasinNode high, BasinNode low, MapMaker mapIn) {
+        MAX = MapMaker.RSIZE -2;
         Q = new ChangeQueue();
         map = mapIn;
         begin = high;
@@ -122,10 +122,19 @@ public class River {
             if(t.rlBiome < 3) {
                 oc++;
             }
-            return t.rlBiome == 3 || ((t.rlBiome < 3) 
-                    && ((t.val < 4) || oc > 8));
+            return t.rlBiome == 3 
+                    || ((t.rlBiome < 3) && (oc > 4) 
+                        && ((t.val < 4) || oc > 8)) 
+                    || outOfBounds(x, y);
         }
     }
+    
+    
+    private boolean outOfBounds(int x, int z) {        
+        return (x <= 1) || (z <= 1) 
+                ||(x >= MAX) || (z >= MAX);
+    }
+    
     
     private void incrementAngle(Random r) {        
         angle += da;

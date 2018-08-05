@@ -124,6 +124,7 @@ public class MapMaker {
         SpatialNoise random = regionNoise;
         for(int i = 0; i < premap.length; i++) {
             premap[i].val = BasinNode.summateEffect(basinAr, premap[i]);
+            edgeFix(premap[i]);
         }
         int[] noisy = refineNoise(makeNoise(random, 0), 4);
         for(int i = 0; i < premap.length; i++) {
@@ -319,6 +320,20 @@ public class MapMaker {
         for (ChunkTile tile : premap) {
             tile.biome = BiomeBasin.summateEffect(subbiomes, tile, size);
             tile.biomeSeed = tile.biome & 0x7fffffff;
+        }
+    }
+    
+    
+    private void edgeFix(ChunkTile t) {
+        if(t.x < 10) {
+            t.val += ((t.x - 10) / 2);
+        } else if(t.x >= (RSIZE - 10)) {
+            t.val -= ((t.x - RSIZE + 10) / 2);
+        }
+        if(t.z < 10) {
+            t.val += ((t.z - 10) /  2);
+        } else if(t.z >= (RSIZE - 10)) {
+            t.val -= ((t.z - RSIZE + 10) / 2);
         }
     }
     
