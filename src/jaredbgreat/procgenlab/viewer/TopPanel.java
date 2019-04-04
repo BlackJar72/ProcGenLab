@@ -28,6 +28,7 @@ public class TopPanel extends JPanel {
     GridLayout layout;
     
     JButton generate;
+    JComboBox categories;
     JComboBox generators;
     JTextField seedbox;
     JTextField profiler;
@@ -43,6 +44,7 @@ public class TopPanel extends JPanel {
     public void init() {
         setBorder(BorderFactory.createRaisedBevelBorder());
         addGenerateButton();
+        addCategorySelector();
         addSelector();
         addSeedBox();   
         addProfileBox();
@@ -64,9 +66,28 @@ public class TopPanel extends JPanel {
     
     
     /**
+     * Adds the combo box for categories
+     */
+    private void addCategorySelector() {
+        
+        categories = new JComboBox();
+        categories.setEditable(false);
+        categories.setEnabled(false);
+        
+        categories.setActionCommand("selectCategory");
+        categories.addItemListener(Interpreter.getInterpeter());
+        categories.addActionListener(Interpreter.getInterpeter());        
+        
+        add(categories);        
+        MainWindow.registerComponenent("CategoryComboBox", categories);
+    }
+    
+    
+    /**
      * Adds the combo box for generators
      */
     private void addSelector() {
+        
         generators = new JComboBox();
         generators.setEditable(false);
         generators.setEnabled(false);

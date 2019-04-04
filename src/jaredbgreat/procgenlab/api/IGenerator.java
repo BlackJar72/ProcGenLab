@@ -48,6 +48,12 @@ public interface IGenerator {
      * 
      * @return name*/
     public String getName();
+    /**
+     * Returns a category to classify generators
+     * 
+     * @return category
+     */
+    public String getCategory();
     /** Get the names of the layers for display on GUI tabs.
      * 
      * @return String[] - layer names*/
