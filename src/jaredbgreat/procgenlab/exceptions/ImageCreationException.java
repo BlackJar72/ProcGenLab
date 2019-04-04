@@ -12,8 +12,9 @@ package jaredbgreat.procgenlab.exceptions;
  * @author Jared Blackburn
  */
 public class ImageCreationException extends Exception {
+	private static final long serialVersionUID = -4573392965486859436L;
 
-    public ImageCreationException(String msg) {
+	public ImageCreationException(String msg) {
         super(msg);
     }
     

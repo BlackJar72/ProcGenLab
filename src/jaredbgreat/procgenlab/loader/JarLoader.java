@@ -90,9 +90,9 @@ public class JarLoader extends ClassLoader {
         List<String> classes = listClasses(file);
         URL url = new URL("jar:file://" + file.getCanonicalPath() + "!/");
         System.out.println(url);
-        URLClassLoader loader = new URLClassLoader(new URL[]{url}, getParent());
+        URLClassLoader loader = new URLClassLoader(new URL[]{url}, getParent());        
         for(String path : classes) {
-            String name = path.substring(0, path.length() - 6).replace(File.separator, ".");
+            String name = path.substring(0, path.length() - 6).replace("/", ".");
             System.out.println(path);
             Class theClass = loader.loadClass(name);
             System.out.println(theClass.getName()  + " -> " + IGenerator.class.isAssignableFrom(theClass));

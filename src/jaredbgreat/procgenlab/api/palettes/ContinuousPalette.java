@@ -15,7 +15,7 @@ import jaredbgreat.procgenlab.exceptions.ImageCreationException;
  */
 public class ContinuousPalette extends AbstractPalette {
     private double inMin, inMax;
-    private int minR, maxR, minG, maxG, minB, maxB, minA, maxA;
+    private int minR, maxR, minG, maxG, minB, maxB;
     private double rRange, gRange, bRange;
     
     boolean inRange(int value) {

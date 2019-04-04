@@ -7,7 +7,6 @@ package jaredbgreat.procgenlab;
  * https://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-import jaredbgreat.procgenlab.loader.InternalLoader;
 import jaredbgreat.procgenlab.viewer.MainWindow;
 
 /**
@@ -42,18 +41,12 @@ public class MapGenView {
     }
     
     
-    private static void init() {        
-        InternalLoader.listClasses();
-    }
+    private static void init() {}
     
     
-    private static void run() {
-        
-    }
+    private static void run() {}
     
     
-    private static void cleanup() {
-        
-    }
+    private static void cleanup() {}
     
 }

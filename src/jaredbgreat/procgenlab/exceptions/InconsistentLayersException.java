@@ -12,8 +12,9 @@ package jaredbgreat.procgenlab.exceptions;
  * @author Jared Blackburn
  */
 public class InconsistentLayersException extends Exception {
-    
-    public InconsistentLayersException(String message) {
+	private static final long serialVersionUID = 8620590028774614702L;
+
+	public InconsistentLayersException(String message) {
         super(message);
     }
 }
