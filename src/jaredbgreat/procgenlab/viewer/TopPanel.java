@@ -8,16 +8,18 @@ package jaredbgreat.procgenlab.viewer;
  */
 
 import java.awt.GridLayout;
+import java.util.List;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import jaredbgreat.procgenlab.viewer.control.GenerateCommand;
 import jaredbgreat.procgenlab.viewer.control.Interpreter;
 import jaredbgreat.procgenlab.viewer.control.SelectGeneratorCommand;
-import java.awt.event.ItemListener;
-import javax.swing.BorderFactory;
 
 /**
  *
@@ -149,9 +151,16 @@ public class TopPanel extends JPanel {
     
     private void removeGenerator(String name) {
         generators.removeItem(name);
-        if(generators.getItemCount() < 1) {
-            generators.setEnabled(false);
-        }
+    	generators.setEnabled(generators.getItemCount() > 0);
+    }
+    
+    
+    public void loadGenerators(List<String> names) {
+    	generators.removeAllItems();
+    	for(String name : names) {
+    		generators.addItem(name);;
+    	}
+    	generators.setEnabled(generators.getItemCount() > 0);
     }
     
     
