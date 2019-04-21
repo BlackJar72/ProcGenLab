@@ -25,9 +25,9 @@ import java.util.StringTokenizer;
  * @author jared
  */
 public class InfiteNoise implements IGenerator {
-    private static final int BIOME_SIZE = 256;
+    private static final int BIOME_SIZE = 16;
     private int biomeSize = BIOME_SIZE;
-    private SizeScale.Wrapper sizeScale;
+    private final SizeScale.Wrapper sizeScale;
     MapMaker map;
 
     public InfiteNoise() {
@@ -36,7 +36,7 @@ public class InfiteNoise implements IGenerator {
     
     @Override
     public void generate(Long seed) {
-        map = new MapMaker(0, 0, seed);
+        map = new MapMaker(0, 0, seed, sizeScale.value, biomeSize);
         map.generate();
     }
 
@@ -63,15 +63,18 @@ public class InfiteNoise implements IGenerator {
 
     @Override
     public void setParameters(String param) {
-        // Will need expanding with further options
-        StringTokenizer tokens = new StringTokenizer(param, SUS + SRS + SGS + SFS);
-        if(tokens.nextToken().equals("multi")) {
-            if(tokens.nextToken().equals("Size Scale")) {
-                sizeScale.set(tokens.nextToken().toUpperCase());
-            }
-        } else if(tokens.nextToken().equals("int")) {
-            if(tokens.nextToken().equals("Biome Size")) {                
-                biomeSize = Integer.valueOf(tokens.nextToken());
+        StringTokenizer l1 = new StringTokenizer(param, SGS + SFS);
+        while(l1.hasMoreTokens()) {
+            StringTokenizer tokens = new StringTokenizer(l1.nextToken(), SRS);
+            String typename = tokens.nextToken();
+            if(typename.equalsIgnoreCase("multi")) {
+                if(tokens.nextToken().equalsIgnoreCase("Size Scale")) {
+                    sizeScale.set(tokens.nextToken().toUpperCase());
+                }
+            } else if(typename.equalsIgnoreCase("int")) {
+                if(tokens.nextToken().equalsIgnoreCase("Biome Size")) {
+                    biomeSize = Integer.valueOf(tokens.nextToken());
+                }
             }
         }
     }

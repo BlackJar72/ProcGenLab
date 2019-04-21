@@ -1,33 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
-
-import jaredbgreat.procgenlab.generators.region.Size;
-import static jaredbgreat.procgenlab.generators.region.Size.MEDIUM;
-import static jaredbgreat.procgenlab.generators.region.Size.setting;
 
 /**
  *
- * @author jared
+ * @author Jared Blackburn
  */
 public enum SizeScale {
-    X1 (1),
-    X2 (2),
-    X4 (4);
+    X1 (1, 0),
+    X2 (2, 1),
+    X4 (4, 2);
     
     public final int whole;
     public final double fract;
     public final double inv;
+    public final int log; // determines fractal iterations, mostly
     
     public static SizeScale setting = X1;
     
-    SizeScale(int s) {
+    SizeScale(int s, int l) {
         whole = s;
         fract = s;
         inv = 1.0 / fract;
+        log = l;
     }
     
     

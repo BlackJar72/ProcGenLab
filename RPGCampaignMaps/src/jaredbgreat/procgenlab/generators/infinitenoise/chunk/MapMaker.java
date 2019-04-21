@@ -27,7 +27,6 @@ public class MapMaker {
     public static final int RSIZE = 4096 / CSIZE; // region / "continent" size
     public static final int RADIUS = RSIZE / 2; // radius for basin effect range
     public static final int SQRADIUS = RADIUS * RADIUS;
-    public static final int BSIZE = 256 / CSIZE; // base size for (sub)biomes
     public static final int GENSIZE = 7; // area of chunks to looks at
     public static final int GENHALF1 = GENSIZE  / 2;
     public static final int GENHALF0 = GENHALF1 - 1;
@@ -51,9 +50,14 @@ public class MapMaker {
     public final SpatialNoise regionNoise;
     public final SpatialNoise biomeNoise;
     
+    public final SizeScale sizeScale;
+    public final int biomeSize;
     
-    public MapMaker(int x, int z, long seed) {
+    
+    public MapMaker(int x, int z, long seed, SizeScale scale, int size) {
         Random random = new Random(seed);
+        sizeScale = scale;
+        biomeSize = size;
         chunkNoise  = new SpatialNoise(random.nextLong(), random.nextLong());
         regionNoise = new SpatialNoise(random.nextLong(), random.nextLong());
         biomeNoise  = new SpatialNoise(random.nextLong(), random.nextLong());
@@ -144,7 +148,7 @@ public class MapMaker {
         for(int i = 0; i < premap.length; i++) {
             
         }
-        makeBiomes(256, random.getRandomAt(0, 0, 3));
+        makeBiomes(random.getRandomAt(0, 0, 3));
         BiomeType.makeBiomes(this, random, regions[4]);
     }
     
@@ -307,9 +311,9 @@ public class MapMaker {
     }
     
     
-    public void makeBiomes(int sizeBlocks, RandomAt random) {
-        int size = sizeBlocks / 16;
-        int across = BSIZE;
+    public void makeBiomes(RandomAt random) {
+        int size = biomeSize;
+        int across = RSIZE / biomeSize;
         int down = across;
         subbiomes = new BiomeBasin[across][down];
         for(int i = 0; i < across; i++) 
