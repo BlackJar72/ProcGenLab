@@ -18,7 +18,7 @@ public class ChunkTile {
     int biomeSeed = 0, biome = 0;
     int noiseVal = 0;
     double faults;
-    boolean mountain = false, hilly = false, land = false;
+    boolean mountain = false, hilly = false, land = false, beach = false;
     
     public ChunkTile(int x, int y) {
         this.x = x;
@@ -67,7 +67,11 @@ public class ChunkTile {
 
     public boolean isIsHilly() {
         return hilly;
-    }    
+    }   
+
+    public boolean isIsBeach() {
+        return beach;
+    }  
     
     public void nextBiomeSeed() {
     	biomeSeed ^= biomeSeed << 13;

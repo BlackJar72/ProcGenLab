@@ -8,7 +8,6 @@ public class BasinNode {
     final int x, y, value;
     final double decay;
     private static final double[] LOGTABLE = makeLogTable();
-    private static final double[] logtable = makeLogTable();
     
     
     public BasinNode(int x, int y, int value, double decay) {
@@ -78,10 +77,17 @@ public class BasinNode {
     
     
     public static double getLogScaled(int in) {
-        return logtable[in + 15];
+        return LOGTABLE[in + 15];
     }
     
     
+    public String toString() {
+        return "    [x=" + x + ", z=" + y + ", val=" + value + ", decay=" + decay + "] ";
+    }
     
+    
+    public String briefString() {
+        return "    [x=" + x + ", z=" + y + "] ";
+    }
     
 }

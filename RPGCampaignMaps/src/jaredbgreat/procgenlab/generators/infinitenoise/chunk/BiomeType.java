@@ -27,6 +27,7 @@ public enum BiomeType {
     SAVANNA (0xff88ff44),
     TAIGA (0xff22aa99),
     FOREST (0xff00aa22),
+    PARK (0xff10c040),
     SFOREST (0xff00aa22),
     TFOREST (0xff00aa22),
     JUNGLE (0xff22ff44),
@@ -34,7 +35,8 @@ public enum BiomeType {
     SCRUB (0xff668844),
     ALPINE (0xff776688), 
     ALPINE2 (0xffaaaacc),  
-    HILLY (0xff556666);  
+    HILLY (0xff556666),  
+    BEACH (0xffaaff88);
     
     public final int color;
     
@@ -56,11 +58,11 @@ public enum BiomeType {
     	CGRASS,  CGRASS,   TAIGA,   TAIGA,   TAIGA,   TAIGA,  TAIGA,  TAIGA,  TAIGA,  TAIGA,
     	CGRASS,  CGRASS,   TAIGA,   TAIGA,   TAIGA,   TAIGA,  TAIGA,  TAIGA,  TAIGA,  TAIGA,
     	//Temperate
-    	GRASS,  GRASS,   GRASS,   GRASS,   FOREST,  FOREST, FOREST, FOREST, FOREST, FOREST,
-    	SCRUB,  GRASS,   GRASS,   GRASS,   FOREST,  FOREST, FOREST, FOREST, FOREST, FOREST,
-    	SCRUB,  GRASS,   GRASS,   GRASS,   FOREST,  FOREST, FOREST, FOREST, FOREST, FOREST,
-    	DESERT, SCRUB,   GRASS,   GRASS,   FOREST,  FOREST, FOREST, FOREST, FOREST, FOREST,
-    	DESERT, DESERT,  SCRUB,   GRASS,   FOREST,  FOREST, FOREST, FOREST, FOREST, FOREST,
+    	GRASS,  GRASS,   GRASS,   GRASS,   PARK,  FOREST, FOREST, FOREST, FOREST, FOREST,
+    	SCRUB,  GRASS,   GRASS,   GRASS,   PARK,  FOREST, FOREST, FOREST, FOREST, FOREST,
+    	SCRUB,  GRASS,   GRASS,   GRASS,   PARK,  FOREST, FOREST, FOREST, FOREST, FOREST,
+    	DESERT, SCRUB,   GRASS,   GRASS,   PARK,  FOREST, FOREST, FOREST, FOREST, FOREST,
+    	DESERT, DESERT,  SCRUB,   GRASS,   PARK,  FOREST, FOREST, FOREST, FOREST, FOREST,
     	//Sub-Tropical
     	DESERT, DESERT,  DESERT,  SCRUB,   SGRASS,   SFOREST, SFOREST, SFOREST, SFOREST, SFOREST,
     	DESERT, DESERT,  DESERT,  SCRUB,   SGRASS,   SFOREST, SFOREST, SFOREST, SFOREST, JUNGLE,
@@ -82,6 +84,7 @@ public enum BiomeType {
         int[] ice   = refineNoise10(map.makeNoise(random, 5), map);
         int[] cn    = refineNoise10(map.makeNoise(random, 6), map);
         for(int i = 0; i < map.premap.length; i++) {
+            map.makeBeach(map.premap[i], cn[i]);            
             findBiome(map.premap[i], noise[i], ice[i], cn[i]);
         }
         RiverMaker rm = new RiverMaker(map, random.longFor(0, 0, 16), 
@@ -92,7 +95,7 @@ public enum BiomeType {
     
     public static void findBiome(ChunkTile tile, int noise, int ice, int cn) {
         if(tile.rlBiome == 0) {
-            if(((ice / 2) - tile.temp) > 0) {
+            if(((ice / 2) - tile.temp) > -2) {
                 tile.rlBiome = FROCEAN.ordinal();
             } else if(tile.val < 3) {
                 //tile.rlBiome = DOCEAN.ordinal();
@@ -109,6 +112,10 @@ public enum BiomeType {
                 return;
             }
             tile.nextBiomeSeed();
+        }
+        if(tile.isIsBeach()) {
+            tile.rlBiome = BEACH.ordinal();
+            return;
         }
         int mval = (int)(tile.faults * 10)  + 15 - tile.val - tile.noiseVal;
         /*if(mval < 10) {

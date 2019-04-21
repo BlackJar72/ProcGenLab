@@ -65,10 +65,14 @@ public final class WorldMap implements IWorldMap {
         if(names.length != layers) {
             if(names.length < layers) {
                 throw new 
-                    InconsistentLayersException("Not all layers are named.");
+                    InconsistentLayersException("Not all layers are named"
+                            + " (layers = " + layers + ", given = " 
+                            + names.length + ")");
             } else {
                 throw new 
-                    InconsistentLayersException("More names given than layers.");                
+                    InconsistentLayersException("More names given than layers;"
+                            + " (layers = " + layers + ", given = " 
+                            + names.length + ")");
             }
         }
         IPalette[] palettes = generator.getColorPaletes();
@@ -86,10 +90,14 @@ public final class WorldMap implements IWorldMap {
         if(maps.length != layers) {
             if(maps.length < layers) {
                 throw new 
-                    InconsistentLayersException("Not all layers have maps.");
+                    InconsistentLayersException("Not all layers have maps"
+                            + " (layers = " + layers + ", given = " 
+                            + maps.length + ")");
             } else {
                 throw new 
-                    InconsistentLayersException("More names given than maps.");                
+                    InconsistentLayersException("More names given than maps"
+                            + " (layers = " + layers + ", given = " 
+                            + maps.length + ")");               
             }
         }
         images = new BufferedImage[layers];

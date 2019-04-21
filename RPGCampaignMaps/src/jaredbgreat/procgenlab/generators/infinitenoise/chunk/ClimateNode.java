@@ -48,4 +48,9 @@ public class ClimateNode extends BasinNode {
         return (int)Math.max((effect / sum) + noise, 0);
     }
     
+    
+    public String toString() {
+        return "    [x=" + x + ", z=" + y + ", val=" + value + ", decay=" + decay + ", faint=" + "] ";
+    }
+    
 }

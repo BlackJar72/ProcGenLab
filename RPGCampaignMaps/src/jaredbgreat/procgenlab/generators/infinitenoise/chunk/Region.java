@@ -6,6 +6,7 @@
 package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
 
 import jaredbgreat.procgenlab.generators.infinitenoise.cache.AbstractCachable;
+import jaredbgreat.procgenlab.generators.infinitenoise.cache.MutableCoords;
 import static jaredbgreat.procgenlab.generators.infinitenoise.chunk.MapMaker.*;
 
 /**
@@ -48,6 +49,32 @@ public void finalize() throws Throwable {
         makeRainBasins(12, random.getRandomAt(x, z, 2));
         // Profile
         num++;
+        //System.out.println(toDataOut());
+    }
+    
+    public String toDataOut() {
+        StringBuilder builder = new StringBuilder();
+        MutableCoords coords = this.getCoords();
+        builder.append("\n*************\n");
+        builder.append("Region:" + coords.getX() + ", " + coords.getZ() + "\n");
+        builder.append("cx = " + cx + "; cz = " + cz + "\n");
+        builder.append("Land Sequences: \n");
+        for(BasinNode basin : basins) {
+            builder.append(basin.briefString());
+            builder.append('\n');
+        }
+        builder.append("Temp Sequences: \n");
+        for(ClimateNode basin : temp) {
+            builder.append(basin.briefString());
+            builder.append('\n');
+        }
+        builder.append("Wetness Sequences: \n");
+        for(ClimateNode basin : wet) {
+            builder.append(basin.briefString());
+            builder.append('\n');
+        }
+        builder.append("\n*************\n");
+        return builder.toString();
     }
     
     
@@ -127,13 +154,12 @@ public void finalize() throws Throwable {
                 cz + random.nextInt(RSIZE), 
                 random.nextInt(25), 
                 (BasinNode.getLogScaled(random.nextInt(5) - 12) / 30) * 1.5, 
-                random.nextInt(5) + 5);
+                random.nextInt(3) + 1);
         }
     }
     
     
     public void makeRainBasins(int n, SpatialNoise.RandomAt random) {
-        int fuck;
         wet = new ClimateNode[n];
         for(int i = 0; i < wet.length; i++) {
             int cycle = i % 3;
@@ -145,7 +171,7 @@ public void finalize() throws Throwable {
                         9, 
                         (BasinNode.getLogScaled(random.nextInt(5) - 15) / 30) 
                                 * 1.5, 
-                        0); //fuck = random.nextInt(5);
+                        0);
                     break;
                 case 1:
                     wet[i] = new ClimateNode(
@@ -154,7 +180,7 @@ public void finalize() throws Throwable {
                         0, 
                         (BasinNode.getLogScaled(random.nextInt(5) - 15) / 30) 
                                 * 1.5, 
-                        0); //fuck = random.nextInt(5);
+                        0); 
                     break;
                 case 2:
                     wet[i] = new ClimateNode(
@@ -163,7 +189,7 @@ public void finalize() throws Throwable {
                         random.nextInt(10), 
                         (BasinNode.getLogScaled(random.nextInt(5) - 15) / 10) 
                                 * 1.5, 
-                        random.nextInt(5));
+                        random.nextInt(5)); //fuck = random.nextInt(5);
                     break;
             }
         }

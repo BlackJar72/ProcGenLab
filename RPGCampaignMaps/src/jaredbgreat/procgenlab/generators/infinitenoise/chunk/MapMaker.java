@@ -121,12 +121,12 @@ public class MapMaker {
         BasinNode[] basinAr = basins.toArray(new BasinNode[basins.size()]);
         ClimateNode[] tempAr = temp.toArray(new ClimateNode[temp.size()]);
         ClimateNode[] wetAr = wet.toArray(new ClimateNode[wet.size()]);
-        SpatialNoise random = regionNoise;
+        SpatialNoise random = chunkNoise;
         for(int i = 0; i < premap.length; i++) {
             premap[i].val = BasinNode.summateEffect(basinAr, premap[i]);
             edgeFix(premap[i]);
         }
-        int[] noisy = refineNoise(makeNoise(random, 0), 4);
+        int[] noisy = refineNoise(makeNoise(random, 1), 4);
         for(int i = 0; i < premap.length; i++) {
             premap[i].rlBiome = 1 - noisy[i];
         }
@@ -140,6 +140,9 @@ public class MapMaker {
         for(int i = 0; i < premap.length; i++) {
             premap[i].wet = Math.min(ClimateNode.summateEffect(wetAr, premap[i], 
                     doubleNoise[i]), 9);
+        }
+        for(int i = 0; i < premap.length; i++) {
+            
         }
         makeBiomes(256, random.getRandomAt(0, 0, 3));
         BiomeType.makeBiomes(this, random, regions[4]);
@@ -264,7 +267,7 @@ public class MapMaker {
             for(int j = y - 1; j <= y + 1; j++) {
                 sum += noise[i][j];
             }
-        if(sum < premap[((y -1) * RSIZE) + (x - 1)].val) {
+        if(sum < premap[((y - 1) * RSIZE) + (x - 1)].val) {
             return 0;
         } else {
             return 1;
@@ -335,6 +338,34 @@ public class MapMaker {
         } else if(t.z >= (RSIZE - 10)) {
             t.val -= ((t.z - RSIZE + 10) / 2);
         }
+    }
+    
+    
+    private boolean notLand(ChunkTile t) {
+        return t.rlBiome == 0;
+    }
+    
+    
+    void makeBeach(ChunkTile t, int noise) {
+        //System.out.println();
+        if(notLand(t) || (t.getX() < 1) || (t.getX() > 254)
+                      || (t.getZ() < 1) || (t.getZ() > 254)) return;
+        int oceans = 0;
+        for(int i = -1; i < 2; i++) 
+            for(int j = -1; j < 2; j++) {
+                ChunkTile x = premap[((t.getX() + i) * RSIZE) + t.getZ() + j];
+                //System.out.println(x.getX() + ", " + x.getZ() + ": " + x.rlBiome);
+                if(notLand(x)) {
+                    oceans++;
+                }
+            }
+        //System.out.println(oceans);
+        if(oceans < 3) return;
+        //System.out.println(((t.getBiomeSeed() >> 16) & 1));
+        t.beach = noise < (oceans - (2 * Math.max(oceans - 4, 0)) + 3 
+                - ((t.getBiomeSeed() >> 16) & 1)
+                + ((t.getBiomeSeed() >> 15) & 1));
+        //System.out.println();
     }
     
     

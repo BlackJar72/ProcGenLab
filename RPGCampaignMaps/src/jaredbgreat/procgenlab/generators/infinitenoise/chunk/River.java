@@ -1,5 +1,7 @@
 package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Random;
 
 /**
@@ -13,8 +15,10 @@ public class River {
     double angle, da;
     double cx, cy, rx, ry;
     AS s;
-    final ChangeQueue Q;
+    final Deque<ChunkTile> Q;
+    //final ChangeQueue Q;
     private int oc;
+    //private ChunkTile last;
     
     private enum AS {
         P2 (2,   0),
@@ -42,34 +46,34 @@ public class River {
         }
     }      
     
-    private class ChangeQueue {
-        private final ChunkTile[] data = new ChunkTile[16];
-        private int head = 0, tail = 0;
-        public ChunkTile push(ChunkTile in) {
-            data[head] = in;
-            head = (head + 1) % data.length;
-            if(head == tail) {
-                tail = (tail + 1) % data.length;
-                return data[head];
-            } else {
-                return null;
-            }
-        }
-        public ChunkTile pop() {
-            if(head == tail) {
-                return null;
-            } else {
-                ChunkTile out = data[tail];
-                tail = (tail + 1) % data.length;
-                return out;
-            }
-        }
-    }  
+//    private class ChangeQueue {
+//        private final ChunkTile[] data = new ChunkTile[16];
+//        private int head = 0, tail = 0;
+//        public ChunkTile push(ChunkTile in) {
+//            data[head] = in;
+//            head = (head + 1) % data.length;
+//            if(head == tail) {
+//                tail = (tail + 1) % data.length;
+//                return data[head];
+//            } else {
+//                return null;
+//            }
+//        }
+//        public ChunkTile pop() {
+//            if(head == tail) {
+//                return null;
+//            } else {
+//                ChunkTile out = data[tail];
+//                tail = (tail + 1) % data.length;
+//                return out;
+//            }
+//        }
+//    }  
     
     
     public River(BasinNode high, BasinNode low, MapMaker mapIn) {
         MAX = MapMaker.RSIZE -2;
-        Q = new ChangeQueue();
+        Q = new ArrayDeque<>();
         map = mapIn;
         begin = high;
         end   = low;
@@ -102,13 +106,14 @@ public class River {
             incrementAngle(r);
             cx += (f * dx) + (p * dy);
             cy += (f * dy) + (p * dx);
-            ChunkTile toChange = Q.push(map.getTile((int)cx, (int)cy));
-            if(toChange != null) {
-                makeRiver(toChange);
-            }
+            Q.push(map.getTile((int)cx, (int)cy));
+            //ChunkTile toChange = Q.peek();
+//            if(toChange != null) {
+//                makeRiver(toChange);
+//            }
         } while(!shouldEnd((int)cx, (int)cy));
         ChunkTile toChange;
-        while((toChange = Q.pop()) != null) {
+        while(!Q.isEmpty() && (toChange = Q.pop()) != null) {
             makeRiver(toChange);
         }
     }
