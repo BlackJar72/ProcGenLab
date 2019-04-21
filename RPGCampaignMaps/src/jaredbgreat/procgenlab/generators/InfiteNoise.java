@@ -5,6 +5,10 @@
  */
 package jaredbgreat.procgenlab.generators;
 
+import static jaredbgreat.procgenlab.api.Delims.SFS;
+import static jaredbgreat.procgenlab.api.Delims.SGS;
+import static jaredbgreat.procgenlab.api.Delims.SRS;
+import static jaredbgreat.procgenlab.api.Delims.SUS;
 import jaredbgreat.procgenlab.api.IGenerator;
 import jaredbgreat.procgenlab.api.IPalette;
 import jaredbgreat.procgenlab.api.palettes.ContinuousPalette;
@@ -12,13 +16,23 @@ import jaredbgreat.procgenlab.api.palettes.DiscretePalette;
 import jaredbgreat.procgenlab.api.palettes.LiteralPalette;
 import jaredbgreat.procgenlab.generators.infinitenoise.chunk.MapMaker;
 import jaredbgreat.procgenlab.generators.infinitenoise.chunk.BiomeType;
+import jaredbgreat.procgenlab.generators.infinitenoise.chunk.SizeScale;
+import jaredbgreat.procgenlab.generators.region.Size;
+import java.util.StringTokenizer;
 
 /**
  *
  * @author jared
  */
 public class InfiteNoise implements IGenerator {
+    private static final int BIOME_SIZE = 256;
+    private int biomeSize = BIOME_SIZE;
+    private SizeScale.Wrapper sizeScale;
     MapMaker map;
+
+    public InfiteNoise() {
+        this.sizeScale = new SizeScale.Wrapper();
+    }
     
     @Override
     public void generate(Long seed) {
@@ -40,12 +54,28 @@ public class InfiteNoise implements IGenerator {
     }
 
     @Override
-    public String getParameters() {
-        return "";
+    public String getParameters() {        
+        return "MULTI" + SRS + "Size Scale" + SRS + "x1" + SUS + "x2" 
+                + SUS  + "x4" + SGS 
+                + "INT" + SRS + "Biome Size" + SRS + BIOME_SIZE
+                + SFS;
     }
 
     @Override
-    public void setParameters(String param) {}
+    public void setParameters(String param) {
+        // Will need expanding with further options
+        StringTokenizer tokens = new StringTokenizer(param, SUS + SRS + SGS + SFS);
+        if(tokens.nextToken().equals("multi")) {
+            if(tokens.nextToken().equals("Size Scale")) {
+                sizeScale.set(tokens.nextToken().toUpperCase());
+            }
+        } else if(tokens.nextToken().equals("int")) {
+            if(tokens.nextToken().equals("Biome Size")) {                
+                biomeSize = Integer.valueOf(tokens.nextToken());
+            }
+        }
+    }
+    
 
     @Override
     public IPalette[] getColorPaletes() {
