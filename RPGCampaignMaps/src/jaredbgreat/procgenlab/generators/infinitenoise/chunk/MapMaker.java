@@ -114,23 +114,23 @@ public class MapMaker {
     
     public void generate() {
         Region[] regions = findRegions(coords.getX(), coords.getZ());
-        ArrayList<BasinNode> basins = new ArrayList<>();
-        ArrayList<ClimateNode> temp = new ArrayList<>();
-        ArrayList<ClimateNode> wet = new ArrayList<>();
+        ArrayList<BasinNode> lBasins = new ArrayList<>();
+        ArrayList<ClimateNode> lTemp = new ArrayList<>();
+        ArrayList<ClimateNode> lWet = new ArrayList<>();
         for (Region region : regions) {
-            basins.addAll(Arrays.asList(region.basins));
-            temp.addAll(Arrays.asList(region.temp));
-            wet.addAll(Arrays.asList(region.wet));
+            lBasins.addAll(Arrays.asList(region.getBasins()));
+            lTemp.addAll(Arrays.asList(region.getTemp()));
+            lWet.addAll(Arrays.asList(region.getWet()));
         }
-        BasinNode[] basinAr = basins.toArray(new BasinNode[basins.size()]);
-        ClimateNode[] tempAr = temp.toArray(new ClimateNode[temp.size()]);
-        ClimateNode[] wetAr = wet.toArray(new ClimateNode[wet.size()]);
+        BasinNode[] basinAr = lBasins.toArray(new BasinNode[lBasins.size()]);
+        ClimateNode[] tempAr = lTemp.toArray(new ClimateNode[lTemp.size()]);
+        ClimateNode[] wetAr = lWet.toArray(new ClimateNode[lWet.size()]);
         SpatialNoise random = chunkNoise;
         for(int i = 0; i < premap.length; i++) {
-            premap[i].val = BasinNode.summateEffect(basinAr, premap[i]);
+            premap[i].val = BasinNode.summateEffect(basinAr, premap[i], 1.0);
             edgeFix(premap[i]);
         }
-        int[] noisy = refineNoise(makeNoise(random, 1), 4);
+        int[] noisy = refineNoise(random, 4);
         for(int i = 0; i < premap.length; i++) {
             premap[i].rlBiome = 1 - noisy[i];
         }
@@ -138,12 +138,12 @@ public class MapMaker {
         doubleNoise = averageNoise(makeDoubleNoise(random, 1));
         for(int i = 0; i < premap.length; i++) {
             premap[i].temp = Math.min(ClimateNode.summateEffect(tempAr, premap[i], 
-                    doubleNoise[i]), 24);
+                    doubleNoise[i], sizeScale.inv), 24);
         }
         doubleNoise = averageNoise(makeDoubleNoise(random, 2));
         for(int i = 0; i < premap.length; i++) {
             premap[i].wet = Math.min(ClimateNode.summateEffect(wetAr, premap[i], 
-                    doubleNoise[i]), 9);
+                    doubleNoise[i], sizeScale.inv), 9);
         }
         for(int i = 0; i < premap.length; i++) {
             
@@ -233,18 +233,21 @@ public class MapMaker {
     }
     
     
-    protected int[] refineNoise(int[][] noise, int times) {
-        int[][] out = noise;
-        for(int i = times; i > 0; i--) {
+    protected int[] refineNoise(SpatialNoise random, int times) {
+        int[][] out = makeNoise(random, 1);
+        for(int i = times - 2; i > 0; i--) {
             out = refineNoise2(out);
         }
+        for(int i = 0; i < sizeScale.log; i++) {
+            
+        }
+        out = refineNoise2(out);
         return refineNoise(out);
     }
     
     
     protected int[] refineNoise(int[][] noise) {
         int[] out = new int[premap.length];
-        // Could be better optimized, but this is a test of the gui and api
         for(int i = 1; i < (RSIZE + 1); i++) 
             for(int j = 1; j < (RSIZE + 1); j++) {
                 out[((j - 1) * RSIZE) + (i - 1)] = refineCell(noise, i, j);
@@ -255,10 +258,43 @@ public class MapMaker {
     
     protected int[][] refineNoise2(int[][] noise) {
         int[][] out = new int[noise.length][noise[0].length];
-        // Could be better optimized, but this is a test of the gui and api
         for(int i = 1; i < (RSIZE + 1); i++) 
             for(int j = 1; j < (RSIZE + 1); j++) {
                 out[i][j] = refineCell(noise, i, j);
+            }
+        return out;
+    }
+    
+    
+    protected int[][] refineNoise3(int[][] noise) {
+        int[][] out = new int[noise.length][noise[0].length];
+        for(int i = 1; i < (RSIZE + 1); i++) 
+            for(int j = 1; j < (RSIZE + 1); j++) {
+                out[i][j] = refineCell2(noise, i, j);
+            }
+        return out;
+    }
+    
+    
+    private int[][] upsize(int[][] noise, SpatialNoise random, int t) {
+        int[][] out = new int[noise.length * 2][noise[0].length * 2];
+        for(int i = 0; i < noise.length; i++)
+            for(int j = 0; j < noise[0].length; j++) {
+                if(noise[i][j] > -1) {
+                    out[i * 2][j * 2]         = noise[i][j];
+                    out[i * 2 + 1][j * 2]     = noise[i][j];
+                    out[i * 2 + 1][j * 2 + 1] = noise[i][j];
+                    out[i * 2][j * 2 + 1]     = noise[i][j];
+                } else {
+                    out[i * 2][j * 2]         = absModulus(random.intFor(i, j, t), 2);
+                    out[i * 2 + 1][j * 2]     = absModulus(random.intFor(i, j, t), 2);
+                    out[i * 2 + 1][j * 2 + 1] = absModulus(random.intFor(i, j, t), 2);
+                    out[i * 2][j * 2 + 1]     = absModulus(random.intFor(i, j, t), 2);                    
+                }
+            }        
+        for(int i = 1; i < (RSIZE + 1); i++) 
+            for(int j = 1; j < (RSIZE + 1); j++) {
+                out[i][j] = refineCell2(noise, i, j);
             }
         return out;
     }
@@ -275,6 +311,23 @@ public class MapMaker {
             return 0;
         } else {
             return 1;
+        }
+    }
+    
+    
+    public int refineCell2(int[][] noise, int x, int y) {
+        int sum = 0;
+        // Yes, I include the cell itself -- its simpler and works for me
+        for(int i = x - 1; i <= x + 1; i++) 
+            for(int j = y - 1; j <= y + 1; j++) {
+                sum += noise[i][j];
+            }
+        if(sum < premap[((y - 1) * RSIZE) + (x - 1)].val) {
+            return 0;
+        } else if(sum > premap[((y - 1) * RSIZE) + (x - 1)].val) {
+            return 1;
+        } else {
+            return - 1;
         }
     }
     

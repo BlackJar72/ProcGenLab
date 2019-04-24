@@ -326,11 +326,7 @@ public class SpatialNoise {
     
     
     public static int absModulus(int in, int bound) {
-        if(in < 0) {
-            return -(in % bound);             
-        } else {
-            return (in % bound);
-        }
+        return (in % bound) & 0x7fffffff;
     }
 }
 

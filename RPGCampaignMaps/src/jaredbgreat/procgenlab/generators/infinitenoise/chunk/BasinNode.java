@@ -5,7 +5,7 @@ package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
  * @author Jared Blackburn
  */
 public class BasinNode {
-    final int x, y, value;
+    final double x, y, value;
     final double decay;
     private static final double[] LOGTABLE = makeLogTable();
     
@@ -24,14 +24,15 @@ public class BasinNode {
     }
     
     
-    public double getWeaknessAt(int atx, int aty) {
-        double xdisplace = ((double)(x - atx) * decay);
-        double ydisplace = ((double)(y - aty) * decay);
+    public double getWeaknessAt(int atx, int aty, double scale) {
+        //System.out.println("Scale = " + scale);
+        double xdisplace = ((x - (((double)atx) * scale)) * decay);
+        double ydisplace = ((y - (((double)aty) * scale)) * decay);
         return Math.min((xdisplace * xdisplace) + (ydisplace * ydisplace), 1.0);
     }
     
     
-    public static int summateEffect(BasinNode[] n, ChunkTile t) {
+    public static int summateEffect(BasinNode[] n, ChunkTile t, double scale) {
         double effect = 0.0;
         double sum    = 0.0;
         double power, weakness;
@@ -39,7 +40,7 @@ public class BasinNode {
             if((n[i].x == t.x) && (n[i].y == t.z)) {
                 return (int)n[i].value;
             }
-            weakness = n[i].getWeaknessAt(t.x, t.z);
+            weakness = n[i].getWeaknessAt(t.x, t.z, scale);
             power = 1.0 / (weakness * weakness);
             sum += power;
             effect += Math.max(((double)n[i].value) * power, 0);
@@ -49,7 +50,8 @@ public class BasinNode {
     }
     
     
-    public static int summateEffect(BasinNode[] n, ChunkTile t, double noise) {
+    public static int summateEffect(BasinNode[] n, ChunkTile t, 
+                double noise, double scale) {
         double effect = 0.0;
         double sum    = 0.0;
         double power, weakness;
@@ -57,7 +59,7 @@ public class BasinNode {
             if((n[i].x == t.x) && (n[i].y == t.z)) {
                 return (int)n[i].value;
             }
-            weakness = n[i].getWeaknessAt(t.x, t.z);
+            weakness = n[i].getWeaknessAt(t.x, t.z, scale);
             power = 1.0 / (weakness * weakness);
             sum += power;
             effect += Math.max(((double)n[i].value) * power, 0);
@@ -82,7 +84,8 @@ public class BasinNode {
     
     
     public String toString() {
-        return "    [x=" + x + ", z=" + y + ", val=" + value + ", decay=" + decay + "] ";
+        return "    [x=" + x + ", z=" + y + ", val=" + value 
+             + ", decay=" + decay + "] ";
     }
     
     

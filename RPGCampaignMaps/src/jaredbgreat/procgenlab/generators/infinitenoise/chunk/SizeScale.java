@@ -5,9 +5,9 @@ package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
  * @author Jared Blackburn
  */
 public enum SizeScale {
-    X1 (1, 0),
-    X2 (2, 1),
-    X4 (4, 2);
+    X1 (1.0, 0),
+    X2 (2.0, 1),
+    X4 (4.0, 2);
     
     public final int whole;
     public final double fract;
@@ -16,8 +16,8 @@ public enum SizeScale {
     
     public static SizeScale setting = X1;
     
-    SizeScale(int s, int l) {
-        whole = s;
+    SizeScale(double s, int l) {
+        whole = (int)s;
         fract = s;
         inv = 1.0 / fract;
         log = l;
