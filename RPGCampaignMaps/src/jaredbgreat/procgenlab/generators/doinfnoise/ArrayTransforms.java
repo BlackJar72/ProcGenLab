@@ -6,12 +6,39 @@ import static jaredbgreat.procgenlab.generators.doinfnoise.MathFuncs.*;
  * A class to hold functions (static methods) for transforming arrays of 
  * integer data (bytes or ints), predominantly through cellular automata as 
  * well as with randomness.
+ * 
  *
  * @author Jared Blackburn
  */
+// At this point many possible ways of doing this are bing considered and 
+// given preliminary development.
 public final class ArrayTransforms {    
     private ArrayTransforms() {/*Do not instantiate me!*/}
     
+    /**
+     * Generate a one dimensional representation of a square bit field.
+     * 
+     * The requested widths should be given as multiples of 8, though it will 
+     * protect itself from errors involving this, too a point.
+     * 
+     * @param width the height and width of the square field
+     * @param xoff the offset in fields on x
+     * @param yoff the offset in fields on y
+     * @param t the number series to use
+     * @param random the SpatialNoise hash used to generate the numbers
+     * @return 
+     */
+    public static byte[] makeBitfield(int width, int xoff, int yoff, int t,
+                SpatialNoise random) {
+        int bwidth = ((width - 7) / 8) + 1;
+        int size = width * bwidth;
+        xoff *= bwidth; yoff *= width;
+        byte[] out = new byte[size];
+        for(int i = 0; i < out.length; i++) {
+            out[i] = random.byteFor((i % bwidth) + xoff, (i / bwidth) + yoff, t);
+        }
+        return out;
+    }
 
     /**
      * Generate a table of bytes.
