@@ -1,4 +1,4 @@
-package jaredbgreat.procgenlab.generators.doinfnoise;
+package jaredbgreat.procgenlab.generators.doinfnoise.chunk;
 
 /**
  * Represents scaling factor for the landmasses and climate zones.

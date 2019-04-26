@@ -1,4 +1,4 @@
-package jaredbgreat.procgenlab.generators.doinfnoise;
+package jaredbgreat.procgenlab.generators.doinfnoise.chunk;
 
 /*
  * Copyright (C) Jared Blackburn 2017

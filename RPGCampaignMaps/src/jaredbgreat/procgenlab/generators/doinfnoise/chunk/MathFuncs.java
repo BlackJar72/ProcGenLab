@@ -1,4 +1,4 @@
-package jaredbgreat.procgenlab.generators.doinfnoise;
+package jaredbgreat.procgenlab.generators.doinfnoise.chunk;
 
 /**
  * Math and related functions as static methods.
