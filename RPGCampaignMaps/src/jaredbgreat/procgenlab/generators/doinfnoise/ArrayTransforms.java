@@ -15,6 +15,17 @@ import static jaredbgreat.procgenlab.generators.doinfnoise.MathFuncs.*;
 public final class ArrayTransforms {    
     private ArrayTransforms() {/*Do not instantiate me!*/}
     
+    
+
+/*-*********************************************************-*/
+/*                  A Bit-Field Approach                     */
+/*                                                           */
+/*                    VERY EXPERIMENTAL                      */
+/* I have no idea how effective this would be even in native */
+/* code, much less how the JVM might get in the way or if    */
+/* the JIT compiler will in any way help out!                */
+/*-*********************************************************-*/
+    
     /**
      * Generate a one dimensional representation of a square bit field.
      * 
@@ -39,7 +50,62 @@ public final class ArrayTransforms {
         }
         return out;
     }
+    
+    
+    /**
+     * This will apply a semi-"lifelike" cellular automata transform on a 
+     * 50/50 split.  For variable cut offs a similar but more complex 
+     * function will be needed.
+     * 
+     * @param in
+     * @param out
+     * @param width 
+     */
+    // What I still need to know -left- is this faster or slower than a byte-array
+    // solution?  (And by byte array I do mean and array or byte arrays using 
+    // one byte per bit.)
+    public static void caTransBits(byte[] in, byte[] out, int width) {
+        int wEnd = width - 1;
+        int tmp, loc;
+        for(int i = 1; i < wEnd; i++)
+            for(int j = 1; j < wEnd; j++) {
+                // Yes it looks repetetive and like a mess but:
+                // Basically just find the bit at the top-left and
+                // progress to the bottom right (without adding extra
+                // looping variables snd conditional).
+                // Then clear set the cleftental bit in output, found as 
+                // up and right by one from the final location of bottom-left.
+                loc = (((j - 1) * width) + (i - 1));
+                tmp = in[loc / 8] >> (loc % 8);
+                loc++;                
+                tmp += in[loc / 8] >> (loc % 8);
+                loc++;                
+                tmp += in[loc / 8] >> (loc % 8);
+                loc = loc + width - 2;
+                tmp += in[loc / 8] >> (loc % 8);
+                loc++;                
+                tmp += in[loc / 8] >> (loc % 8);
+                loc++;                
+                tmp += in[loc / 8] >> (loc % 8);
+                loc = loc + width - 2;
+                tmp += in[loc / 8] >> (loc % 8);
+                loc++;                
+                tmp += in[loc / 8] >> (loc % 8);
+                loc++;                
+                tmp += in[loc / 8] >> (loc % 8);
+                loc =  loc - width - 1; // The center
+                out[loc / 8] &= (byte)(~(0x1 >> (loc % 8)));
+                out[loc / 8] |= (byte)(1 >> (tmp / 5)) | out[loc / 8];
+            }
+    }
 
+    
+    
+/*-*********************************************************-*/
+/*                 Probably Won't Be Used                    */
+/*-*********************************************************-*/
+
+    
     /**
      * Generate a table of bytes.
      * 
@@ -61,6 +127,11 @@ public final class ArrayTransforms {
             }
         return out;
     }
+    
+    
+/*-*********************************************************-*/
+/*                  A Byte Array Approach                    */
+/*-*********************************************************-*/
     
     /**
      * Generate a table of bytes containing ones and zeros.  This is a bit 
@@ -87,6 +158,33 @@ public final class ArrayTransforms {
                 out[i][j] = random.bitFor(i + xoff, j + yoff, t);
             }
         return out;
+    }
+    
+    /**
+     * This will apply a semi-"lifelike" cellular automata transform on a 
+     * 50/50 split.  For variable cut offs a similar but more complex 
+     * function will be needed.
+     * 
+     * @param in
+     * @param out
+     * @param width 
+     */
+    public static void caTransBytes(byte[][] in, byte[][] out, int width) {
+        int wEnd = width - 1;
+        int tmp;
+        for(int i = 1; i < wEnd; i++)
+            for(int j = 1; j < wEnd; j++) {
+                tmp = in[i -1][j - 1]
+                    + in[i][j - 1]
+                    + in[i + 1][j - 1]
+                    + in[i - 1][j]
+                    + in[i][j]
+                    + in[i + 1][j]
+                    + in[i - 1][j + 1]
+                    + in[i][j + 1]
+                    + in[i + 1][j + 1];
+                out[i][j] = (byte)(tmp / 5);
+            }
     }
     
     
