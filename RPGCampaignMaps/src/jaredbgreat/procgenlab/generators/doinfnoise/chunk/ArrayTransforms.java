@@ -290,6 +290,8 @@ public final class ArrayTransforms {
      * @param in
      * @param out
      * @param width 
+     * @param scale 
+     * @param basins 
      */
     public static void bbTransBytes(byte[][] in, byte[][] out, 
                 int width, int scale, BasinNode[] basins) {

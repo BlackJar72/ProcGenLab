@@ -1,6 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package jaredbgreat.procgenlab.generators.infinitenoise.chunk;
 
 import jaredbgreat.procgenlab.generators.infinitenoise.cache.AbstractCachable;
+import jaredbgreat.procgenlab.generators.infinitenoise.cache.MutableCoords;
 import static jaredbgreat.procgenlab.generators.infinitenoise.chunk.MapMaker.*;
 
 /**
@@ -8,27 +14,80 @@ import static jaredbgreat.procgenlab.generators.infinitenoise.chunk.MapMaker.*;
  * @author jared
  */
 public final class Region extends AbstractCachable {
-    private BasinNode[] basins;
-    private ClimateNode[] temp;
-    private ClimateNode[] wet;
+    BasinNode[] basins;
+    ClimateNode[] temp;
+    ClimateNode[] wet;
     // FIXME: These should not really be duplicated
     private static final int w = RSIZE, h = RSIZE;
-    private int cx, cz;
+    int cx, cz;
     
     
-    private Region() {};
+//*********************************************************************************/
+//                         DEBUGGING / PROFILING                                   /
+//*********************************************************************************/
+public static volatile long num = 0;
+@Override
+public void finalize() throws Throwable {
+	num--;
+	super.finalize();
+}
+//*********************************************************************************/
+        
     
+    public Region() {
+        // Profile
+        num++;
+    }
     
     public Region(int x, int z, SpatialNoise random) {
         super(x, z);
-        cx = (x * RSIZE);
-        cz = (z * RSIZE);
+        
+        cx = (x * RSIZE);// - RADIUS;
+        cz = (z * RSIZE);// - RADIUS;
         makeBasins(5, 10, 15, random.getRandomAt(x, z, 0));
         makeTempBasins(10, random.getRandomAt(x, z, 1));
         makeRainBasins(12, random.getRandomAt(x, z, 2));
+        // Profile
+        num++;
+        //System.out.println(toDataOut());
     }
     
-        
+    public String toDataOut() {
+        StringBuilder builder = new StringBuilder();
+        MutableCoords coords = this.getCoords();
+        builder.append("\n*************\n");
+        builder.append("Region:" + coords.getX() + ", " + coords.getZ() + "\n");
+        builder.append("cx = " + cx + "; cz = " + cz + "\n");
+        builder.append("Land Sequences: \n");
+        for(BasinNode basin : basins) {
+            builder.append(basin.briefString());
+            builder.append('\n');
+        }
+        builder.append("Temp Sequences: \n");
+        for(ClimateNode basin : temp) {
+            builder.append(basin.briefString());
+            builder.append('\n');
+        }
+        builder.append("Wetness Sequences: \n");
+        for(ClimateNode basin : wet) {
+            builder.append(basin.briefString());
+            builder.append('\n');
+        }
+        builder.append("\n*************\n");
+        return builder.toString();
+    }
+    
+    
+    public Region init(int x, int z, SpatialNoise random) {
+        cx = (x * RSIZE); //- RADIUS;
+        cz = (z * RSIZE); //- RADIUS;
+        makeBasins(5, 10, 15, random.getRandomAt(x, z, 0));
+        makeTempBasins(10, random.getRandomAt(x, z, 1));
+        makeRainBasins(12, random.getRandomAt(x, z, 2));
+        return this;
+    }
+    
+    
     private BasinNode makeBasin(int value, double decay, SpatialNoise.RandomAt random) {
         int x = cx + random.nextInt(w);
         int z = cz + random.nextInt(h);
@@ -130,7 +189,7 @@ public final class Region extends AbstractCachable {
                         random.nextInt(10), 
                         (BasinNode.getLogScaled(random.nextInt(5) - 15) / 10) 
                                 * 1.5, 
-                        random.nextInt(5)); 
+                        random.nextInt(5)); //fuck = random.nextInt(5);
                     break;
             }
         }
@@ -148,20 +207,5 @@ public final class Region extends AbstractCachable {
             System.arraycopy(basins, basins.length - num, out, 0, num);
         }
         return out;
-    }
-    
-
-    BasinNode[] getBasins() {
-        return basins;
-    }
-
-    
-    ClimateNode[] getTemp() {
-        return temp;
-    }
-
-    
-    ClimateNode[] getWet() {
-        return wet;
     }
 }
