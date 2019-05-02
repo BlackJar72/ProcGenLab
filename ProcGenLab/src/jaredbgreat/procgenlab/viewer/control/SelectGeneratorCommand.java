@@ -18,19 +18,22 @@ import javax.swing.JComboBox;
  */
 public class SelectGeneratorCommand implements ICommand {
     private static JComboBox source;
+    private static JComboBox catSource;
 
     @Override
     public void execute() {
         String selected = (String)source.getSelectedItem();
         if((selected != null) && !selected.isEmpty()) {
             SidePanel panel = (SidePanel)MainWindow.getComponenent("SidePanel");
-            panel.setControls(Registrar.getRegistrar().getParameters(selected));
+            panel.setControls(Registrar.getRegistrar((String)catSource.getSelectedItem())
+            		.getParameters(selected));
         }
     }
     
     
-    public static void setSource(JComboBox src) {
+    public static void setSource(JComboBox src, JComboBox cat) {
         source = src;
+        catSource = cat;
     }
     
 }

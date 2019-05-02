@@ -24,14 +24,15 @@ import javax.swing.JTextField;
  *
  * @author jared
  */
-public class BatchStatsCommand extends GenerateCommand implements ICommand {  
+public class BatchStatsCommand extends GenerateCommand implements ICommand {
+	private static JComboBox<String> catSource;
 
     @Override
     public void execute() {
         int trials = Integer.valueOf(((JTextField)MainWindow
                 .getComponenent("Seedbox")).getText());
         IGenerator generator 
-                = Registrar.getRegistrar()
+                = Registrar.getRegistrar((String)catSource.getSelectedItem())
                         .getGenerator(selection.getSelectedItem().toString());
         if(generator == null) {
             ((JTextField)MainWindow.getComponenent("ProfileTimeBox"))
@@ -50,6 +51,11 @@ public class BatchStatsCommand extends GenerateCommand implements ICommand {
         ViewPanel view = (ViewPanel)MainWindow.getComponenent("ViewPanel");
         view.setStatsView(new StatsHelper(data));
         
+    }
+    
+    
+    public static void setCatSource(JComboBox<String> cat) {
+    	catSource = cat;
     }
     
 }

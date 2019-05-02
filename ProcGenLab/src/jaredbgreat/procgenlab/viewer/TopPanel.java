@@ -17,8 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import jaredbgreat.procgenlab.registries.Registrar;
+import jaredbgreat.procgenlab.viewer.control.BatchStatsCommand;
 import jaredbgreat.procgenlab.viewer.control.GenerateCommand;
 import jaredbgreat.procgenlab.viewer.control.Interpreter;
+import jaredbgreat.procgenlab.viewer.control.SelectCategoryCommand;
 import jaredbgreat.procgenlab.viewer.control.SelectGeneratorCommand;
 
 /**
@@ -30,8 +33,8 @@ public class TopPanel extends JPanel {
     GridLayout layout;
     
     JButton generate;
-    JComboBox categories;
-    JComboBox generators;
+    JComboBox<String> categories;
+    JComboBox<String> generators;
     JTextField seedbox;
     JTextField profiler;
     JLabel seedLabel, profLabel, gensLabel;
@@ -90,18 +93,28 @@ public class TopPanel extends JPanel {
      */
     private void addSelector() {
         
-        generators = new JComboBox();
+        generators = new JComboBox<>();
         generators.setEditable(false);
         generators.setEnabled(false);
-        GenerateCommand.setSelector(generators);
-        SelectGeneratorCommand.setSource(generators);
-        
         generators.setActionCommand("selectGenerator");
         generators.addItemListener(Interpreter.getInterpeter());
-        generators.addActionListener(Interpreter.getInterpeter());        
+        generators.addActionListener(Interpreter.getInterpeter());
         
-        add(generators);        
+        categories = new JComboBox<>();
+        categories.setEditable(false);
+        categories.setEnabled(false);
+        categories.setActionCommand("selectCategory");
+        categories.addItemListener(Interpreter.getInterpeter());
+        categories.addActionListener(Interpreter.getInterpeter());
+        
+        GenerateCommand.setSelector(generators, categories);
+        SelectGeneratorCommand.setSource(generators, categories);
+        BatchStatsCommand.setCatSource(categories);
+        SelectCategoryCommand.setSource(categories);
+        
+        add(generators);
         MainWindow.registerComponenent("SelectorComboBox", generators);
+        MainWindow.registerComponenent("CategoryComboBox", categories);
     }
     
     
@@ -174,4 +187,18 @@ public class TopPanel extends JPanel {
         seedLabel.setText("Seed: ");
         generate.setActionCommand("generate");
     }
+    
+    
+    public void setCategory(String name) {
+    	loadGenerators(Registrar.getRegistrar(name).getKeys());
+    }
+    
+    
+    public void initCategory() {
+    	Registrar reg = Registrar.getFirst();
+    	if(reg != null) {
+    		loadGenerators(Registrar.getFirst().getKeys());
+    	}
+    }
+    
 }

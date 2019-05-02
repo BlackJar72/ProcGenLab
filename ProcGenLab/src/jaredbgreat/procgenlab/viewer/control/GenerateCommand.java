@@ -29,7 +29,8 @@ public class GenerateCommand implements ICommand {
     private static final long  UNIT        = 1000000000;
     private static final float FLOAT_UNIT  = 1000000000f;
     
-    protected static JComboBox  selection;
+    protected static JComboBox<String>  selection;
+    protected static JComboBox<String>  category;
     protected static List<IParameter> parameters;
 
     @Override
@@ -42,7 +43,7 @@ public class GenerateCommand implements ICommand {
             return;
         }
         IGenerator generator 
-                = Registrar.getRegistrar()
+                = Registrar.getRegistrar((String)category.getSelectedItem())
                         .getGenerator(selection.getSelectedItem().toString());
         if(generator == null) {
             ((JTextField)MainWindow.getComponenent("ProfileTimeBox"))
@@ -75,8 +76,9 @@ public class GenerateCommand implements ICommand {
      * 
      * @param input 
      */
-    public static void setSelector(JComboBox input) {
+    public static void setSelector(JComboBox<String> input, JComboBox<String> cat) {
         selection = input;
+        category  = cat;
     }
     
     

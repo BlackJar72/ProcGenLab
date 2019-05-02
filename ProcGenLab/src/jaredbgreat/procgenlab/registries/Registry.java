@@ -152,7 +152,8 @@ public class Registry<T> implements Iterable<T> {
      * 
      * @return 
      */
-    @Override
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
     public Iterator iterator() {
         return list.iterator();
     }  
@@ -175,7 +176,8 @@ public class Registry<T> implements Iterable<T> {
      * 
      * @return an array containing the items in the registry.
      */
-    public T[] toArray() {
+    @SuppressWarnings("unchecked")
+	public T[] toArray() {
         return (T[])list.toArray();
     }
     
@@ -196,7 +198,8 @@ public class Registry<T> implements Iterable<T> {
      * 
      * @return a the data as a clones list.
      */
-    public List<T> getListCopy() {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<T> getListCopy() {
         return (List<T>) ((ArrayList)list).clone();
     }
     
@@ -233,5 +236,5 @@ public class Registry<T> implements Iterable<T> {
         list.clear();
         directory.clear();
         n = 0;
-    }    
+    } 
 }

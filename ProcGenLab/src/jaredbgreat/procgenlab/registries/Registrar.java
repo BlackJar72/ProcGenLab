@@ -1,5 +1,10 @@
 package jaredbgreat.procgenlab.registries;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JComboBox;
+
 /*
  * Copyright (C) Jared Blackburn 2017
  *
@@ -12,8 +17,6 @@ import jaredbgreat.procgenlab.api.IPalette;
 import jaredbgreat.procgenlab.viewer.MainWindow;
 import jaredbgreat.procgenlab.viewer.logic.parameters.IParameter;
 import jaredbgreat.procgenlab.viewer.logic.parameters.ParameterFactory;
-import java.util.List;
-import javax.swing.JComboBox;
 
 /**
  * This class handles registries, registering them and providing access to 
@@ -22,29 +25,30 @@ import javax.swing.JComboBox;
  * @author Jared Blackburn
  */
 public class Registrar {
-    private static Registrar registries = new Registrar();
+    private static Registry<Registrar> registries = new Registry<>();
     private final Registry<IGenerator> gens;
     private final Registry<IPalette[]> palettes;
     private final Registry<List<IParameter>> parameters;
     @SuppressWarnings("rawtypes")
 	private final JComboBox selector;
+    private final String name;
+    private final List<String> keys;
     
     
     @SuppressWarnings("rawtypes")
-	private Registrar() {
+	private Registrar(String name) {
+    	this.name = name;
         gens = new Registry<>();
         palettes = new Registry<>();
         parameters = new Registry<>();
         selector = (JComboBox)MainWindow.getComponentRegistry()
                 .get("SelectorComboBox");
+        keys = new ArrayList<String>();
     }
     
     
-    public static Registrar getRegistrar() {
-        if(registries == null) {
-            registries = new Registrar();
-        }
-        return registries;
+    public static Registrar getRegistrar(String name) {
+        return registries.get(name);
     }
     
     
@@ -59,14 +63,22 @@ public class Registrar {
      * @param gen = the generator being registered.
      */
     @SuppressWarnings("unchecked")
-	public void registerGenerator(IGenerator gen) {
+	public static void registerGenerator(IGenerator gen) {
+    	String type = gen.getCategory();
+    	Registrar reg = registries.get(type);
+    	if(reg == null) {
+    		reg = new Registrar(type);
+    		registries.add(type, reg);
+    		
+    	}
         String name = gen.getName();
-        gens.add(name, gen);
-        palettes.add(name, gen.getColorPaletes());
-        parameters.add(name, 
+        reg.gens.add(name, gen);
+        reg.keys.add(name);
+        reg.palettes.add(name, gen.getColorPaletes());
+        reg.parameters.add(name, 
                 ParameterFactory.makeParameters(gen.getParameters()));        
-        selector.addItem(name);
-        selector.setEnabled(true);
+        reg.selector.addItem(name);
+        reg.selector.setEnabled(true);
     }
     
     
@@ -110,6 +122,21 @@ public class Registrar {
             return parameters.get(name);
         } else return null;
     }
+
+
+	public String getName() {
+		return name;
+	}
+	
+	
+	public List<String> getKeys() {
+		return keys;
+	}
+	
+	
+	public static Registrar getFirst() {
+		return registries.get(0);
+	}
     
     
     

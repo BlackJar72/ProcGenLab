@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 /**
  * Is the main window of the application.  Will hold a menu and a viewing pane
  * for visualizing the maps or map generation layers.  Main use panes for 
- * help and config panes to, et., to be included.
+ * help and config panes to, etc., to be included.
  * 
  * @author Jared Blackburn
  */

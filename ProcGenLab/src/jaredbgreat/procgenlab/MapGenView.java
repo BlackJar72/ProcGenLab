@@ -8,6 +8,7 @@ package jaredbgreat.procgenlab;
  */
 
 import jaredbgreat.procgenlab.viewer.MainWindow;
+import jaredbgreat.procgenlab.viewer.TopPanel;
 
 /**
  * TODO: Everything!!!
@@ -54,6 +55,8 @@ public class MapGenView {
     
     private static void registerGenerators() {
     	// TODO: Use Registrar#registerGenerator(IGenerator) here to register each generator
+		TopPanel panel = (TopPanel)MainWindow.getComponenent("TopPanel");
+		panel.initCategory();
     }
     
 }
