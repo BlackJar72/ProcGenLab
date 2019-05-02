@@ -41,12 +41,19 @@ public class MapGenView {
     }
     
     
-    private static void init() {}
+    private static void init() {
+    	registerGenerators();
+    }
     
     
     private static void run() {}
     
     
     private static void cleanup() {}
+    
+    
+    private static void registerGenerators() {
+    	// TODO: Use Registrar#registerGenerator(IGenerator) here to register each generator
+    }
     
 }

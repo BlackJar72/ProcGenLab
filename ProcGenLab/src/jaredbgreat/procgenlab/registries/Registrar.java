@@ -26,10 +26,12 @@ public class Registrar {
     private final Registry<IGenerator> gens;
     private final Registry<IPalette[]> palettes;
     private final Registry<List<IParameter>> parameters;
-    private final JComboBox selector;
+    @SuppressWarnings("rawtypes")
+	private final JComboBox selector;
     
     
-    private Registrar() {
+    @SuppressWarnings("rawtypes")
+	private Registrar() {
         gens = new Registry<>();
         palettes = new Registry<>();
         parameters = new Registry<>();
@@ -56,7 +58,8 @@ public class Registrar {
      * 
      * @param gen = the generator being registered.
      */
-    public void registerGenerator(IGenerator gen) {
+    @SuppressWarnings("unchecked")
+	public void registerGenerator(IGenerator gen) {
         String name = gen.getName();
         gens.add(name, gen);
         palettes.add(name, gen.getColorPaletes());

@@ -40,7 +40,8 @@ public class Registry<T> implements Iterable<T> {
         public int hashCode() {
             return name.hashCode();
         }
-        @Override
+        @SuppressWarnings("unchecked")
+		@Override
         public boolean equals(Object other) {
             if(other.getClass() != this.getClass()) return false;
             return name.equals(((Entry)other).name);

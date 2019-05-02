@@ -14,7 +14,6 @@ import java.awt.event.ItemListener;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 
 /**
  * A class to store, retrieve, and execute commands defined with GUI components.
@@ -95,7 +94,8 @@ public class Interpreter implements ActionListener, ItemListener {
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-        JComboBox sender = (JComboBox) e.getSource();
+        @SuppressWarnings("rawtypes")
+		JComboBox sender = (JComboBox) e.getSource();
         execute(sender.getActionCommand());
     }
 }

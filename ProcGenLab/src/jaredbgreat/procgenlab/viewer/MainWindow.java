@@ -33,7 +33,8 @@ public class MainWindow extends JFrame {
     private final int width = 1024;
     private final int height = 640;
     
-    private BorderLayout layout;
+    @SuppressWarnings("unused")
+	private BorderLayout layout;
     private TopPanel topPanel;
     private GeneratorPanel gensArea;
     
