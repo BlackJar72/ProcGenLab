@@ -36,7 +36,7 @@ public class InfiteNoise implements IGenerator {
     
     @Override
     public void generate(Long seed) {
-        map = new MapMaker(0, 0, seed);
+        map = new MapMaker(0, 0, seed, sizeScale.value, biomeSize);
         map.generate();
     }
 
