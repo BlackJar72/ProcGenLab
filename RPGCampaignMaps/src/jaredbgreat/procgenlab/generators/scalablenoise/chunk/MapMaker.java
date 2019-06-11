@@ -83,8 +83,8 @@ public class MapMaker {
      */
     private int[] findRegion(int x, int z) {
         int[] out = new int[2];
-        out[0] = x / RSIZE;
-        out[1] = z / RSIZE;
+        out[0] = x / RSIZE / sizeScale.whole;
+        out[1] = z / RSIZE / sizeScale.whole;
         return out;
     }
     
@@ -144,7 +144,7 @@ public class MapMaker {
             
         }
         makeBiomes(random.getRandomAt(0, 0, 3));
-        BiomeType.makeBiomes(this, random, regions[4]);
+        BiomeType.makeBiomes(this, random, regions[4], sizeScale);
     }
     
     
@@ -216,19 +216,19 @@ public class MapMaker {
     }
     
     public ChunkTile getTile(int x, int y) {
-        int index = (x * RSIZE) + y;
+        int index = (x * RSIZE * sizeScale.whole) + y;
         if(index >= premap.length) {
             return null;
         } else {
-            return premap[(x * RSIZE) + y];
+            return premap[(x * RSIZE * sizeScale.whole) + y];
         }
     }
     
     
     protected int[][] makeNoise(SpatialNoise random, int t) {
-        int[][] noise = new int[RSIZE + 2][RSIZE + 2];
-        for(int i = 0; i < (RSIZE + 2); i++)
-            for(int j = 0; j < (RSIZE + 2); j++) {
+        int[][] noise = new int[RSIZE * sizeScale.whole + 2][RSIZE * sizeScale.whole + 2];
+        for(int i = 0; i < (RSIZE * sizeScale.whole + 2); i++)
+            for(int j = 0; j < (RSIZE * sizeScale.whole + 2); j++) {
                 noise[i][j] = absModulus(random.intFor(i, j, t), 2);
             }
         return noise;
@@ -247,9 +247,9 @@ public class MapMaker {
     protected int[] refineNoise(int[][] noise) {
         int[] out = new int[premap.length];
         // Could be better optimized, but this is a test of the gui and api
-        for(int i = 1; i < (RSIZE + 1); i++) 
-            for(int j = 1; j < (RSIZE + 1); j++) {
-                out[((j - 1) * RSIZE) + (i - 1)] = refineCell(noise, i, j);
+        for(int i = 1; i < (RSIZE * sizeScale.whole + 1); i++) 
+            for(int j = 1; j < (RSIZE * sizeScale.whole + 1); j++) {
+                out[((j - 1) * RSIZE * sizeScale.whole) + (i - 1)] = refineCell(noise, i, j);
             }
         return out;
     }
@@ -258,8 +258,8 @@ public class MapMaker {
     protected int[][] refineNoise2(int[][] noise) {
         int[][] out = new int[noise.length][noise[0].length];
         // Could be better optimized, but this is a test of the gui and api
-        for(int i = 1; i < (RSIZE + 1); i++) 
-            for(int j = 1; j < (RSIZE + 1); j++) {
+        for(int i = 1; i < (RSIZE * sizeScale.whole + 1); i++) 
+            for(int j = 1; j < (RSIZE * sizeScale.whole + 1); j++) {
                 out[i][j] = refineCell(noise, i, j);
             }
         return out;
@@ -273,7 +273,7 @@ public class MapMaker {
             for(int j = y - 1; j <= y + 1; j++) {
                 sum += noise[i][j];
             }
-        if(sum < premap[((y - 1) * RSIZE) + (x - 1)].val) {
+        if(sum < premap[((y - 1) * RSIZE * sizeScale.whole) + (x - 1)].val) {
             return 0;
         } else {
             return 1;
@@ -282,9 +282,9 @@ public class MapMaker {
     
     
     private double[][] makeDoubleNoise(SpatialNoise random, int t) {
-        double[][] noise = new double[RSIZE + 4][RSIZE + 4];
-        for(int i = 0; i < (RSIZE + 2); i++)
-            for(int j = 0; j < (RSIZE + 2); j++) {
+        double[][] noise = new double[RSIZE * sizeScale.whole + 4][RSIZE * sizeScale.whole + 4];
+        for(int i = 0; i < (RSIZE * sizeScale.whole + 2); i++)
+            for(int j = 0; j < (RSIZE * sizeScale.whole + 2); j++) {
                 noise[i][j] = (random.doubleFor(i, j, t) / 5) - 0.1;
             }
         return noise;
@@ -294,9 +294,9 @@ public class MapMaker {
     public double[] averageNoise(double[][] noise) {
         double[] out = new double[premap.length];
         // Could be better optimized, but this is a test of the gui and api
-        for(int i = 2; i < (RSIZE + 2); i++) 
-            for(int j = 2; j < (RSIZE + 2); j++) {
-                out[((j - 2) * RSIZE) + (i - 2)] = averageNoise(noise, i, j);
+        for(int i = 2; i < (RSIZE * sizeScale.whole + 2); i++) 
+            for(int j = 2; j < (RSIZE * sizeScale.whole + 2); j++) {
+                out[((j - 2) * RSIZE * sizeScale.whole) + (i - 2)] = averageNoise(noise, i, j);
             }
         return out;
     }
@@ -315,7 +315,7 @@ public class MapMaker {
     
     public void makeBiomes(RandomAt random) {
         int size = biomeSize;
-        int across = RSIZE / biomeSize;
+        int across = RSIZE * sizeScale.whole / biomeSize;
         int down = across;
         subbiomes = new BiomeBasin[across][down];
         for(int i = 0; i < across; i++) 
@@ -340,12 +340,12 @@ public class MapMaker {
     
     void makeBeach(ChunkTile t, int noise) {
         //System.out.println();
-        if(notLand(t) || (t.getX() < 1) || (t.getX() > 254)
-                      || (t.getZ() < 1) || (t.getZ() > 254)) return;
+        if(notLand(t) || (t.getX() < 1) || (t.getX() > (RSIZE * sizeScale.whole - 2))
+                      || (t.getZ() < 1) || (t.getZ() > (RSIZE * sizeScale.whole - 2))) return;
         int oceans = 0;
         for(int i = -1; i < 2; i++) 
             for(int j = -1; j < 2; j++) {
-                ChunkTile x = premap[((t.getX() + i) * RSIZE) + t.getZ() + j];
+                ChunkTile x = premap[((t.getX() + i) * RSIZE * sizeScale.whole) + t.getZ() + j];
                 //System.out.println(x.getX() + ", " + x.getZ() + ": " + x.rlBiome);
                 if(notLand(x)) {
                     oceans++;

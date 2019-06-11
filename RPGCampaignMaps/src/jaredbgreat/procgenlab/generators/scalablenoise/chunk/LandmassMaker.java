@@ -75,7 +75,8 @@ public class LandmassMaker {
         for(int i = 0; i < mwidth; i++)
             for(int j = 0; j < mwidth; j++) {
                 // This should work as long as all widths are even (as they are)
-                next[i][j] = current[(i + 1) /  2][(j + 1) / 2];
+                next[i][j] = 1 - current[(i + 1) /  2][(j + 1) / 2];
+                
             }
         current = next;
         current = new int[mwidth][mwidth];

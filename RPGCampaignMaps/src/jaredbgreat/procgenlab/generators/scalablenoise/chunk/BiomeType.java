@@ -5,8 +5,6 @@
  */
 package jaredbgreat.procgenlab.generators.scalablenoise.chunk;
 
-import jaredbgreat.procgenlab.generators.scalablenoise.chunk.Region;
-
 /**
  *
  * @author jared
@@ -79,7 +77,7 @@ public enum BiomeType {
     
     
     public static void makeBiomes(MapMaker map, SpatialNoise random, 
-            Region region) {
+            Region region, SizeScale sc) {
         int[] noise = refineNoise(map.makeNoise(random, 4), map);
         int[] ice   = refineNoise10(map.makeNoise(random, 5), map);
         int[] cn    = refineNoise10(map.makeNoise(random, 6), map);
@@ -88,7 +86,7 @@ public enum BiomeType {
             findBiome(map.premap[i], noise[i], ice[i], cn[i]);
         }
         RiverMaker rm = new RiverMaker(map, random.longFor(0, 0, 16), 
-                region);
+                region, sc);
         rm.build();
     }
     
@@ -145,9 +143,9 @@ public enum BiomeType {
     private static int[] refineNoise(int[][] noise, MapMaker map) {
         int[] out = new int[map.premap.length];
         // Could be better optimized, but this is a test of the gui and api
-        for(int i = 1; i < (map.RSIZE + 1); i++) 
-            for(int j = 1; j < (map.RSIZE + 1); j++) {
-                out[((j - 1) * map.RSIZE) + (i - 1)] = refineCell(noise, i, j);
+        for(int i = 1; i < (map.RSIZE * map.sizeScale.whole + 1); i++) 
+            for(int j = 1; j < (map.RSIZE * map.sizeScale.whole + 1); j++) {
+                out[((j - 1) * map.RSIZE * map.sizeScale.whole) + (i - 1)] = refineCell(noise, i, j);
             }
         return out;
     }
@@ -167,9 +165,9 @@ public enum BiomeType {
     private static int[] refineNoise10(int[][] noise, MapMaker map) {
         int[] out = new int[map.premap.length];
         // Could be better optimized, but this is a test of the gui and api
-        for(int i = 1; i < (map.RSIZE + 1); i++) 
-            for(int j = 1; j < (map.RSIZE + 1); j++) {
-                out[((j - 1) * map.RSIZE) + (i - 1)] = refineCell10(noise, i, j);
+        for(int i = 1; i < (map.RSIZE * map.sizeScale.whole + 1); i++) 
+            for(int j = 1; j < (map.RSIZE * map.sizeScale.whole + 1); j++) {
+                out[((j - 1) * map.RSIZE * map.sizeScale.whole) + (i - 1)] = refineCell10(noise, i, j);
             }
         return out;
     }

@@ -19,6 +19,7 @@ public class River {
     //final ChangeQueue Q;
     private int oc;
     //private ChunkTile last;
+    SizeScale scale;
     
     private enum AS {
         P2 (2,   0),
@@ -71,16 +72,17 @@ public class River {
 //    }  
     
     
-    public River(BasinNode high, BasinNode low, MapMaker mapIn) {
-        MAX = MapMaker.RSIZE -2;
+    public River(BasinNode high, BasinNode low, MapMaker mapIn, SizeScale sc) {
+        scale = sc;
+        MAX = (MapMaker.RSIZE * sc.whole) - 2;
         Q = new ArrayDeque<>();
         map = mapIn;
         begin = high;
         end   = low;
         oc = 0;
         da = angle = 0; 
-        cx = begin.x;
-        cy = begin.y;
+        cx = begin.x * sc.fract;
+        cy = begin.y * sc.fract;
         double length = findLength(cx, cy, end.x, end.y);
         dx = (end.x - begin.x) / length;
         dy = (end.y - begin.y) / length;
