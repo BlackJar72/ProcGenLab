@@ -38,7 +38,7 @@ public class MapMaker {
     private MutableCoords regionCoords = new MutableCoords(); 
     private MutableCoords chunkCoords = new MutableCoords(); 
     
-    final ChunkTile[] premap;
+    ChunkTile[] premap;
     private BasinNode[] basins;
     private ClimateNode[] temp;
     private ClimateNode[] wet;
@@ -125,31 +125,33 @@ public class MapMaker {
         BasinNode[] basinAr = basins.toArray(new BasinNode[basins.size()]);
         ClimateNode[] tempAr = temp.toArray(new ClimateNode[temp.size()]);
         ClimateNode[] wetAr = wet.toArray(new ClimateNode[wet.size()]);
+        
         SpatialNoise random = chunkNoise;
-        for(int i = 0; i < premap.length; i++) {
-            premap[i].val = BasinNode.summateEffect(basinAr, premap[i], 1.0);
-            edgeFix(premap[i]);
-        }
-        int[] noisy = refineNoise(makeNoise(random, 1), 4);
-        for(int i = 0; i < premap.length; i++) {
-            premap[i].rlBiome = 1 - noisy[i];
-        }
+        makeLandmass(basinAr, random);
+        
         double[] doubleNoise;
         doubleNoise = averageNoise(makeDoubleNoise(random, 1));
         for(int i = 0; i < premap.length; i++) {
             premap[i].temp = Math.min(ClimateNode.summateEffect(tempAr, premap[i], 
-                    doubleNoise[i], 1.0), 24);
+                    doubleNoise[i], sizeScale.inv), 24);
         }
         doubleNoise = averageNoise(makeDoubleNoise(random, 2));
         for(int i = 0; i < premap.length; i++) {
             premap[i].wet = Math.min(ClimateNode.summateEffect(wetAr, premap[i], 
-                    doubleNoise[i], 1.0), 9);
+                    doubleNoise[i], sizeScale.inv), 9);
         }
         for(int i = 0; i < premap.length; i++) {
             
         }
         makeBiomes(random.getRandomAt(0, 0, 3));
         BiomeType.makeBiomes(this, random, regions[4]);
+    }
+    
+    
+    private void makeLandmass(BasinNode[] basins, SpatialNoise random) {
+        LandmassMaker maker = new LandmassMaker(coords.getX(), coords.getZ(), 
+                random, basins, sizeScale, RSIZE);
+        premap = maker.makePremap();
     }
     
     
@@ -327,20 +329,6 @@ public class MapMaker {
         for (ChunkTile tile : premap) {
             tile.biome = BiomeBasin.summateEffect(subbiomes, tile, size);
             tile.biomeSeed = tile.biome & 0x7fffffff;
-        }
-    }
-    
-    
-    private void edgeFix(ChunkTile t) {
-        if(t.x < 10) {
-            t.val += ((t.x - 10) / 2);
-        } else if(t.x >= (RSIZE - 10)) {
-            t.val -= ((t.x - RSIZE + 10) / 2);
-        }
-        if(t.z < 10) {
-            t.val += ((t.z - 10) /  2);
-        } else if(t.z >= (RSIZE - 10)) {
-            t.val -= ((t.z - RSIZE + 10) / 2);
         }
     }
     

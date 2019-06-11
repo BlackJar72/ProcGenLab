@@ -17,7 +17,6 @@ import jaredbgreat.procgenlab.api.palettes.LiteralPalette;
 import jaredbgreat.procgenlab.generators.scalablenoise.chunk.MapMaker;
 import jaredbgreat.procgenlab.generators.scalablenoise.chunk.BiomeType;
 import jaredbgreat.procgenlab.generators.scalablenoise.chunk.SizeScale;
-import jaredbgreat.procgenlab.generators.region.Size;
 import java.util.StringTokenizer;
 
 /**
@@ -121,12 +120,12 @@ public class ScalableNoise implements IGenerator {
 
     @Override
     public int getWidth() {
-        return MapMaker.RSIZE;
+        return MapMaker.RSIZE * sizeScale.value.whole;
     }
 
     @Override
     public int getHeight() {
-        return MapMaker.RSIZE;
+        return MapMaker.RSIZE * sizeScale.value.whole;
     }
     
 }

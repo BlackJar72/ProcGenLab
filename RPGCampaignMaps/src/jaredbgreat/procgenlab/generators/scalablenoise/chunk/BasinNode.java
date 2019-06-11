@@ -25,8 +25,8 @@ public class BasinNode {
     
     
     public double getWeaknessAt(double atx, double aty) {
-        double xdisplace = ((x - atx) * decay);
-        double ydisplace = ((y - aty) * decay);
+        double xdisplace = ((((double)x) - atx) * decay);
+        double ydisplace = ((((double)y) - aty) * decay);
         return Math.min((xdisplace * xdisplace) + (ydisplace * ydisplace), 1.0);
     }
     
