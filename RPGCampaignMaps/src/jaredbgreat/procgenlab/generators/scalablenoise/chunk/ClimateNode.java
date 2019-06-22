@@ -28,7 +28,7 @@ public class ClimateNode extends BasinNode {
     }
     
     
-    public static int summateEffect(ClimateNode[] n, ChunkTile t, 
+    public static double summateEffect(ClimateNode[] n, ChunkTile t, 
                 double noise, double scale) {
         double effect = 0.0;
         double sum    = 0.0;
@@ -45,7 +45,7 @@ public class ClimateNode extends BasinNode {
             effect += ((double)n[i].value) * power;
         }
         //System.out.println((int)(effect / sum));
-        return (int)Math.max((effect / sum) + noise, 0);
+        return Math.max((effect / sum) + noise, 0);
     }
     
     

@@ -129,16 +129,28 @@ public class MapMaker {
         SpatialNoise random = chunkNoise;
         makeLandmass(basinAr, random);
         
+        HeightNoise climateMaker 
+                = new HeightNoise(chunkNoise, RSIZE * sizeScale.whole, 
+                        16 * sizeScale.whole, 1.0, 
+                        coords.getX(), coords.getZ());
+        
         double[] doubleNoise;
-        doubleNoise = averageNoise(makeDoubleNoise(random, 1));
+        double[][] climateNoise = climateMaker.process(128);
+        doubleNoise = averageNoise(makeDoubleNoise(random, 1));        
         for(int i = 0; i < premap.length; i++) {
-            premap[i].temp = Math.min(ClimateNode.summateEffect(tempAr, premap[i], 
-                    doubleNoise[i], sizeScale.inv), 24);
+            premap[i].temp = (int)Math.max(Math.min(
+                    ClimateNode.summateEffect(tempAr, premap[i], 
+                    doubleNoise[i], sizeScale.inv) + 
+                    climateNoise[i / (RSIZE * sizeScale.whole)]
+                            [i % (RSIZE * sizeScale.whole)], 24), 0);
         }
         doubleNoise = averageNoise(makeDoubleNoise(random, 2));
+        climateNoise = climateMaker.process(160);
         for(int i = 0; i < premap.length; i++) {
-            premap[i].wet = Math.min(ClimateNode.summateEffect(wetAr, premap[i], 
-                    doubleNoise[i], sizeScale.inv), 9);
+            premap[i].wet = (int)Math.max(Math.min(ClimateNode.summateEffect(wetAr, premap[i], 
+                    doubleNoise[i], sizeScale.inv) + 
+                    climateNoise[i / (RSIZE * sizeScale.whole)]
+                            [i % (RSIZE * sizeScale.whole)], 9), 0);
         }
         for(int i = 0; i < premap.length; i++) {
             
