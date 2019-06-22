@@ -31,7 +31,7 @@ public class BasinNode {
     }
     
     
-    public static int summateEffect(BasinNode[] n, ChunkTile t, double scale) {
+    public static double summateEffect(BasinNode[] n, ChunkTile t, double scale) {
         double effect = 0.0;
         double sum    = 0.0;
         double power, weakness;
@@ -47,11 +47,11 @@ public class BasinNode {
             effect += Math.max(((double)n[i].value) * power, 0);
         }
         //System.out.println((int)(effect / sum));
-        return (int)(effect / sum);
+        return (effect / sum);
     }
     
     
-    public static int summateEffect(BasinNode[] n, ChunkTile t, 
+    public static double summateEffect(BasinNode[] n, ChunkTile t, 
                 double noise, double scale) {
         double effect = 0.0;
         double sum    = 0.0;
@@ -68,7 +68,7 @@ public class BasinNode {
             effect += Math.max(((double)n[i].value) * power, 0);
         }
         //System.out.println((int)(effect / sum));
-        return (int)((effect / sum) + noise);
+        return (effect / sum) + (double)noise;
     }
     
     

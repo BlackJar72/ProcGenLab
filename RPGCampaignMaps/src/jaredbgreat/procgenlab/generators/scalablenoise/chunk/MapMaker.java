@@ -151,7 +151,7 @@ public class MapMaker {
     private void makeLandmass(BasinNode[] basins, SpatialNoise random) {
         LandmassMaker maker = new LandmassMaker(coords.getX(), coords.getZ(), 
                 random, basins, sizeScale, RSIZE);
-        premap = maker.makePremap();
+        premap = maker.generate();
     }
     
     

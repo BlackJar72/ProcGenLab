@@ -15,52 +15,49 @@ import java.util.Random;
  * @author Jared Blackburn
  */
 public class HeightNoise {
-    int sizex, sizey, interval, currentInterval;
+    int size, interval, currentInterval, regx, regy;
     double[][] field;
     double scale, divisor;
+    SpatialNoise random;
+
     
-    private static final class PDat {
-        public final double val;
-        public final double weight;
-        public static final PDat Z0 = new PDat(0.0, 0.0);
-        public PDat(double v, double w) {
-            val = v;
-            weight = w;
-        }
-    }
-    
-    public HeightNoise(int sizex, int sizey, int interval, double scale) {
-        this.sizex = sizex; 
-        this.sizey = sizey; 
+    public HeightNoise(SpatialNoise random, int size, int interval, 
+                double scale, int regx, int regy) {
+        this.size = size; 
         this.interval = interval; 
         this.scale = scale;
+        this.regx = regx;
+        this.regy = regy;
+        this.size = size;
+        this.random = random;
     }
     
-    public double[][] process(Random rand)  {
-        field = new double[sizex][sizey];
+    public double[][] process(int startz)  {
+        field = new double[size][size];
         currentInterval = interval;
         divisor = 1.0;
         while(currentInterval > 2) {
-            processOne(rand);            
-            divisor *=2;
+            processOne(startz);            
+            divisor *= 2;
             currentInterval /= 2;
+            startz += 2;
         }
         return field;
     }
     
     
-    private void processOne(Random rand) {
-        int nodesX = sizex / currentInterval + 1;
-        int nodesY = sizey / currentInterval + 1;
+    private void processOne(int startz) {
+        int nodesX = size / currentInterval + 1;
+        int nodesY = size / currentInterval + 1;
         Vec2D[][] nodes = new Vec2D[nodesX][nodesY];
         for(int i = 0; i < nodesX; i++)
             for(int j = 0; j < nodesY; j++) {
-                //nodes[i][j] = new Vec2D(rand, 2.0, -1.0);
-                nodes[i][j] = new Vec2D(rand/*, 1.0*/);
+                nodes[i][j] = new Vec2D(random, (regx * nodesX - 1) + i, 
+                        (regy * nodesY - 1) + j, startz);
         }
-        for(int i = 0; i < sizex; i++)
-            for(int j = 0; j < sizey; j++) {
-                field[i][j] += processPoint(nodes, i, j) * scale;// / divisor;
+        for(int i = 0; i < size; i++)
+            for(int j = 0; j < size; j++) {
+                field[i][j] += processPoint(nodes, i, j) * scale;
         }
     }
     

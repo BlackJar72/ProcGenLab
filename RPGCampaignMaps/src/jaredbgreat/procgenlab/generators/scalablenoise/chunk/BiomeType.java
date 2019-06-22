@@ -97,10 +97,10 @@ public enum BiomeType {
                 tile.rlBiome = FROCEAN.ordinal();
             } else if(tile.val < 3) {
                 //tile.rlBiome = DOCEAN.ordinal();
-            } else if((tile.biomeSeed % 5 == 0) 
+            } /*else if((tile.biomeSeed % 5 == 0) 
                     && (cn > (3 + (tile.biomeSeed % 3)))) {
                 findLandBiome(tile);
-            }
+            }*/
             return;
         }
         if(tile.temp > 4 && ((tile.wet - tile.val) > noise - 1)) {
