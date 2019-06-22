@@ -63,15 +63,15 @@ public class LandmassMaker {
     
     
     private double edgeFix(ChunkTile t, double val) {
-        if(t.x < (20 * scale.whole)) {
-            val += ((t.x - (20 * scale.whole)) / (4 * scale.whole));
-        } else if(t.x >= (size - (20 * scale.whole))) {
-            val -= ((t.x - size + (20 * scale.whole)) / (4 * scale.whole));
+        if(t.x < (10 * scale.whole)) {
+            val += ((t.x - (10 * scale.whole)) / (2 * scale.whole));
+        } else if(t.x >= (size - (10 * scale.whole))) {
+            val -= ((t.x - size + (10 * scale.whole)) / (2 * scale.whole));
         }
-        if(t.z < (20 * scale.whole)) {
-            val += ((t.z - (20 * scale.whole)) /  (4 * scale.whole));
-        } else if(t.z >= (size - (20 * scale.whole))) {
-            val -= ((t.z - size + (20 * scale.whole)) / (4 * scale.whole));
+        if(t.z < (10 * scale.whole)) {
+            val += ((t.z - (10 * scale.whole)) /  (2 * scale.whole));
+        } else if(t.z >= (size - (10 * scale.whole))) {
+            val -= ((t.z - size + (10 * scale.whole)) / (2 * scale.whole));
         }
         return val;
     }

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package jaredbgreat.procgenlab.generators.scalablenoise.chunk;
 
 import jaredbgreat.procgenlab.generators.scalablenoise.cache.Cache;
@@ -131,7 +127,7 @@ public class MapMaker {
         
         HeightNoise climateMaker 
                 = new HeightNoise(chunkNoise, RSIZE * sizeScale.whole, 
-                        16 * sizeScale.whole, 1.0, 
+                        64 * sizeScale.whole, 2.0, 
                         coords.getX(), coords.getZ());
         
         double[] doubleNoise;
