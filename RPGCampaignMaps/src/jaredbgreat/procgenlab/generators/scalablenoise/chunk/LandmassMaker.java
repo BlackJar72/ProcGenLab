@@ -62,7 +62,7 @@ public class LandmassMaker {
             for(int j = 0; j < current.length; j++) {
                 current[i][j] = random
                         .intFor((regx * width) + i + 1, 
-                                (regy * width) + j + 1, 0);
+                                (regy * width) + j + 1, 0)  & 0x1;
             }
     }
     
@@ -72,12 +72,14 @@ public class LandmassMaker {
         mwidth = width + 2;
         currentScale /= 2;
         next = new int[mwidth][mwidth];
-        for(int i = 0; i < mwidth; i++)
+        for(int i = 0; i < mwidth; i++) {
             for(int j = 0; j < mwidth; j++) {
                 // This should work as long as all widths are even (as they are)
                 next[i][j] = 1 - current[(i + 1) /  2][(j + 1) / 2];
-                
+                //System.out.print(next[i][j]);
             }
+            //System.out.println();
+        }
         current = next;
         current = new int[mwidth][mwidth];
         makeTmpChunks();
@@ -99,8 +101,8 @@ public class LandmassMaker {
         int count = current[x-1][y-1] + current[x][y-1] + current[x+1][y-1] +
                     current[x-1][y]   + current[x][y]   + current[x+1][y] +
                     current[x-1][y+1] + current[x][y+1] + current[x+1][y+1];
-        if(count >= tmpChunks[x - 1][y - 1].val) return 1;
-        return 0;
+        if(count < tmpChunks[x - 1][y - 1].val) return 0;
+        return 1;
     }
     
     
