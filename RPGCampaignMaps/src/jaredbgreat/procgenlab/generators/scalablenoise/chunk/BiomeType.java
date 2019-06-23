@@ -78,12 +78,11 @@ public enum BiomeType {
     
     public static void makeBiomes(MapMaker map, SpatialNoise random, 
             Region region, SizeScale sc) {
-        int[] noise = refineNoise(map.makeNoise(random, 4), map);
         int[] ice   = refineNoise10(map.makeNoise(random, 5), map);
         int[] cn    = refineNoise10(map.makeNoise(random, 6), map);
         for(int i = 0; i < map.premap.length; i++) {
             map.makeBeach(map.premap[i], cn[i]);            
-            findBiome(map.premap[i], noise[i], ice[i], cn[i]);
+            findBiome(map.premap[i], ice[i], cn[i]);
         }
         RiverMaker rm = new RiverMaker(map, random.longFor(0, 0, 16), 
                 region, sc);
@@ -91,7 +90,7 @@ public enum BiomeType {
     }
     
     
-    public static void findBiome(ChunkTile tile, int noise, int ice, int cn) {
+    public static void findBiome(ChunkTile tile, int ice, int cn) {
         if(tile.rlBiome == 0) {
             if(((ice / 2) - tile.temp) > -2) {
                 tile.rlBiome = FROCEAN.ordinal();
@@ -103,7 +102,7 @@ public enum BiomeType {
             }*/
             return;
         }
-        if(tile.temp > 4 && ((tile.wet - tile.val) > noise - 1)) {
+        if(tile.temp > 7 && ((tile.wet - tile.val - tile.height) > 0)) {
             if((tile.getBiomeSeed() & 0x1) == 1) {
                 tile.rlBiome = SWAMP.ordinal();
                 tile.nextBiomeSeed();

@@ -17,7 +17,7 @@ public class ChunkTile {
     int temp = 0, wet = 0;
     int biomeSeed = 0, biome = 0;
     int noiseVal = 0;
-    double faults;
+    double faults, height;
     boolean mountain = false, hilly = false, land = false, beach = false;
     
     public ChunkTile(int x, int y) {
@@ -35,6 +35,10 @@ public class ChunkTile {
 
     public int getVal() {
         return val;
+    }
+
+    public double getHeight() {
+        return height;
     }
 
 //    public BiomeType getRlBiome() {

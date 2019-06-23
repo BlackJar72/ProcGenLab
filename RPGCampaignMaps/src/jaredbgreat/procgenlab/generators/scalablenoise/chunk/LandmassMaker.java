@@ -9,9 +9,7 @@ public class LandmassMaker {
     int regx, regy, size;
     SizeScale scale;
     double currentScale;
-    double[][] current;
     BasinNode[] basins;
-    ChunkTile[][] tmpChunks;
     
     
     LandmassMaker(int rx, int ry, SpatialNoise rand, 
@@ -23,7 +21,6 @@ public class LandmassMaker {
         scale = sc;
         currentScale = 1.0;
         basins = basinAr;
-        current = new double[size][size];
     }
     
     
@@ -39,19 +36,22 @@ public class LandmassMaker {
         double[][] heights = heightmaker.process(0);
         for(int i = 0; i < size; i++)
             for(int j = 0; j < size; j++) {
-                current[i][j] 
+                out[(i * size) + j].height 
                         = edgeFix(out[(i * size) + j], 
-                                BasinNode.summateEffect(basins, out[(i * size) + j], 
+                                BasinNode.summateEffect(basins, 
+                                        out[(i * size) + j], 
                                 scale.inv));
-                out[(i * size) + j].val = (int)current[i][j];
-                current[i][j] /= 10.0;
-                current[i][j] = ((current[i][j] + (heights[i][j] / 2.0) + 0.5) * current[i][j]) 
+                out[(i * size) + j].val = (int)out[(i * size) + j].height;
+                out[(i * size) + j].height /= 10.0;
+                out[(i * size) + j].height = ((out[(i * size) + j].height 
+                        + (heights[i][j] / 2.0) + 0.5) 
+                        * out[(i * size) + j].height) 
                         + heights[i][j];
             }
         
         for(int i = 0; i < size; i++)
             for(int j = 0; j < size; j++) {
-                if(current[i][j] > 0.6) {
+                if(out[(i * size) + j].height > 0.6) {
                     out[(i * size) + j].rlBiome = 1;
                 } else {
                     out[(i * size) + j].rlBiome = 0;                    

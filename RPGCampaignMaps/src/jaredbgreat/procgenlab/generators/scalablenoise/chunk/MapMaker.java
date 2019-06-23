@@ -127,7 +127,7 @@ public class MapMaker {
         
         HeightNoise climateMaker 
                 = new HeightNoise(chunkNoise, RSIZE * sizeScale.whole, 
-                        64 * sizeScale.whole, 2.0, 
+                        32 * sizeScale.whole, 2.0, 
                         coords.getX(), coords.getZ());
         
         double[] doubleNoise;
@@ -147,9 +147,6 @@ public class MapMaker {
                     doubleNoise[i], sizeScale.inv) + 
                     climateNoise[i / (RSIZE * sizeScale.whole)]
                             [i % (RSIZE * sizeScale.whole)], 9), 0);
-        }
-        for(int i = 0; i < premap.length; i++) {
-            
         }
         makeBiomes(random.getRandomAt(0, 0, 3));
         BiomeType.makeBiomes(this, random, regions[4], sizeScale);
