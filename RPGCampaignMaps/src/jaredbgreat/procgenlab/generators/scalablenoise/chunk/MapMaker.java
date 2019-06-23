@@ -19,8 +19,8 @@ public class MapMaker {
     final MutableCoords coords;
     // Using division to make the derivation obvious; this should be done
     // at compile time with no loss of performance.
-    public static final int CSIZE = 16; // chuck size
-    public static final int RSIZE = 4096 / CSIZE; // region / "continent" size
+    public static final int CSIZE = 16; // chuck SIZE
+    public static final int RSIZE = 4096 / CSIZE; // region / "continent" SIZE
     public static final int RADIUS = RSIZE / 2; // radius for basin effect range
     public static final int SQRADIUS = RADIUS * RADIUS;
     public static final int GENSIZE = 7; // area of chunks to looks at

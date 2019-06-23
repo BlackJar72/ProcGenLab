@@ -12,7 +12,7 @@ package jaredbgreat.procgenlab.generators.scalablenoise.chunk;
 public enum BiomeType {
     
     OCEAN (0xff1122ff),
-    DOCEAN (0xff111199),
+    DOCEAN (0xff1111dd),
     FROCEAN (0xff2244ff),
     RIVER (0xff1133ff),
     UNKOWN (0xff00ff44),
@@ -91,15 +91,17 @@ public enum BiomeType {
     
     
     public static void findBiome(ChunkTile tile, int ice, int cn) {
+        if(tile.river != 0) {
+            tile.rlBiome = RIVER.ordinal();
+            System.out.println("Found a River!!!");
+            return;
+        }
         if(tile.rlBiome == 0) {
             if(((ice / 2) - tile.temp) > -2) {
                 tile.rlBiome = FROCEAN.ordinal();
-            } else if(tile.val < 3) {
-                //tile.rlBiome = DOCEAN.ordinal();
-            } /*else if((tile.biomeSeed % 5 == 0) 
-                    && (cn > (3 + (tile.biomeSeed % 3)))) {
-                findLandBiome(tile);
-            }*/
+            } else if(tile.height < 0.2) {
+                tile.rlBiome = DOCEAN.ordinal();
+            }
             return;
         }
         if(tile.temp > 7 && ((tile.wet - tile.val - tile.height) > 0)) {

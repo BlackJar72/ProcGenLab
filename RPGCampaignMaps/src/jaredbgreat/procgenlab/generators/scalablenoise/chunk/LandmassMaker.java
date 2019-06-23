@@ -29,7 +29,7 @@ public class LandmassMaker {
         for(int i = 0; i < size; i++) 
             for(int j = 0; j < size; j++) {
                 out[(i * size) + j] 
-                        = new ChunkTile(i /*+ (size * regx)*/, j /*+ (size * regy)*/);
+                        = new ChunkTile(i /*+ (SIZE * regx)*/, j /*+ (SIZE * regy)*/);
         }        
         HeightNoise heightmaker 
                 = new HeightNoise(random, size, 16 * scale.whole, 1.0, regx, regy);

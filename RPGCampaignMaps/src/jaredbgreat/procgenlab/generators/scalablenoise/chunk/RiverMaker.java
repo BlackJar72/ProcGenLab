@@ -16,7 +16,7 @@ public class RiverMaker {
     public RiverMaker(MapMaker mapIn, long seed, Region region, SizeScale sc) {
         map = mapIn;
         rand = new Random(seed);
-        num = rand.nextInt(3) + 5;  
+        num = rand.nextInt(3 + sc.log) + 5 + (sc.whole * sc.log);  
         starts = region.getBasins(num, true);
         ends = region.getBasins(num, false);      
         scale = sc;
@@ -24,7 +24,7 @@ public class RiverMaker {
     
     public void build() {
         for(int i = 0; i < num; i++) {
-            River river = new River(starts[i], ends[i], map, scale);
+            River river = new River(i + 1, starts[i], ends[i], map, scale);
             river.build(rand);
         }
     }
