@@ -1,7 +1,5 @@
 package jaredbgreat.procgenlab.generators.scalablenoise.chunk;
 
-import java.util.Random;
-
 /**
  * A gradient noise generator.  This is based on Perlin noise  but 
  * with a few modifications. First, this does not use linear interpolation,
@@ -32,6 +30,17 @@ public class HeightNoise {
         this.random = random;
     }
     
+    /**
+     * This produce full fractal noise for the parameters specified in the 
+     * constructor.  It receives a parameter representing the starting Z value 
+     * in the spatial hash function used to generate random values; this is 
+     * essentially the series number of the noise map, allowing multiple 
+     * unique maps to be generated with the same instance which can be used 
+     * to represent different quantities in the same area at the same scale.
+     * 
+     * @param startz
+     * @return 
+     */
     public double[][] process(int startz)  {
         field = new double[size][size];
         currentInterval = interval;
@@ -45,7 +54,13 @@ public class HeightNoise {
         return field;
     }
     
-    
+    /**
+     * This processes of the points for one level of scaling.  Calling this 
+     * multiple times at different scales allows for fractal noise to be 
+     * generated.
+     * 
+     * @param startz 
+     */
     private void processOne(int startz) {
         int nodesX = size / currentInterval + 1;
         int nodesY = size / currentInterval + 1;
@@ -61,7 +76,18 @@ public class HeightNoise {
         }
     }
     
-    
+    /**
+     * Calculates the value at a given point.
+     * 
+     * This adds together the values relative to the gradients at each corner 
+     * of the cell, then divides to produce a value in the desired range of 
+     * -1 to 1.
+     * 
+     * @param nodes
+     * @param x
+     * @param y
+     * @return 
+     */
     public double processPoint(Vec2D[][] nodes, int x, int y) {
         double out = 0.0;
         
@@ -83,14 +109,26 @@ public class HeightNoise {
         out /= interval;
         out /= 2.0;
         
-        if((out >= 0.99) || (out <= -0.99)) {
-            System.out.println(out);
-            out = 0.0;
-        }
         return out;
     }
     
-    
+    /**
+     * This calculates the noise value at a given point relative to one 
+     * specific gradient / origin.  This is one of the core difference 
+     * from Perlin noise, as it is base on Euclidian distance rather than 
+     * using linear interpolation across on each axis.  The effectively 
+     * results in noise that is based on true geometric distance rather than 
+     * a "Manhattan" distance.
+     * 
+     * Technically this uses the square of the distance, not for any analytic 
+     * reason but rather for a more artistic one -- testing showed that this 
+     * simply looks better (at least to me).
+     * 
+     * @param from The origin of the gradient
+     * @param at the point for which the value is being calculated
+     * @param ci "Current Interval" the distance across a cell
+     * @return The height relative to the specified gradient
+     */
     private double calcLoc(Vec2D from, Vec2D at, double ci) {
         double dx = at.x / ci;
         double dy = at.y / ci;
@@ -101,12 +139,26 @@ public class HeightNoise {
         return 0.0;
     }
     
-    
+    /**
+     * This is Ken Perlin's fade function.  It smooths out the values near 
+     * the origin and termination point, thus removing grid-like artifact 
+     * from the noise map.
+     * 
+     * @param in
+     * @return 
+     */
     private double fade(double in) {
         return in * in * in * (in * (in * 6 - 15) + 10);  
     }
     
-    
+    /**
+     * This performs a scaled version of the fade function in which the range 
+     * is transformed to be treat as exactly 1.0.  This is required to make 
+     * the function work properly on non-unit lengths.
+     * 
+     * @param in
+     * @return 
+     */
     private double fullFade(double in) {
         return fade(in / currentInterval) * currentInterval;
     }

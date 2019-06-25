@@ -24,8 +24,30 @@ public class RiverMaker {
     
     public void build() {
         for(int i = 0; i < num; i++) {
-            River river = new River(i + 1, starts[i], ends[i], map, scale);
+            int endX, endZ;
+            switch(rand.nextInt(4)) {
+                case 0:
+                    endX = rand.nextInt(MapMaker.RSIZE * scale.whole);
+                    endZ = 0;
+                    break;
+                case 1:
+                    endX = rand.nextInt(MapMaker.RSIZE * scale.whole);
+                    endZ = MapMaker.RSIZE * scale.whole;
+                    break;
+                case 2:
+                    endZ = rand.nextInt(MapMaker.RSIZE * scale.whole);
+                    endX = 0;
+                    break;
+                case 3:
+                    endZ = rand.nextInt(MapMaker.RSIZE * scale.whole);
+                    endX = MapMaker.RSIZE * scale.whole;
+                    break;
+                default: // Should never actually happern
+                    endX = ends[i].x;
+                    endZ = ends[i].y;
+            }
+            River river = new River(i + 1, starts[i], endX, endZ, map, scale);
             river.build(rand);
         }
-    }
+    } 
 }
