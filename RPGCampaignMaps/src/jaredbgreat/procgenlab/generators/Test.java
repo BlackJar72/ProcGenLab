@@ -12,7 +12,7 @@ import jaredbgreat.procgenlab.api.IPalette;
 import static jaredbgreat.procgenlab.api.Delims.*;
 import jaredbgreat.procgenlab.api.palettes.DiscretePalette;
 import jaredbgreat.procgenlab.api.palettes.LiteralPalette;
-import jaredbgreat.procgenlab.api.util.SpatialNoise;
+import jaredbgreat.procgenlab.api.util.SpatialHash;
 import jaredbgreat.procgenlab.generators.test.Caves;
 import jaredbgreat.procgenlab.generators.test.Caves2;
 import java.util.Random;
@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
  */
 public class Test implements IGenerator {
     int x = 100, y = 100, depth = 0;
-    SpatialNoise random;
+    SpatialHash random;
     int[][] data;
     int[][] data2;
     IPalette[] palettes;
@@ -49,7 +49,7 @@ public class Test implements IGenerator {
     @Override
     public void generate(Long seed) {
         numZeros = 0;
-        random = new SpatialNoise(seed);
+        random = new SpatialHash(seed);
         data = new int[5][x * y];
         for(int i = 0; i < x; i++) {
             for(int j = 0; j < y; j++) {

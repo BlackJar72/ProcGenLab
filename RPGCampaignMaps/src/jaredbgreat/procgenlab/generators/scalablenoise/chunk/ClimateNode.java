@@ -44,7 +44,6 @@ public class ClimateNode extends BasinNode {
             sum += power;
             effect += ((double)n[i].value) * power;
         }
-        //System.out.println((int)(effect / sum));
         return Math.max((effect / sum) + noise, 0);
     }
     

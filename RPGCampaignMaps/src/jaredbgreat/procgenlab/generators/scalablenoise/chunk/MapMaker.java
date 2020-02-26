@@ -35,9 +35,6 @@ public class MapMaker {
     private MutableCoords chunkCoords = new MutableCoords(); 
     
     ChunkTile[] premap;
-    private BasinNode[] basins;
-    private ClimateNode[] temp;
-    private ClimateNode[] wet;
     private ClimateNode[] height;
     private TectonicNode[] plates;
     private BiomeBasin[][] subbiomes;
@@ -51,6 +48,7 @@ public class MapMaker {
     
     
     public MapMaker(int x, int z, long seed, SizeScale scale, int size) {
+        System.out.println(seed);
         Random random = new Random(seed);
         sizeScale = scale;
         biomeSize = size;
@@ -150,6 +148,7 @@ public class MapMaker {
         }
         makeBiomes(random.getRandomAt(0, 0, 3));
         BiomeType.makeBiomes(this, random, regions[4], sizeScale);
+        
     }
     
     
@@ -329,11 +328,17 @@ public class MapMaker {
                         = new BiomeBasin((i * size) + random.nextInt(size),
                                     (j * size) + random.nextInt(size),
                                     random.nextInt() | 0xff000000,
-                                    1.0 + random.nextDouble());
+                                    1.0 + random.nextDouble(), this);
             }
         for (ChunkTile tile : premap) {
-            tile.biome = BiomeBasin.summateEffect(subbiomes, tile, size);
-            tile.biomeSeed = tile.biome & 0x7fffffff;
+            ChunkTile basis = BiomeBasin.summateForCenter(subbiomes, tile, size);
+            tile.biome = basis.biomeSeed;
+            tile.biomeSeed = basis.biome;
+            /*if(true) {
+                tile.val = basis.val;
+                tile.wet = basis.wet;
+                tile.temp = basis.temp;
+            }*/
         }
     }
     

@@ -7,7 +7,7 @@ package jaredbgreat.procgenlab.generators.test;
  * https://creativecommons.org/licenses/by/4.0/legalcode
 */
 
-import jaredbgreat.procgenlab.api.util.SpatialNoise;
+import jaredbgreat.procgenlab.api.util.SpatialHash;
 import java.util.Random;
 import static jaredbgreat.procgenlab.generators.Test.absModulus;
 
@@ -17,7 +17,7 @@ import static jaredbgreat.procgenlab.generators.Test.absModulus;
  */
 public class Caves2 extends Caves {
 
-    public Caves2(int width, int height, SpatialNoise random) {
+    public Caves2(int width, int height, SpatialHash random) {
         super(width, height, random);
     }
     

@@ -13,7 +13,7 @@ import java.util.Random;
  *
  * @author Jared Blackburn
  */
-public class SpatialNoise {
+public class SpatialHash {
     private final long seed1;
     protected final long seed2;
     
@@ -23,20 +23,20 @@ public class SpatialNoise {
      *=====================================*/
     
     
-    public SpatialNoise() {
+    public SpatialHash() {
         long theSeed = System.nanoTime();
         seed1 = theSeed;
         seed2 = new java.util.Random(seed1).nextLong();
     }
     
     
-    public SpatialNoise(final long theSeed) {
+    public SpatialHash(final long theSeed) {
         seed1 = theSeed;
         seed2 = new Random(seed1).nextLong();
     }
     
     
-    public SpatialNoise(final long theSeed, final long altSeed) {
+    public SpatialHash(final long theSeed, final long altSeed) {
         seed1 = theSeed;
         seed2 = altSeed;
     }
@@ -53,7 +53,7 @@ public class SpatialNoise {
         if ((obj == null) || (getClass() != obj.getClass())) {
             return false;
         }
-        final SpatialNoise other = (SpatialNoise) obj;
+        final SpatialHash other = (SpatialHash) obj;
         return (seed1 == other.seed1);
     }
     
@@ -90,7 +90,7 @@ public class SpatialNoise {
      * @return 
      */
     public float floatFor(int x, int z, int t) {
-        return ((float)(longFor(x, z, t) & 0x7fffffff)) 
+        return ((float)(longFor(x, z, t)& 0x7fffffffffffffffl) 
                 / ((float)Long.MAX_VALUE);
     }
     
@@ -195,7 +195,7 @@ public class SpatialNoise {
      * from java.util.random, though though using a modified xorshift that is 
      * specific to the coordinates gives.
      */
-    public static class RandomAt extends SpatialNoise {
+    public static class RandomAt extends SpatialHash {
         private long nextSeed;
         private final int x1, x2, z1, z2, t1, t2;
         private final long addative1;
@@ -233,7 +233,7 @@ public class SpatialNoise {
          * @param z
          * @param t 
          */
-        public RandomAt(SpatialNoise from, int x, int z, int t) {
+        public RandomAt(SpatialHash from, int x, int z, int t) {
             super(from.seed1, from.seed2);
             nextSeed = from.getSeed();
             addative1 = (15485077L * (long)t) + (12338621L * (long)x) 
