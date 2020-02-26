@@ -14,6 +14,10 @@ import java.util.Random;
  * @author Jared Blackburn
  */
 public class SpatialHash {
+    public static final int INT_MASK  = 0x7fffffff;
+    public static final long LONG_MASK = 0x7fffffffffffffffl;
+    public static final double MAX_LONG_D = (double)Long.MAX_VALUE;
+    public static final float  MAX_LONG_F = (float)Long.MAX_VALUE;
     private final long seed1;
     protected final long seed2;
     
@@ -90,8 +94,7 @@ public class SpatialHash {
      * @return 
      */
     public float floatFor(int x, int z, int t) {
-        return ((float)(longFor(x, z, t)& 0x7fffffffffffffffl) 
-                / ((float)Long.MAX_VALUE);
+        return ((float)(longFor(x, z, t)& LONG_MASK) / MAX_LONG_F);
     }
     
     
@@ -105,8 +108,7 @@ public class SpatialHash {
      */
     public double doubleFor(int x, int z, int t) {
         return ((double)(longFor(x, z, t) 
-                & 0x7fffffffffffffffl)) 
-                / ((double)Long.MAX_VALUE);
+                & LONG_MASK)) / (MAX_LONG_D);
     }
     
     
@@ -142,9 +144,9 @@ public class SpatialHash {
         alt ^= rotateLeft(alt, (x % 29) + 13);
         alt ^= rotateRight(alt, (z % 31) + 7);
         alt ^= rotateLeft(alt, (t % 23) + 19);
-        out ^= rotateLeft(out, ((x & 0x7fffffff) % 13) + 5);
-        out ^= rotateRight(out, ((z & 0x7fffffff) % 11) + 28);  
-        out ^= rotateLeft(out, ((t & 0x7ffffff)% 17) + 45); 
+        out ^= rotateLeft(out, ((x & INT_MASK) % 13) + 5);
+        out ^= rotateRight(out, ((z & INT_MASK) % 11) + 28);  
+        out ^= rotateLeft(out, ((t & INT_MASK)% 17) + 45); 
         return (out ^ alt);
     }
     
@@ -216,9 +218,9 @@ public class SpatialHash {
             addative2 = seed2 + (179424743L * (long)t)
                          + (179426003L * (long)x) 
                          + (179425819L * (long)z);
-            x1 = ((x & 0x7fffffff) % 29) + 13;
-            z1 = ((z & 0x7fffffff)% 31) + 7;
-            t1 = ((t & 0x7fffffff)% 23) + 19;
+            x1 = ((x & INT_MASK) % 29) + 13;
+            z1 = ((z & INT_MASK)% 31) + 7;
+            t1 = ((t & INT_MASK)% 23) + 19;
             x2 = (x % 13) + 5;
             z2 = (z % 11) + 28;
             t2 = (t % 17) + 45;
@@ -288,7 +290,7 @@ public class SpatialHash {
          * @return a pseudorandom in between 0 and bounds
          */
         public int nextInt(int bound) {
-            return (((int)nextLong()) & 0x7fffffff) % bound;
+            return (((int)nextLong()) & INT_MASK) % bound;
         }
         
         
@@ -308,8 +310,7 @@ public class SpatialHash {
          * @return a pseudorandom float
          */
         public float nextFloat() {
-            return ((float)(nextLong() 
-                    & 0x7fffffffffffffffl) / (float)Long.MAX_VALUE);
+            return ((float)(nextLong() & LONG_MASK) / MAX_LONG_F);
         }
         
         
@@ -319,8 +320,7 @@ public class SpatialHash {
          * @return a pseudorandom double
          */
         public double nextDouble() {
-            return ((double)(nextLong() & 0x7fffffffffffffffl) 
-                    / (double)Long.MAX_VALUE);
+            return ((double)(nextLong() & LONG_MASK) / MAX_LONG_D);
         }        
     }
     
