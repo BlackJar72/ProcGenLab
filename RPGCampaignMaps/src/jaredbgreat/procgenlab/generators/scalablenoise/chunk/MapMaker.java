@@ -46,6 +46,8 @@ public class MapMaker {
     public final SizeScale sizeScale;
     public final int biomeSize;
     
+    private double[][] faulty;
+    
     
     public MapMaker(int x, int z, long seed, SizeScale scale, int size) {
         System.out.println(seed);
@@ -141,15 +143,20 @@ public class MapMaker {
         doubleNoise = averageNoise(makeDoubleNoise(random, 2));
         climateNoise = climateMaker.process(160);
         for(int i = 0; i < premap.length; i++) {
-            premap[i].wet = (int)Math.max(Math.min(ClimateNode.summateEffect(wetAr, premap[i], 
+            premap[i].wet = (int)Math.max(Math.min(ClimateNode.summateEffect(wetAr, 
+                    premap[i], 
                     doubleNoise[i], sizeScale.inv) + 
                     climateNoise[i / (RSIZE * sizeScale.whole)]
                             [i % (RSIZE * sizeScale.whole)], 9), 0);
         }
+        makeFaults();
         makeBiomes(random.getRandomAt(0, 0, 3));
         BiomeType.makeBiomes(this, random, regions[4], sizeScale);
         
     }
+    
+    
+    
     
     
     private void makeLandmass(BasinNode[] basins, SpatialNoise random) {
@@ -210,11 +217,16 @@ public class MapMaker {
      }
     
     
-    public int[] getFaultlines() {
+    public int[] getFaultlines() {         
         int[] out = new int[premap.length];
+        
         for(int i = 0; i < out.length; i++) {
-            out[i] = (int) Math.min(Math.max((premap[i].faults * 10)  + 15 
-                    - premap[i].val, 0), 10);
+            out[i] = (int) Math.min(Math.max(
+                    
+                    (faulty[i / (RSIZE * sizeScale.whole)]
+                            [i % (RSIZE * sizeScale.whole)] * 262144) - 256
+                    
+                    , 0), 255);
         }
         return out;
     }
@@ -314,6 +326,22 @@ public class MapMaker {
                 sum += noise[i][j];
             }
         return sum / 9;
+    }
+    
+    
+    public void makeFaults() {
+        HeightNoise climateMaker 
+                = new HeightNoise(chunkNoise, RSIZE * sizeScale.whole, 
+                        128 * sizeScale.whole, 1.0, 
+                        coords.getX(), coords.getZ());
+        faulty = climateMaker.process(130);
+        for(int i = 0; i < faulty.length; i++)
+            for(int j = 0; j < faulty[i].length; j++) {
+                faulty[i][j] = faulty[i][j] * faulty[i][j];
+            if(faulty[i][j] <0.001) {                    
+                    premap[(i * RSIZE * sizeScale.whole) + j].mountain = true;
+            }
+        }
     }
     
     

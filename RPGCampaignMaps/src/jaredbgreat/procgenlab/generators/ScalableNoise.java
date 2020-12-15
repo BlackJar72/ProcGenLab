@@ -97,7 +97,7 @@ public class ScalableNoise implements IGenerator {
         out[4] = new LiteralPalette();
         out[5] = new LiteralPalette();
         out[6] = new ContinuousPalette();
-        ((ContinuousPalette)out[6]).setPalette(0, 10, 0xffffffff, 0xff000000);
+        ((ContinuousPalette)out[6]).setPalette(0, 255, 0xffffffff, 0xff000000);
         return out;
     }
 

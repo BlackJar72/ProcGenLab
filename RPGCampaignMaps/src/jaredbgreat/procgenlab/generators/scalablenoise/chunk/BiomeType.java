@@ -116,22 +116,10 @@ public enum BiomeType {
             tile.rlBiome = BEACH.ordinal();
             return;
         }
-        int mval = (int)(tile.faults * 10)  + 15 - tile.val - tile.noiseVal;
-        /*if(mval < 10) {
-            if(mval < 10) {
-                tile.mountain = true;
-                if(mval < 7) {                    
-                    tile.rlBiome = ALPINE2.ordinal();
-                } else {
-                    tile.rlBiome = ALPINE.ordinal();
-                }
-                return;
-            } else {
-                tile.rlBiome = HILLY.ordinal();
-                tile.hilly = true;
-                return;
-            }
-        }*/
+        if(tile.mountain) {
+            tile.rlBiome = ALPINE.ordinal();
+            return;
+        }
         findLandBiome(tile);
     }
     
