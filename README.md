@@ -1,6 +1,6 @@
 # ProcGenLab
 
-## Do to the flurry of new age verification laws I do not have the infrastructure to comply with, I will not be making or working on videogames or any other standalone software applications. ##
+## Due to the flurry of new age verification laws I do not have the infrastructure to comply with, I will not be making or working on videogames or any other standalone software applications. ##
 
 A simple tool for testing, prototyping, and experimenting with procedural content generation.  It will allow any system which produces or can readily be reprented as a tile map or sort of time map to be tested visually, tweaked, and profiled independed 
 a game (or similar).  Systems can be hacked in within the generators package in an IDE or written with the jar link as a 
